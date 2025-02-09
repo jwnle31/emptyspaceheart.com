@@ -9,6 +9,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.2.5"
+    "astro": "^5.2.5",
+    "astro-icon": "^1.1.5"
+  },
+  "devDependencies": {
+    "@iconify-json/tabler": "^1.2.16"
   }
 }

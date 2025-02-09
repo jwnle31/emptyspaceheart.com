@@ -1,0 +1,37 @@
+@font-face {
+  font-family: "Renogare";
+  src: url("/fonts/Renogare-Regular.otf");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "RenogareSoft";
+  src: url("/fonts/RenogareSoft-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "JetBrainsMono";
+  src: url("/fonts/JetBrainsMono-VariableFont_wght.ttf");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "JetBrainsMono";
+  display: flex;
+  justify-content: center;
+  color: #333333;
+  min-height: 100vh;
+}

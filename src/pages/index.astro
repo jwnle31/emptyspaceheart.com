@@ -1,16 +1,41 @@
 ---
-
+import BaseLayout from "../layouts/BaseLayout.astro";
+import List from "../components/List.astro";
+import Breathe from "../components/Breathe.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout>
+  <div class="quote">
+    <img src="gifs/strawberry.gif" />
+    <p>
+      The way I see it,<br />the Mountain can't bring out<br />anything that
+      isn't already in you.
+    </p>
+    <small>- Granny -</small>
+  </div>
+  <Breathe />
+  <List title="Official" category="official" />
+  <Breathe />
+  <List title="General" category="general" />
+  <Breathe />
+  <List title="Discord" category="discord-global" />
+  <Breathe />
+  <List title="Modding" category="modding" />
+  <Breathe />
+  <List title="Challenges" category="challenge" />
+  <Breathe />
+  <List title="Speedrunning" category="speedrunning" />
+  <Breathe />
+  <List title="Merch" category="merch" />
+  <Breathe />
+</BaseLayout>
+<style>
+  img {
+    width: 1rem;
+  }
+  .quote {
+    font-size: 0.75rem;
+    line-height: 2rem;
+    text-align: center;
+  }
+</style>

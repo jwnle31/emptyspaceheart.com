@@ -1,0 +1,51 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<footer class="footer">
+  <div>
+    <a href="/about">About</a>
+  </div>
+  <div class="socials">
+    <a
+      href="https://github.com/jwnle31"
+      target="_blank"
+      rel="noopener noreferrer"
+      ><Icon class="icon" name="tabler:brand-github" /></a
+    >
+  </div>
+</footer>
+<style>
+  footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.75rem;
+  }
+
+  .socials {
+    margin-top: 0.5rem;
+  }
+
+  .icon {
+    font-size: 1.25rem;
+  }
+
+  a {
+    color: #222;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+  }
+
+  a:hover {
+    color: #444;
+  }
+
+  a:active {
+    color: #666;
+  }
+
+  a:focus {
+    outline: none;
+  }
+</style>

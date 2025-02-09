@@ -1,0 +1,40 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Link from "../components/Link.astro";
+import Breathe from "../components/Breathe.astro";
+---
+
+<BaseLayout>
+  <div class="img-wrapper">
+    <img src="gifs/seed.gif" />
+  </div>
+  <Breathe />
+  <div class="not-found-container">
+    <h5>About</h5>
+    <p>
+      linkeline is a minimalist hub<br />for Celeste resources.
+    </p>
+    <br />
+    <p>Missing something?<br />Suggest it via:</p>
+    <br />
+    <Link icon="brand-github" text="GitHub Issues" url="/" internal={true} />
+    <Breathe />
+  </div>
+  <style>
+    img {
+      width: 1rem;
+    }
+
+    .img-wrapper {
+      text-align: center;
+    }
+
+    p {
+      font-size: 0.75rem;
+    }
+
+    h5 {
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</BaseLayout>

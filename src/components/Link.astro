@@ -1,0 +1,76 @@
+---
+import { Icon } from "astro-icon/components";
+import "../styles/flags.css";
+const { icon, text, flag, url, internal } = Astro.props;
+---
+
+<li>
+  <Icon class="icon" name={`tabler:${icon}`} />
+  <span>
+    {
+      internal ? (
+        <a href={url}>{text}</a>
+      ) : (
+        <a href={url} target="_blank" rel="noopener noreferrer">
+          {text}
+        </a>
+      )
+    }
+  </span>
+  {
+    flag && (
+      <div class="flag-wrapper">
+        <span class={`flag flag:${flag}`} />
+      </div>
+    )
+  }
+</li>
+
+<style>
+  .icon {
+    font-size: 1rem;
+    min-width: 1rem;
+  }
+
+  li {
+    font-family: JetBrainsMono;
+    list-style: none;
+    font-size: 0.75rem;
+    line-height: 1.75rem;
+    display: flex;
+    align-items: center;
+  }
+
+  li > span:nth-child(2) {
+    margin: 0 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  li a {
+    color: #222;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+  }
+
+  li a:hover {
+    color: #444;
+  }
+
+  li a:active {
+    color: #666;
+  }
+
+  li a:focus {
+    outline: none;
+  }
+
+  .flag-wrapper {
+    margin-left: auto;
+  }
+
+  .flag {
+    border: solid #333 0.01rem;
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+import Link from "./Link.astro";
+import linksData from "../data/links.json";
+
+const { title, category } = Astro.props;
+const categoryData = linksData.filter((link) => link.type === category);
+---
+
+<div class="list-container">
+  <h5>{title}</h5>
+  <ul>
+    {
+      categoryData.map((link) => (
+        <li>
+          <Link
+            icon={link.icon}
+            text={link.text}
+            url={link.url}
+            flag={link.flag || ""}
+            internal={false}
+          />
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  h5 {
+    margin-bottom: 0.5rem;
+  }
+
+  ul {
+    padding: 0;
+  }
+
+  li {
+    list-style: none;
+  }
+</style>

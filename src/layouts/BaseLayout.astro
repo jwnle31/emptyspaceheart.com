@@ -1,0 +1,40 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+const { pageTitle } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <div id="slim">
+      <Header />
+      <main>
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>
+<style>
+  #slim {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 20rem;
+    overflow: hidden;
+    margin: 0 1.25rem;
+    padding: 2.5rem 0;
+  }
+
+  main {
+    flex: 1;
+  }
+</style>

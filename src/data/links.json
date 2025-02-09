@@ -1,0 +1,194 @@
+[
+  {
+    "type": "official",
+    "icon": "world",
+    "text": "celestegame.com",
+    "url": "https://www.celestegame.com/"
+  },
+  {
+    "type": "official",
+    "icon": "world",
+    "text": "Extremely OK Games, Ltd.",
+    "url": "https://exok.com"
+  },
+  {
+    "type": "official",
+    "icon": "world",
+    "text": "Celeste Classics",
+    "url": "https://celesteclassic.github.io/"
+  },
+  {
+    "type": "official",
+    "icon": "world",
+    "text": "Celeste 64",
+    "url": "https://maddymakesgamesinc.itch.io/celeste64"
+  },
+  {
+    "type": "general",
+    "icon": "brand-reddit",
+    "text": "r/celestegame",
+    "url": "https://www.reddit.com/r/celestegame/"
+  },
+  {
+    "type": "general",
+    "icon": "world",
+    "text": "Celeste Wiki",
+    "url": "https://celeste.ink/"
+  },
+  {
+    "type": "general",
+    "icon": "world",
+    "text": "Berry Camp",
+    "url": "https://berrycamp.github.io/"
+  },
+  {
+    "type": "discord-global",
+    "icon": "brand-discord",
+    "text": "Mt. Celeste Climbing Association",
+    "url": "https://discord.gg/celeste",
+    "flag": "CA"
+  },
+  {
+    "type": "discord-global",
+    "icon": "brand-discord",
+    "text": "Celeste Brasil",
+    "url": "https://discord.gg/celeste-brasil",
+    "flag": "BR"
+  },
+  {
+    "type": "discord-global",
+    "icon": "brand-discord",
+    "text": "Le Perchoir Celeste",
+    "url": "https://discord.com/invite/XVxrn84eum",
+    "flag": "FR"
+  },
+  {
+    "type": "discord-global",
+    "icon": "brand-discord",
+    "text": "Celeste日本語サーバー",
+    "url": "https://discord.com/invite/MW3mBqfN3K",
+    "flag": "JP"
+  },
+  {
+    "type": "discord-global",
+    "icon": "brand-discord",
+    "text": "Русское сообщество Celeste",
+    "url": "https://discord.gg/2g3KpBKhpV",
+    "flag": "RU"
+  },
+  {
+    "type": "discord-global",
+    "icon": "brand-discord",
+    "text": "셀레스트 🇰🇷",
+    "url": "https://discord.com/invite/SWb9tM4dHR",
+    "flag": "KR"
+  },
+  {
+    "type": "modding",
+    "icon": "world",
+    "text": "Everest",
+    "url": "https://everestapi.github.io/"
+  },
+  {
+    "type": "modding",
+    "icon": "world",
+    "text": "GameBanana",
+    "url": "https://gamebanana.com/games/6460"
+  },
+  {
+    "type": "modding",
+    "icon": "world",
+    "text": "Strawberry Jam Collab",
+    "url": "https://gamebanana.com/mods/424541"
+  },
+  {
+    "type": "modding",
+    "icon": "world",
+    "text": "CelesteNet",
+    "url": "https://celestenet.0x0a.de/"
+  },
+  {
+    "type": "modding",
+    "icon": "world",
+    "text": "Celeste Mods List",
+    "url": "https://celestemods.com/"
+  },
+  {
+    "type": "modding",
+    "icon": "world",
+    "text": "Maddie's Random Stuff",
+    "url": "https://maddie480.ovh/"
+  },
+  {
+    "type": "challenge",
+    "icon": "file-spreadsheet",
+    "text": "Farewell Golden Collectors' List",
+    "url": "https://docs.google.com/spreadsheets/d/1FesTb6qkgMz-dCn7YdioRydToWSQNTg1axFEIHU4FF8/edit?usp=sharing"
+  },
+  {
+    "type": "challenge",
+    "icon": "file-spreadsheet",
+    "text": "Celeste Survivors List",
+    "url": "https://docs.google.com/spreadsheets/d/1a32h6LErb1PAyYGsIO8hY-Y1pd-3r4co3M6RnuIRTZE/edit?usp=sharing"
+  },
+  {
+    "type": "challenge",
+    "icon": "world",
+    "text": "Wow Your Friends",
+    "url": "https://wowyourfriends.netlify.app/"
+  },
+  {
+    "type": "challenge",
+    "icon": "world",
+    "text": "goldberries.net",
+    "url": "https://goldberries.net/"
+  },
+  {
+    "type": "challenge",
+    "icon": "file-spreadsheet",
+    "text": "Celeste's Hardest Maps Clear List",
+    "url": "https://docs.google.com/spreadsheets/d/1A88F3X2lOQJry-Da2NpnAr-w5WDrkjDtg7Wt0kLCiz8/edit?usp=sharing"
+  },
+  {
+    "type": "challenge",
+    "icon": "file-spreadsheet",
+    "text": "Celeste Skill Rating",
+    "url": "https://docs.google.com/spreadsheets/d/1XTAL3kgpX0bG6SBfznPX8z7Qdb7lGnQRuxeUfPZMFoU/edit?usp=sharing"
+  },
+  {
+    "type": "challenge",
+    "icon": "brand-trello",
+    "text": "Celeste Bounty Board",
+    "url": "https://trello.com/b/DzaUnS9z/celeste-bounty-board"
+  },
+  {
+    "type": "speedrunning",
+    "icon": "world",
+    "text": "Speedrun.com Leaderboard",
+    "url": "https://www.speedrun.com/celeste"
+  },
+  {
+    "type": "speedrunning",
+    "icon": "file-spreadsheet",
+    "text": "Celeste Speedrunning Reference Guide",
+    "url": "https://docs.google.com/spreadsheets/d/14WJL-0vJHYOJzDzhrxfJQumMnMn5M8LD6qwwojogp0E/edit?usp=sharing"
+  },
+  {
+    "type": "speedrunning",
+    "icon": "file-type-doc",
+    "text": "Celeste Speedrunning Resource Guide",
+    "url": "https://docs.google.com/document/d/11AkfNoNJdwfPO3zzRWUqmKATm5EOd00fxh-HOds6HLY/edit?usp=sharing"
+  },
+  {
+    "type": "merch",
+    "icon": "shopping-bag",
+    "text": "Fangamer",
+    "url": "https://www.fangamer.com/collections/celeste"
+  },
+  {
+    "type": "merch",
+    "icon": "shopping-bag",
+    "text": "The Yetee",
+    "url": "https://theyetee.com/collections/celeste"
+  }
+]
