@@ -1,5 +1,5 @@
 ---
-import { Icon } from "astro-icon/components";
+
 ---
 
 <footer class="footer">
@@ -8,10 +8,13 @@ import { Icon } from "astro-icon/components";
   </div>
   <div class="socials">
     <a
+      class="github-button"
       href="https://github.com/jwnle31/linkeline"
-      target="_blank"
-      rel="noopener noreferrer"
-      ><Icon class="icon" name="tabler:brand-github" /></a
+      data-color-scheme="no-preference: light; light: light; dark: dark;"
+      data-icon="octicon-star"
+      data-size="large"
+      data-show-count="true"
+      aria-label="Star buttons/github-buttons on GitHub">Star</a
     >
   </div>
 </footer>
@@ -24,7 +27,7 @@ import { Icon } from "astro-icon/components";
   }
 
   .socials {
-    margin-top: 0.5rem;
+    margin-top: 2rem;
   }
 
   .icon {
