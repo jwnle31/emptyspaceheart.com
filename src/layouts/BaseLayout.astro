@@ -2,6 +2,7 @@
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
+const { pageTitle } = Astro.props;
 ---
 
 <html lang="en">
@@ -28,7 +29,18 @@ import "../styles/global.css";
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>emptyspaceheart</title>
+    <title>
+      {pageTitle ? `${pageTitle} | Empty Space Heart` : "Empty Space Heart"}
+    </title>
+    <meta name="description" content="A minimalist hub for Celeste resources" />
+    <meta name="author" content="jwnle31" />
+    <meta property="og:title" content="Empty Space Heart" />
+    <meta
+      property="og:description"
+      content="A minimalist hub for Celeste resources"
+    />
+    <meta property="og:image" content="/images/favicon.png" />
+    <meta property="og:url" content="https://emptyspaceheart.com" />
   </head>
   <body>
     <div id="slim">
