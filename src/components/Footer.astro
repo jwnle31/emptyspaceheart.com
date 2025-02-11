@@ -24,11 +24,12 @@
     flex-direction: column;
     align-items: center;
     font-size: 0.75rem;
-    margin: 5rem 0;
+    margin-top: 4rem;
+    margin-bottom: 3rem;
   }
 
   .socials {
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
 
   .icon {
@@ -36,20 +37,13 @@
   }
 
   a {
-    color: #222;
+    color: var(--theme-color);
     text-decoration: none;
-    transition: color 0.2s ease-in-out;
   }
 
-  a:hover {
-    color: #444;
-  }
-
+  a:hover,
   a:active {
-    color: #666;
-  }
-
-  a:focus {
-    outline: none;
+    color: var(--theme-color-hover);
+    transition: color 0.2s ease-in;
   }
 </style>

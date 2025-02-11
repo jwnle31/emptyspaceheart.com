@@ -24,6 +24,19 @@ body {
   font-family: "JetBrainsMono";
   display: flex;
   justify-content: center;
-  color: #333333;
   min-height: 100vh;
+  background-color: #fff;
+  color: var(--theme-color);
+  --theme-color: #333;
+  --theme-color-hover: #666;
+  transition: color 0.2s ease-in;
+  transition: background-color 0.2s ease-in;
 }
+
+body.dark {
+  background-color: #000;
+  color: var(--theme-color);
+  --theme-color: #fff;
+  --theme-color-hover: #ccc;
+}
+

@@ -1,20 +1,32 @@
 ---
-
+import ThemeIcon from "./ThemeIcon.astro";
 ---
 
-<h1><a href="/">empty space</a></h1>
+<div>
+  <div class="menu">
+    <ThemeIcon />
+  </div>
+  <h1><a href="/">empty space</a></h1>
+</div>
+
 <style>
+  .menu {
+    text-align: right;
+  }
+
   h1 {
     font-family: Renogare;
     font-size: 1.25rem;
     font-weight: 300;
     letter-spacing: 0.5rem;
-    margin-right: -0.5rem;
     text-align: center;
-    margin: 5rem 0;
+    margin-top: 6rem;
+    margin-bottom: 6rem;
+    margin-right: -0.5rem;
   }
+
   a {
-    color: #333;
+    color: var(--theme-color);
     text-decoration: none;
   }
 </style>

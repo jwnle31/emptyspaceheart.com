@@ -4,7 +4,7 @@ import "../styles/flags.css";
 const { icon, text, flag, url, internal } = Astro.props;
 ---
 
-<li>
+<li class="link">
   <Icon class="icon" name={`tabler:${icon}`} />
   <span>
     {
@@ -49,21 +49,14 @@ const { icon, text, flag, url, internal } = Astro.props;
   }
 
   li a {
-    color: #222;
+    color: var(--theme-color);
     text-decoration: none;
-    transition: color 0.2s ease-in-out;
   }
 
-  li a:hover {
-    color: #444;
-  }
-
+  li a:hover,
   li a:active {
-    color: #666;
-  }
-
-  li a:focus {
-    outline: none;
+    color: var(--theme-color-hover);
+    transition: color 0.2s ease-in;
   }
 
   .flag-wrapper {
@@ -71,6 +64,7 @@ const { icon, text, flag, url, internal } = Astro.props;
   }
 
   .flag {
-    border: solid #333 0.01rem;
+    border-style: solid;
+    border-width: 0.01rem;
   }
 </style>
