@@ -1,6 +1,11 @@
 @font-face {
   font-family: "RenogareSoft";
-  src: url("/fonts/RenogareSoft-Regular.ttf");
+  src: url('/fonts/jetbrainsmono-variablefont_wght-webfont.eot');
+  src: url('/fonts/jetbrainsmono-variablefont_wght-webfont.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/jetbrainsmono-variablefont_wght-webfont.woff2') format('woff2'),
+    url('/fonts/jetbrainsmono-variablefont_wght-webfont.woff') format('woff'),
+    url('/fonts/jetbrainsmono-variablefont_wght-webfont.ttf') format('truetype'),
+    url('/fonts/jetbrainsmono-variablefont_wght-webfont.svg#jetbrains_monoregular') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -8,7 +13,12 @@
 
 @font-face {
   font-family: "JetBrainsMono";
-  src: url("/fonts/JetBrainsMono-VariableFont_wght.ttf");
+  src: url('/fonts/renogaresoft-regular-webfont.eot');
+  src: url('/fonts/renogaresoft-regular-webfont.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/renogaresoft-regular-webfont.woff2') format('woff2'),
+    url('/fonts/renogaresoft-regular-webfont.woff') format('woff'),
+    url('/fonts/renogaresoft-regular-webfont.ttf') format('truetype'),
+    url('/fonts/renogaresoft-regular-webfont.svg#renogare_softregular') format('svg');
   font-weight: 100 900;
   font-style: normal;
   font-display: block;
