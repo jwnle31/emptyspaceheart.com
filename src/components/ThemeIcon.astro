@@ -8,19 +8,23 @@ import { Icon } from "astro-icon/components";
 
 <style>
   #themeToggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border: 0;
     background: none;
+    padding: 0;
     cursor: pointer;
   }
 
   .icon {
     font-size: 0.5rem;
-    margin-top: 0.5rem;
     color: var(--theme-color);
+    cursor: pointer;
   }
 </style>
 
-<script is:inline>
+<script>
   const handleToggleClick = () => {
     const element = document.documentElement;
     element.classList.toggle("dark");
