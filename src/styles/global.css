@@ -25,8 +25,9 @@ body {
   display: flex;
   justify-content: center;
   min-height: 100vh;
-  background-color: #fff;
+  background-color: var(--theme-color-bg);
   color: var(--theme-color);
+  --theme-color-bg: #fff;
   --theme-color: #333;
   --theme-color-hover: #666;
   transition: color 0.2s ease-in;
@@ -34,8 +35,9 @@ body {
 }
 
 body.dark {
-  background-color: #000;
+  background-color: var(--theme-color-bg);
   color: var(--theme-color);
+  --theme-color-bg: #000;
   --theme-color: #fff;
   --theme-color-hover: #ccc;
 }
