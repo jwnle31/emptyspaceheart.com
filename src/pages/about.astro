@@ -12,34 +12,44 @@ import Breathe from "../components/Breathe.astro";
   <div class="not-found-container">
     <h5>About</h5>
     <p>
-      linkeline is a minimalist hub<br />for Celeste resources.
+      emptyspaceheart.com is a<br />minimalist hub for Celeste resources.
     </p>
     <br />
-    <p>Missing something?<br />Suggest it via:</p>
-    <br />
-    <Link
-      icon="brand-github"
-      text="GitHub Issues"
-      url="https://github.com/jwnle31/linkeline/issues"
-      internal={false}
-    />
-    <Breathe />
+    <p>
+      Named after a fleeting heart, it serves<br />as a reminder — no matter how
+      much you’ve overcome, there’s always more to discover, more to climb.
+    </p>
   </div>
-  <style>
-    img {
-      width: 1rem;
-    }
-
-    .img-wrapper {
-      text-align: center;
-    }
-
-    p {
-      font-size: 0.75rem;
-    }
-
-    h5 {
-      margin-bottom: 0.5rem;
-    }
-  </style>
+  <br />
+  <p class="suggestion">Want to add something? Suggest it via:</p>
+  <Link
+    icon="brand-github"
+    text="GitHub Issues"
+    url="https://github.com/jwnle31/emptyspaceheart/issues"
+    internal={false}
+  />
+  <Breathe />
 </BaseLayout>
+<style>
+  img {
+    width: 1rem;
+  }
+
+  .img-wrapper {
+    text-align: center;
+  }
+
+  .suggestion {
+    margin-top: 5rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 0.75rem;
+    line-height: 2rem;
+  }
+
+  h5 {
+    margin-bottom: 1.25rem;
+  }
+</style>
