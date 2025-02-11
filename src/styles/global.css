@@ -34,7 +34,7 @@ body {
   transition: background-color 0.2s ease-in;
 }
 
-body.dark {
+:root.dark body {
   background-color: var(--theme-color-bg);
   color: var(--theme-color);
   --theme-color-bg: #000;
