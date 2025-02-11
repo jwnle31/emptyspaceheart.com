@@ -1,11 +1,11 @@
 @font-face {
   font-family: "RenogareSoft";
-  src: url('RenogareSoft-Regular.eot');
-  src: url('RenogareSoft-Regular.eot?#iefix') format('embedded-opentype'),
-    url('RenogareSoft-Regular.woff2') format('woff2'),
-    url('RenogareSoft-Regular.woff') format('woff'),
-    url('RenogareSoft-Regular.ttf') format('truetype'),
-    url('RenogareSoft-Regular.svg#RenogareSoft-Regular') format('svg');
+  src: url('/fonts/RenogareSoft-Regular.eot');
+  src: url('/fonts/RenogareSoft-Regular.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/RenogareSoft-Regular.woff2') format('woff2'),
+    url('/fonts/RenogareSoft-Regular.woff') format('woff'),
+    url('/fonts/RenogareSoft-Regular.ttf') format('truetype'),
+    url('/fonts/RenogareSoft-Regular.svg#RenogareSoft-Regular') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
