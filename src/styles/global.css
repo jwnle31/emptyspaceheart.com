@@ -1,11 +1,11 @@
 @font-face {
   font-family: "RenogareSoft";
-  src: url('/fonts/jetbrainsmono-variablefont_wght-webfont.eot');
-  src: url('/fonts/jetbrainsmono-variablefont_wght-webfont.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/jetbrainsmono-variablefont_wght-webfont.woff2') format('woff2'),
-    url('/fonts/jetbrainsmono-variablefont_wght-webfont.woff') format('woff'),
-    url('/fonts/jetbrainsmono-variablefont_wght-webfont.ttf') format('truetype'),
-    url('/fonts/jetbrainsmono-variablefont_wght-webfont.svg#jetbrains_monoregular') format('svg');
+  src: url('RenogareSoft-Regular.eot');
+  src: url('RenogareSoft-Regular.eot?#iefix') format('embedded-opentype'),
+    url('RenogareSoft-Regular.woff2') format('woff2'),
+    url('RenogareSoft-Regular.woff') format('woff'),
+    url('RenogareSoft-Regular.ttf') format('truetype'),
+    url('RenogareSoft-Regular.svg#RenogareSoft-Regular') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -13,12 +13,12 @@
 
 @font-face {
   font-family: "JetBrainsMono";
-  src: url('/fonts/renogaresoft-regular-webfont.eot');
-  src: url('/fonts/renogaresoft-regular-webfont.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/renogaresoft-regular-webfont.woff2') format('woff2'),
-    url('/fonts/renogaresoft-regular-webfont.woff') format('woff'),
-    url('/fonts/renogaresoft-regular-webfont.ttf') format('truetype'),
-    url('/fonts/renogaresoft-regular-webfont.svg#renogare_softregular') format('svg');
+  src: url('/fonts/JetBrainsMono-Regular.eot');
+  src: url('/fonts/JetBrainsMono-Regular.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/JetBrainsMono-Regular.woff2') format('woff2'),
+    url('/fonts/JetBrainsMono-Regular.woff') format('woff'),
+    url('/fonts/JetBrainsMono-Regular.ttf') format('truetype'),
+    url('/fonts/JetBrainsMono-Regular.svg#JetBrainsMono-Regular') format('svg');
   font-weight: 100 900;
   font-style: normal;
   font-display: block;
