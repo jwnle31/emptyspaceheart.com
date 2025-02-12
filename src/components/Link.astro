@@ -6,7 +6,7 @@ const { icon, text, flag, url, internal } = Astro.props;
 
 <li class="link">
   <Icon class="icon" name={`tabler:${icon}`} />
-  <span>
+  <span title={text}>
     {
       internal ? (
         <a href={url}>{text}</a>
@@ -28,14 +28,14 @@ const { icon, text, flag, url, internal } = Astro.props;
 
 <style>
   .icon {
-    font-size: 1rem;
+    font-size: 0.875rem;
     min-width: 1rem;
   }
 
   li {
     font-family: JetBrainsMono;
     list-style: none;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     line-height: 1.75rem;
     display: flex;
     align-items: center;

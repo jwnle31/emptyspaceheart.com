@@ -122,7 +122,7 @@
   {
     "type": "challenge",
     "icon": "file-spreadsheet",
-    "text": "Farewell Golden Collectors' List",
+    "text": "FWG Collectors' List",
     "url": "https://docs.google.com/spreadsheets/d/1FesTb6qkgMz-dCn7YdioRydToWSQNTg1axFEIHU4FF8/edit?usp=sharing"
   },
   {
@@ -146,7 +146,7 @@
   {
     "type": "challenge",
     "icon": "file-spreadsheet",
-    "text": "Celeste's Hardest Maps Clear List",
+    "text": "Hardest Maps Clear List",
     "url": "https://docs.google.com/spreadsheets/d/1A88F3X2lOQJry-Da2NpnAr-w5WDrkjDtg7Wt0kLCiz8/edit?usp=sharing"
   },
   {
@@ -170,13 +170,13 @@
   {
     "type": "speedrunning",
     "icon": "file-spreadsheet",
-    "text": "Celeste Speedrunning Reference Guide",
+    "text": "Reference Guide",
     "url": "https://docs.google.com/spreadsheets/d/14WJL-0vJHYOJzDzhrxfJQumMnMn5M8LD6qwwojogp0E/edit?usp=sharing"
   },
   {
     "type": "speedrunning",
     "icon": "file-type-doc",
-    "text": "Celeste Speedrunning Resource Guide",
+    "text": "Resource Guide",
     "url": "https://docs.google.com/document/d/11AkfNoNJdwfPO3zzRWUqmKATm5EOd00fxh-HOds6HLY/edit?usp=sharing"
   },
   {
