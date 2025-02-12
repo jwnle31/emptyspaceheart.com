@@ -1,10 +1,10 @@
 # emptyspaceheart.com
 
-![Tools Used](https://skillicons.dev/icons?i=astro,netlify&theme=light)&thinsp;&thinsp;<img src="./public/gifs/emptyspaceheart.gif" height="48">
+<img src="./public/gifs/emptyspaceheart.gif" height="48">&thinsp;&thinsp;![Tools Used](https://skillicons.dev/icons?i=astro,netlify&theme=light)
 
 emptyspaceheart.com is a minimalist hub for major [Celeste](https://www.celestegame.com) resources.
 
-If you come across any useful resources that are missing in the website,<br />please feel free to open an issue with the details.
+If you come across any useful resources missing from the website, please feel free to open an issue.
 
 ## Commands
 
