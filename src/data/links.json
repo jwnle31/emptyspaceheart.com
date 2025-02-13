@@ -104,6 +104,18 @@
   {
     "type": "modding",
     "icon": "world",
+    "text": "2020 Spring Collab",
+    "url": "https://gamebanana.com/mods/150813"
+  },
+  {
+    "type": "modding",
+    "icon": "world",
+    "text": "Monika's D-Sides",
+    "url": "https://gamebanana.com/mods/150759"
+  },
+  {
+    "type": "modding",
+    "icon": "world",
     "text": "CelesteNet",
     "url": "https://celestenet.0x0a.de/"
   },
