@@ -98,6 +98,12 @@
   {
     "type": "modding",
     "icon": "world",
+    "text": "CelesteNet",
+    "url": "https://celestenet.0x0a.de/"
+  },
+  {
+    "type": "modding",
+    "icon": "world",
     "text": "Strawberry Jam Collab",
     "url": "https://gamebanana.com/mods/424541"
   },
@@ -115,9 +121,15 @@
   },
   {
     "type": "modding",
-    "icon": "world",
-    "text": "CelesteNet",
-    "url": "https://celestenet.0x0a.de/"
+    "icon": "brand-youtube",
+    "text": "Celeste Modding Central",
+    "url": "https://www.youtube.com/@CelesteModdingCentral"
+  },
+  {
+    "type": "modding",
+    "icon": "brand-discord",
+    "text": "Mt. Celeste Playtesting Association",
+    "url": "https://discord.gg/pmauV7EyMs"
   },
   {
     "type": "modding",
@@ -154,6 +166,12 @@
     "icon": "world",
     "text": "goldberries.net",
     "url": "https://goldberries.net/"
+  },
+  {
+    "type": "challenge",
+    "icon": "brand-discord",
+    "text": "Celeste Modded Done Deathless",
+    "url": "https://discord.com/invite/GeJvmMycaC"
   },
   {
     "type": "challenge",
@@ -202,5 +220,17 @@
     "icon": "shopping-bag",
     "text": "The Yetee",
     "url": "https://theyetee.com/collections/celeste"
+  },
+  {
+    "type": "misc",
+    "icon": "brand-discord",
+    "text": "Mt. Celeste Paceping Association",
+    "url": "https://discord.gg/MJPB64VZKD"
+  },
+  {
+    "type": "misc",
+    "icon": "file-spreadsheet",
+    "text": "Celeste Resource Collection",
+    "url": "https://docs.google.com/spreadsheets/d/1UM4ynWTr22tIUMPlvGQnuyzx5UZQw4dBtBIpiGG27u4/edit?usp=sharing"
   }
 ]
