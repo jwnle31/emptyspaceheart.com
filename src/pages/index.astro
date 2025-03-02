@@ -6,7 +6,22 @@ import Breathe from "../components/Breathe.astro";
 
 <BaseLayout>
   <div class="quote">
-    <img src="/gifs/emptyspaceheart.gif" alt="Empty Space Heart" />
+    <div class="placeholder">
+      <div class="heart-menu">
+        <img src="/gifs/emptyspaceheart.gif" alt="Empty Space Heart" />
+        <div class="menu">
+          <button data-category="official">Official</button>
+          <button data-category="general">General</button>
+          <button data-category="discord-global">Discord</button>
+          <button data-category="modding">Modding</button>
+          <button data-category="challenge">Challenges</button>
+          <button data-category="speedrunning">Speedrunning</button>
+          <button data-category="merch">Merch</button>
+          <button data-category="misc">Misc.</button>
+        </div>
+      </div>
+    </div>
+
     <p>
       The way I see it,<br />the Mountain can't bring out<br />anything that
       isn't already in you.
@@ -32,13 +47,129 @@ import Breathe from "../components/Breathe.astro";
   <Breathe />
 </BaseLayout>
 <style>
-  img {
-    width: 2.5rem;
-  }
   .quote {
     font-size: 0.75rem;
     line-height: 2.5rem;
     text-align: center;
     margin-bottom: 3rem;
   }
+
+  .placeholder {
+    height: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .heart-menu {
+    position: relative;
+    display: inline-block;
+  }
+
+  .heart-menu img {
+    width: 2.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .heart-menu:hover img {
+    transform: scale(1.3);
+  }
+
+  .menu {
+    font-family: "JetBrainsMono";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(0.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    background: var(--theme-color-bg);
+    padding: 0.5rem;
+    border: 0.125rem solid var(--theme-color);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .heart-menu:hover .menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .menu button {
+    background: none;
+    border: none;
+    font-family: JetBrainsMono;
+    font-size: 0.875rem;
+    cursor: pointer;
+    padding: 0.5rem 0.75rem;
+    color: var(--theme-color);
+    white-space: nowrap;
+    border-radius: 0.5rem;
+    text-align: left;
+    transition: all 0.2s ease;
+    min-width: 10rem;
+  }
+
+  .menu button:hover {
+    transform: translateX(0.25rem);
+    color: var(--theme-color-hover);
+  }
+
+  .heart-menu.sticky {
+    position: fixed;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+  }
 </style>
+
+<script>
+  const remToPx = (rem: number) =>
+    rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const heartMenu = document.querySelector(".heart-menu");
+    let offset = 0;
+
+    const updateOffset = () => {
+      const heartPosition = heartMenu?.getBoundingClientRect().top ?? 0;
+      offset = window.scrollY + heartPosition - remToPx(2);
+
+      if (window.scrollY > offset) {
+        heartMenu?.classList.add("sticky");
+      } else {
+        heartMenu?.classList.remove("sticky");
+      }
+    };
+
+    updateOffset();
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > offset) {
+        heartMenu?.classList.add("sticky");
+      } else {
+        heartMenu?.classList.remove("sticky");
+      }
+    });
+
+    const buttons = document.querySelectorAll(".menu button");
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const category = button.getAttribute("data-category");
+        const section = document.getElementById(
+          category || ""
+        )?.previousElementSibling;
+        if (section) {
+          const y =
+            section.getBoundingClientRect().top +
+            window.scrollY +
+            remToPx(2.25);
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+      });
+    });
+  });
+</script>

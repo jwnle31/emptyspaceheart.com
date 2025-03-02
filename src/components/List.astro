@@ -6,20 +6,18 @@ const { title, category } = Astro.props;
 const categoryData = linksData.filter((link) => link.type === category);
 ---
 
-<div class="list-container">
+<div id={category} class="list-container">
   <h5>{title}</h5>
   <ul>
     {
       categoryData.map((link) => (
-        <li>
-          <Link
-            icon={link.icon}
-            text={link.text}
-            url={link.url}
-            flag={link.flag || ""}
-            internal={false}
-          />
-        </li>
+        <Link
+          icon={link.icon}
+          text={link.text}
+          url={link.url}
+          flag={link.flag || ""}
+          internal={false}
+        />
       ))
     }
   </ul>

@@ -39,6 +39,11 @@ const { icon, text, flag, url, internal } = Astro.props;
     line-height: 1.75rem;
     display: flex;
     align-items: center;
+    transition: transform 0.2s ease;
+  }
+
+  li:hover {
+    transform: translateX(0.25rem);
   }
 
   li > span:nth-child(2) {
