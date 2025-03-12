@@ -1,5 +1,7 @@
 # emptyspaceheart.com
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1195f150-84b6-491a-bff8-1f2b87be512e/deploy-status)](https://app.netlify.com/sites/emptyspaceheart/deploys)
+
 <img src="./public/gifs/emptyspaceheart.gif" height="48">&thinsp;&thinsp;![Tools Used](https://skillicons.dev/icons?i=astro,netlify&theme=light)
 
 emptyspaceheart.com is a minimalist hub for major [Celeste](https://www.celestegame.com) resources.
