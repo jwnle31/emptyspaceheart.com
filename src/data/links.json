@@ -187,6 +187,18 @@
   },
   {
     "type": "challenge",
+    "icon": "file-spreadsheet",
+    "text": "Randomizer Perfect Room Clears",
+    "url": "https://docs.google.com/spreadsheets/d/15IIy0mCmP3jFG5zwCme6jCqWgXGVDYJSvme0K0iQR-0/edit?usp=sharing"
+  },
+  {
+    "type": "challenge",
+    "icon": "file-spreadsheet",
+    "text": "Celeste Community Mindash",
+    "url": "https://docs.google.com/spreadsheets/d/1j3lPiqxBWa4bbX1rc3nZ2taHu8JchGaTj4x98gXdcho/edit?usp=sharing"
+  },
+  {
+    "type": "challenge",
     "icon": "brand-trello",
     "text": "Celeste Bounty Board",
     "url": "https://trello.com/b/DzaUnS9z/celeste-bounty-board"
