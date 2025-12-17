@@ -24,6 +24,24 @@
     "url": "https://maddymakesgamesinc.itch.io/celeste64"
   },
   {
+    "type": "official",
+    "icon": "world",
+    "text": "amora.ink",
+    "url": "https://amora.ink/celeste"
+  },
+  {
+    "type": "official",
+    "icon": "brand-bandcamp",
+    "text": "Celeste Original Soundtrack",
+    "url": "https://radicaldreamland.bandcamp.com/album/celeste-original-soundtrack"
+  },
+  {
+    "type": "official",
+    "icon": "brand-bandcamp",
+    "text": "Celeste B-Sides",
+    "url": "https://radicaldreamland.bandcamp.com/album/celeste-b-sides"
+  },
+  {
     "type": "general",
     "icon": "brand-reddit",
     "text": "r/celestegame",
@@ -73,7 +91,7 @@
     "type": "discord-global",
     "icon": "brand-discord",
     "text": "Русское сообщество Celeste",
-    "url": "https://discord.gg/2g3KpBKhpV",
+    "url": "https://discord.gg/mreyDsfheT",
     "flag": "RU"
   },
   {
@@ -142,6 +160,12 @@
     "icon": "world",
     "text": "Maddie's Random Stuff",
     "url": "https://maddie480.ovh/"
+  },
+  {
+    "type": "modding",
+    "icon": "world",
+    "text": "Celeste's FMOD Studio Project",
+    "url": "https://www.fmod.com/docs/2.03/studio/appendix-a-celeste.html"
   },
   {
     "type": "challenge",
