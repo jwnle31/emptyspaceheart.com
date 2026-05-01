@@ -1,3 +1,13 @@
+# emptyspaceheart.com
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1195f150-84b6-491a-bff8-1f2b87be512e/deploy-status)](https://app.netlify.com/sites/emptyspaceheart/deploys)
+
+<img src="./src/assets/gifs/emptyspaceheart.gif" height="48">&thinsp;&thinsp;![Tools Used](https://skillicons.dev/icons?i=react,netlify&theme=light)
+
+emptyspaceheart.com is a minimalist hub for major [Celeste](https://www.celestegame.com) resources.
+
+If you come across any useful resources missing from the website, please feel free to open an issue.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -40,15 +50,15 @@ export default defineConfig([
       // other options...
     },
   },
-])
+]);
 ```
 
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
 // eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+import reactX from 'eslint-plugin-react-x';
+import reactDom from 'eslint-plugin-react-dom';
 
 export default defineConfig([
   globalIgnores(['dist']),
@@ -69,5 +79,5 @@ export default defineConfig([
       // other options...
     },
   },
-])
+]);
 ```
