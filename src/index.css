@@ -1,24 +1,32 @@
+@import './styles/flags.css';
+
 @font-face {
-  font-family: "RenogareSoft";
-  src: url('/fonts/RenogareSoft-Regular.eot');
-  src: url('/fonts/RenogareSoft-Regular.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/RenogareSoft-Regular.woff2') format('woff2'),
-    url('/fonts/RenogareSoft-Regular.woff') format('woff'),
-    url('/fonts/RenogareSoft-Regular.ttf') format('truetype'),
-    url('/fonts/RenogareSoft-Regular.svg#RenogareSoft-Regular') format('svg');
+  font-family: 'RenogareSoft';
+  src: url('assets/fonts/RenogareSoft-Regular.eot');
+  src:
+    url('assets/fonts/RenogareSoft-Regular.eot?#iefix')
+      format('embedded-opentype'),
+    url('assets/fonts/RenogareSoft-Regular.woff2') format('woff2'),
+    url('assets/fonts/RenogareSoft-Regular.woff') format('woff'),
+    url('assets/fonts/RenogareSoft-Regular.ttf') format('truetype'),
+    url('assets/fonts/RenogareSoft-Regular.svg#RenogareSoft-Regular')
+      format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
 }
 
 @font-face {
-  font-family: "JetBrainsMono";
-  src: url('/fonts/JetBrainsMono-Regular.eot');
-  src: url('/fonts/JetBrainsMono-Regular.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/JetBrainsMono-Regular.woff2') format('woff2'),
-    url('/fonts/JetBrainsMono-Regular.woff') format('woff'),
-    url('/fonts/JetBrainsMono-Regular.ttf') format('truetype'),
-    url('/fonts/JetBrainsMono-Regular.svg#JetBrainsMono-Regular') format('svg');
+  font-family: 'JetBrainsMono';
+  src: url('assets/fonts/JetBrainsMono-Regular.eot');
+  src:
+    url('assets/fonts/JetBrainsMono-Regular.eot?#iefix')
+      format('embedded-opentype'),
+    url('assets/fonts/JetBrainsMono-Regular.woff2') format('woff2'),
+    url('assets/fonts/JetBrainsMono-Regular.woff') format('woff'),
+    url('assets/fonts/JetBrainsMono-Regular.ttf') format('truetype'),
+    url('assets/fonts/JetBrainsMono-Regular.svg#JetBrainsMono-Regular')
+      format('svg');
   font-weight: 100 900;
   font-style: normal;
   font-display: block;
@@ -32,7 +40,7 @@
 }
 
 body {
-  font-family: "JetBrainsMono";
+  font-family: 'JetBrainsMono';
   display: flex;
   justify-content: center;
   min-height: 100vh;
@@ -48,6 +56,9 @@ body {
   --gh-bg-hov: #e5eaee;
   --gh-bg-active: #e6eaef;
   --gh-border: #d1d9e0;
+}
+
+body.transitions-enabled {
   transition: color 0.2s ease-in;
   transition: background-color 0.2s ease-in;
 }
@@ -59,11 +70,10 @@ body {
   --theme-color: #fff;
   --theme-color-hover: #ccc;
   --gh-social-count: #f0f6fc;
-  --gh-social-count-bg: #0D1117;
+  --gh-social-count-bg: #0d1117;
   --gh-bg-img: linear-gradient(180deg, #212830, #1a2026 90%);
   --gh-bg-img-hov: linear-gradient(180deg, #262c36, #1f242c 90%);
   --gh-bg-hov: #1f242c;
   --gh-bg-active: #2a313c;
   --gh-border: #3d444d;
 }
-

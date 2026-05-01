@@ -1,5 +1,10 @@
-[class*=" flag:"],
-[class^="flag:"] {
+.flag {
+  border-style: solid;
+  border-width: 0.01rem;
+}
+
+[class*=' flag:'],
+[class^='flag:'] {
   display: inline-block;
   background-size: cover;
   height: 1em;

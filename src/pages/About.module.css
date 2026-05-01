@@ -1,0 +1,24 @@
+.image {
+  width: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.img-wrapper {
+  text-align: center;
+}
+
+.suggestion {
+  margin-top: 5rem;
+  margin-bottom: 1rem;
+}
+
+.paragraph {
+  font-size: 0.875rem;
+  line-height: 2rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-bottom: 1.25rem;
+}
