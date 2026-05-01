@@ -8,7 +8,7 @@ emptyspaceheart.com is a minimalist hub for major [Celeste](https://www.celesteg
 
 If you come across any useful resources missing from the website, please feel free to open an issue.
 
-# React + TypeScript + Vite
+## React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
