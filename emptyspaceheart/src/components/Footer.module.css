@@ -1,0 +1,31 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.75rem;
+  margin-top: 4rem;
+  margin-bottom: 3rem;
+}
+
+.footer-menu {
+  font-size: 1rem;
+}
+
+.socials {
+  margin-top: 1rem;
+}
+
+.icon {
+  font-size: 1.25rem;
+}
+
+.link {
+  color: var(--theme-color);
+  text-decoration: none;
+}
+
+.link:hover,
+.link:active {
+  color: var(--theme-color-hover);
+  transition: color 0.2s ease-in;
+}

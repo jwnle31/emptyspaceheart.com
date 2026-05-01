@@ -1,0 +1,40 @@
+.icon {
+  font-size: 0.875rem;
+  min-width: 1rem;
+}
+
+.link {
+  font-family: JetBrainsMono;
+  list-style: none;
+  font-size: 0.875rem;
+  line-height: 1.75rem;
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.link:hover {
+  transform: translateX(0.25rem);
+}
+
+.link > span:nth-child(2) {
+  margin: 0 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.link a {
+  color: var(--theme-color);
+  text-decoration: none;
+}
+
+.link a:hover,
+.link a:active {
+  color: var(--theme-color-hover);
+  transition: color 0.2s ease-in;
+}
+
+.flag-wrapper {
+  margin-left: auto;
+}
