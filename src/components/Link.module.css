@@ -10,18 +10,21 @@
   line-height: 1.75rem;
   display: flex;
   align-items: center;
+  gap: 0.25rem;
   transition: transform 0.2s ease;
+  min-width: 0;
 }
 
 .link:hover {
   transform: translateX(0.25rem);
 }
 
-.link > span:nth-child(2) {
-  margin: 0 0.25rem;
+.link span {
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-wrap: ellipsis;
 }
 
 .link a {

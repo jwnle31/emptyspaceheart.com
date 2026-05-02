@@ -7,7 +7,7 @@ function ThemeIcon() {
 
   return (
     <button
-      id="themeToggle"
+      id="theme-toggle"
       className={styles['theme-toggle']}
       onClick={toggleTheme}
       aria-label="Toggle theme"

@@ -41,8 +41,6 @@
 
 body {
   font-family: 'JetBrainsMono';
-  display: flex;
-  justify-content: center;
   min-height: 100vh;
   background-color: var(--theme-color-bg);
   color: var(--theme-color);

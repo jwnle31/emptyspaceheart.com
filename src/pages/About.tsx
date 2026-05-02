@@ -2,10 +2,11 @@ import styles from './About.module.css';
 import Breathe from '../components/Breathe';
 import Link from '../components/Link';
 import Seed from '../assets/gifs/seed.gif';
+import { SlimLayout } from '../layouts/SlimLayout';
 
 function About() {
   return (
-    <>
+    <SlimLayout>
       <div className={styles['img-wrapper']}>
         <img src={Seed} alt="Seed" className={styles.image} />
       </div>
@@ -42,7 +43,7 @@ function About() {
         internal={false}
       />
       <Breathe />
-    </>
+    </SlimLayout>
   );
 }
 

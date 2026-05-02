@@ -1,0 +1,9 @@
+.slim-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 18rem;
+  max-width: 24rem;
+  padding: 0 1rem;
+  margin: 0 auto;
+}
