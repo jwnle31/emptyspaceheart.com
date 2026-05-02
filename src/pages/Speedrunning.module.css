@@ -47,6 +47,14 @@
   font-size: 0.75rem;
 }
 
+.mode-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: min(100%, 16rem);
+  font-size: 0.75rem;
+}
+
 .country-filter button {
   width: 100%;
   min-height: 2.5rem;
@@ -93,8 +101,57 @@
   border-bottom: 0;
 }
 
+.menu-separator {
+  height: 0;
+  border-top: 0.125rem solid var(--theme-color);
+}
+
 .country-menu button:hover {
   color: var(--theme-color-hover);
+}
+
+.display-toggle {
+  display: flex;
+  align-items: stretch;
+  height: 2.5rem;
+  width: 100%;
+  border: 0.125rem solid var(--theme-color);
+  overflow: hidden;
+}
+
+.display-toggle button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex: 1 1 0;
+  border: 0;
+  border-right: 0.0625rem solid var(--theme-color);
+  background: var(--theme-color-bg);
+  color: var(--theme-color);
+  font-family: JetBrainsMono;
+  font-size: 0.875rem;
+  line-height: 1;
+  padding: 0 0.9rem;
+  cursor: pointer;
+}
+
+.display-toggle button:last-child {
+  border-right: 0;
+}
+
+.display-toggle button:hover {
+  color: var(--theme-color-hover);
+}
+
+.display-toggle button.display-toggle-active {
+  background: var(--theme-color);
+  color: var(--theme-color-bg);
+  font-weight: 900;
+}
+
+.display-toggle button.display-toggle-active:hover {
+  color: var(--theme-color-bg);
 }
 
 .summary {
@@ -139,6 +196,18 @@
 
 .table-wrapper tbody tr:hover {
   background: color-mix(in srgb, var(--theme-color) 7%, transparent);
+}
+
+.section-row {
+  padding: 0.55rem 0.8rem;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--theme-color);
+  background: color-mix(in srgb, var(--theme-color) 4%, transparent);
+  border-top: 0.125rem solid var(--theme-color);
+  border-bottom: 0.125rem solid var(--theme-color);
 }
 
 .runner-cell {

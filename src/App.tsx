@@ -15,6 +15,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/speedrunning" element={<Speedrunning />} />
+        <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

@@ -1,17 +1,21 @@
 import type { ReactNode } from 'react';
 import styles from '../Speedrunning.module.css';
 
-type DropdownOption = {
+export type DropdownOption = {
   value: string;
   label: string;
   leading?: ReactNode;
+};
+
+export type DropdownGroup = {
+  options: DropdownOption[];
 };
 
 type DropdownFilterProps = {
   label: string;
   selectedLabel: string;
   selectedLeading?: ReactNode;
-  options: DropdownOption[];
+  groups: DropdownGroup[];
   isOpen: boolean;
   onToggle: () => void;
   onSelect: (value: string) => void;
@@ -21,7 +25,7 @@ function DropdownFilter({
   label,
   selectedLabel,
   selectedLeading,
-  options,
+  groups,
   isOpen,
   onToggle,
   onSelect,
@@ -36,17 +40,24 @@ function DropdownFilter({
 
       {isOpen && (
         <div className={styles['country-menu']}>
-          {options.map(({ value, label: optionLabel, leading }) => (
-            <button
-              key={value}
-              type="button"
-              onClick={() => {
-                onSelect(value);
-              }}
-            >
-              {leading}
-              <span>{optionLabel}</span>
-            </button>
+          {groups.map((group, groupIndex) => (
+            <div key={groupIndex}>
+              {groupIndex > 0 && (
+                <div className={styles['menu-separator']} role="separator" />
+              )}
+              {group.options.map(({ value, label: optionLabel, leading }) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => {
+                    onSelect(value);
+                  }}
+                >
+                  {leading}
+                  <span>{optionLabel}</span>
+                </button>
+              ))}
+            </div>
           ))}
         </div>
       )}

@@ -100,6 +100,21 @@ export type LeaderboardRow = {
   nameStyle: CSSProperties;
 };
 
+export type DisplayLeaderboardRow = LeaderboardRow & {
+  rowType: 'row';
+  rowKey: string;
+  displayRank?: number;
+  displayScope?: string;
+};
+
+export type SeparatorRow = {
+  rowType: 'separator';
+  rowKey: string;
+  label: string;
+};
+
+export type DisplayLeaderboardItem = DisplayLeaderboardRow | SeparatorRow;
+
 export type CountryOption = {
   name: string;
   code?: string;
