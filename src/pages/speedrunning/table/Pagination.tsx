@@ -1,4 +1,4 @@
-import styles from '../Speedrunning.module.css';
+import styles from '../../Speedrunning.module.css';
 
 type PaginationProps = {
   currentPage: number;

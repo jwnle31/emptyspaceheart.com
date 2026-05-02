@@ -2,8 +2,8 @@ import DropdownFilter from './DropdownFilter';
 import {
   type CountryOption,
   type LocationFilterValue,
-} from './types';
-import type { DropdownGroup } from './DropdownFilter';
+  type DropdownGroup,
+} from '../types';
 
 type LocationFilterProps = {
   countries: CountryOption[];

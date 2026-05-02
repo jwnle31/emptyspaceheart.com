@@ -2,8 +2,8 @@ import { IconExternalLink, IconVideo } from '@tabler/icons-react';
 import type {
   DisplayLeaderboardItem,
   LocationFilterValue,
-} from './types';
-import styles from '../Speedrunning.module.css';
+} from '../types';
+import styles from '../../Speedrunning.module.css';
 
 type SpeedrunningTableProps = {
   rows: DisplayLeaderboardItem[];

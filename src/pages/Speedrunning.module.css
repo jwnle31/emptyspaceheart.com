@@ -50,9 +50,15 @@
 
 .controls {
   display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.controls-row {
+  display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
-  margin-bottom: 0.75rem;
 }
 
 .country-filter {
@@ -103,7 +109,7 @@
   top: calc(100% + 0.35rem);
   left: 0;
   z-index: 20;
-  width: min(20rem, calc(100vw - 2.5rem));
+  width: 100%;
   max-height: 18rem;
   overflow-y: auto;
   border: 0.125rem solid var(--theme-color);
@@ -319,10 +325,13 @@
   }
 
   .controls {
-    display: flex;
-    flex-direction: column;
     gap: 1rem;
     margin-bottom: 1rem;
+  }
+
+  .controls-row {
+    flex-direction: column;
+    gap: 1rem;
   }
 
   .country-filter,

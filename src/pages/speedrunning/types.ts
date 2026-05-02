@@ -1,8 +1,19 @@
-import type { CSSProperties } from 'react';
-import countryData from 'flag-icons/country.json';
+import type { CSSProperties, ReactNode } from 'react';
 
-export const LEADERBOARD_URL =
-  'https://www.speedrun.com/api/v1/leaderboards/o1y9j9v6/category/7kjpl1gk?embed=players';
+export type DropdownOption = {
+  value: string;
+  label: string;
+  leading?: ReactNode;
+};
+
+export type DropdownGroup = {
+  options: DropdownOption[];
+};
+
+export const GAME_ID = 'o1y9j9v6';
+export const DEFAULT_CATEGORY_ID = '7kjpl1gk';
+export const GAME_CATEGORIES_URL = `https://www.speedrun.com/api/v1/games/${GAME_ID}?embed=categories`;
+export const GAME_LEVELS_URL = `https://www.speedrun.com/api/v1/games/${GAME_ID}/levels?embed=categories`;
 export const RUNS_PER_PAGE = 100;
 export const CONTINENT_OPTIONS = [
   'Africa',
@@ -23,6 +34,7 @@ export type LeaderboardRun = {
   run: {
     id: string;
     weblink: string;
+    values: Record<string, string>;
     date: string | null;
     times: {
       primary_t: number;
@@ -37,6 +49,91 @@ export type LeaderboardRun = {
       name?: string;
       rel: string;
     }>;
+  };
+};
+
+export type GameCategory = {
+  id: string;
+  name: string;
+  weblink: string;
+  type: 'per-game' | 'per-level';
+  miscellaneous: boolean;
+  variables?: {
+    data: CategoryVariable[];
+  };
+  links: Array<{
+    rel: string;
+    uri: string;
+  }>;
+};
+
+export type GameResponse = {
+  data: {
+    categories: {
+      data: GameCategory[];
+    };
+  };
+};
+
+export type GameLevel = {
+  id: string;
+  name: string;
+  weblink: string;
+  categories?: {
+    data: GameCategory[];
+  };
+  links: Array<{
+    rel: string;
+    uri: string;
+  }>;
+};
+
+export type GameLevelsResponse = {
+  data: GameLevel[];
+};
+
+export type CategoryVariableValue = {
+  label: string;
+  rules?: string | null;
+  flags?: {
+    miscellaneous?: boolean;
+  };
+};
+
+export type CategoryVariableFilterOption = {
+  value: string;
+  label: string;
+};
+
+export type CategoryVariableFilter = {
+  id: string;
+  name: string;
+  options: CategoryVariableFilterOption[];
+};
+
+export type CategoryVariable = {
+  id: string;
+  name: string;
+  mandatory: boolean;
+  'user-defined': boolean;
+  'is-subcategory': boolean;
+  values: {
+    values: Record<string, CategoryVariableValue>;
+  };
+};
+
+export type Category = {
+  id: string;
+  name: string;
+  type: 'per-game' | 'per-level';
+  miscellaneous: boolean;
+  weblink?: string;
+  links: Array<{
+    rel: string;
+    uri: string;
+  }>;
+  variables?: {
+    data: CategoryVariable[];
   };
 };
 
@@ -98,7 +195,23 @@ export type LeaderboardRow = {
   videoUrl?: string;
   runUrl: string;
   nameStyle: CSSProperties;
+  values: Record<string, string>;
 };
+
+export type CategoryOption = {
+  id: string;
+  name: string;
+  label: string;
+  value: string;
+  weblink?: string;
+  variables?: Category['variables'];
+  miscellaneous: boolean;
+  type: 'per-game' | 'per-level';
+  levelName?: string;
+  scope: 'full-game' | 'level';
+};
+
+export type LeaderboardScope = 'full-game' | 'level';
 
 export type DisplayLeaderboardRow = LeaderboardRow & {
   rowType: 'row';
@@ -119,83 +232,3 @@ export type CountryOption = {
   name: string;
   code?: string;
 };
-
-type CountryMetadata = {
-  code: string;
-  continent?: string;
-};
-
-const continentByCountryCode = new Map(
-  (countryData as CountryMetadata[]).map(({ code, continent }) => [
-    code.toLowerCase(),
-    continent,
-  ]),
-);
-
-const continentOverrides = new Map<string, string>([
-  ['ic', 'Europe'],
-  ['es-ga', 'Europe'],
-  ['es-pv', 'Europe'],
-]);
-
-export function formatTime(totalSeconds: number) {
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds - minutes * 60;
-
-  if (minutes >= 60) {
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-
-    return `${hours}:${String(remainingMinutes).padStart(2, '0')}:${seconds
-      .toFixed(3)
-      .padStart(6, '0')}`;
-  }
-
-  return `${minutes}:${seconds.toFixed(3).padStart(6, '0')}`;
-}
-
-export function getFlagIconCode(countryCode?: string) {
-  const normalizedCode = countryCode?.toLowerCase();
-
-  if (normalizedCode === 'es/cn') {
-    return 'ic';
-  }
-
-  return normalizedCode?.replace('/', '-');
-}
-
-export function getCountryContinent(countryCode?: string) {
-  const normalizedCode = getFlagIconCode(countryCode);
-
-  if (!normalizedCode) {
-    return undefined;
-  }
-
-  return continentOverrides.get(normalizedCode) ?? continentByCountryCode.get(normalizedCode);
-}
-
-export function getRunnerNameStyle(player?: Player | null) {
-  const nameStyle = player?.['name-style'];
-
-  if (!nameStyle) {
-    return {
-      style: {},
-    };
-  }
-
-  if (nameStyle.style === 'solid') {
-    return {
-      style: {
-        '--runner-accent-light': nameStyle.color.light,
-        '--runner-accent-dark': nameStyle.color.dark,
-      } as CSSProperties,
-    };
-  }
-
-  return {
-    style: {
-      '--runner-accent-light': `linear-gradient(90deg, ${nameStyle['color-from'].light}, ${nameStyle['color-to'].light})`,
-      '--runner-accent-dark': `linear-gradient(90deg, ${nameStyle['color-from'].dark}, ${nameStyle['color-to'].dark})`,
-    } as CSSProperties,
-  };
-}

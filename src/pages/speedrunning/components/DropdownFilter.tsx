@@ -1,15 +1,6 @@
 import type { ReactNode } from 'react';
-import styles from '../Speedrunning.module.css';
-
-export type DropdownOption = {
-  value: string;
-  label: string;
-  leading?: ReactNode;
-};
-
-export type DropdownGroup = {
-  options: DropdownOption[];
-};
+import styles from '../../Speedrunning.module.css';
+import type { DropdownGroup } from '../types';
 
 type DropdownFilterProps = {
   label: string;
@@ -47,7 +38,7 @@ function DropdownFilter({
               )}
               {group.options.map(({ value, label: optionLabel, leading }) => (
                 <button
-                  key={value}
+                  key={`${groupIndex}-${value}`}
                   type="button"
                   onClick={() => {
                     onSelect(value);
