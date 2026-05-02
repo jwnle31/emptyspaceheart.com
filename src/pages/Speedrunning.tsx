@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
+import { IconTrophy } from '@tabler/icons-react';
 import SEO from '../components/SEO';
 import LocationFilter from './speedrunning/LocationFilter';
 import Pagination from './speedrunning/Pagination';
@@ -234,11 +235,13 @@ function Speedrunning() {
         <div className={styles.heading}>
           <h2>Speedrunning</h2>
           <a
+            className={styles['speedrun-link']}
             href="https://www.speedrun.com/celeste?h=Any&x=7kjpl1gk"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="speedrun.com"
           >
-            speedrun.com
+            <IconTrophy size={16} />
           </a>
         </div>
 

@@ -23,6 +23,14 @@
   text-decoration: none;
 }
 
+.speedrun-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 .heading a:hover,
 .heading a:active,
 .table-wrapper a:hover,
@@ -53,6 +61,7 @@
   gap: 0.35rem;
   width: min(100%, 16rem);
   font-size: 0.75rem;
+  margin-bottom: 0.1rem;
 }
 
 .country-filter button {
@@ -156,7 +165,6 @@
 
 .summary {
   min-height: 1.75rem;
-  margin-bottom: 0.5rem;
   font-size: 0.75rem;
   color: var(--theme-color-hover);
 }
@@ -271,6 +279,7 @@
   justify-content: center;
   gap: 0.75rem;
   margin-top: 1rem;
+  margin-bottom: 1rem;
   font-size: 0.875rem;
 }
 
@@ -296,11 +305,27 @@
 
 @media (max-width: 40rem) {
   .heading {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: baseline;
+    flex-direction: row;
   }
 
   .controls {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .country-filter,
+  .mode-filter {
+    width: 100%;
+  }
+
+  .summary {
+    margin-top: 0.5rem;
+  }
+
+  .pagination {
+    margin-bottom: 1rem;
   }
 }
