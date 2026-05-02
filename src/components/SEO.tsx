@@ -8,7 +8,7 @@ type SEOProps = {
 
 function SEO({
   title,
-  description = 'A minimalist hub for Celeste resources',
+  description = 'A minimalist hub for Celeste',
   noIndex = false,
 }: SEOProps) {
   const fullTitle = title

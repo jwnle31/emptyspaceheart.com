@@ -99,7 +99,7 @@ function SpeedrunningView({
     <>
       <SEO
         title="Speedrunning"
-        description="A filterable Celeste Any% leaderboard from speedrun.com"
+        description="Leaderboard browsing tool for Celeste speedruns"
       />
       <section className={styles.page}>
         <div className={styles['img-wrapper']}>
