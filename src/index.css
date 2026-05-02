@@ -1,4 +1,4 @@
-@import './styles/flags.css';
+@import 'flag-icons/css/flag-icons.min.css';
 
 @font-face {
   font-family: 'RenogareSoft';
@@ -61,6 +61,10 @@ body.transitions-enabled {
   transition: background-color 0.2s ease-in;
 }
 
+.fi {
+  box-shadow: 0 0 0 0.0625rem #000;
+}
+
 :root.dark body {
   background-color: var(--theme-color-bg);
   color: var(--theme-color);
@@ -74,4 +78,8 @@ body.transitions-enabled {
   --gh-bg-hov: #1f242c;
   --gh-bg-active: #2a313c;
   --gh-border: #3d444d;
+}
+
+:root.dark .fi {
+  box-shadow: 0 0 0 0.0625rem #fff;
 }

@@ -25,7 +25,7 @@ function Link({ icon, text, url, flag, internal }: LinkProps) {
       </span>
       {flag && (
         <div className={styles['flag-wrapper']}>
-          <span className={`flag flag:${flag}`} />
+          <span className={`fi fi-${flag.toLowerCase()}`} />
         </div>
       )}
     </li>

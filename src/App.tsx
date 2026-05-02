@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
+import Speedrunning from './pages/Speedrunning';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/speedrunning" element={<Speedrunning />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
