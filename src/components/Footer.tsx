@@ -7,6 +7,8 @@ function Footer() {
         <div className={styles['footer-menu']}>
           <a href="/" className={styles.link}>Home</a>
           <span> · </span>
+          <a href="/speedrunning" className={styles.link}>Speedrunning</a>
+          <span> · </span>
           <a
             href="https://cloud.umami.is/share/dap298M75AbdWQGb/emptyspaceheart.com"
             target="_blank"

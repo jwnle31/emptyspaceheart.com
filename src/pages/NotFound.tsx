@@ -1,4 +1,5 @@
 import styles from './NotFound.module.css';
+import Breathe from '../components/Breathe';
 import Link from '../components/Link';
 import SEO from '../components/SEO';
 import Creature_F from '../assets/gifs/creature_f.gif';
@@ -11,6 +12,7 @@ function NotFound() {
       <div className={styles['img-wrapper']}>
         <img src={Creature_F} alt="Creature F" className={styles.image} />
       </div>
+      <Breathe />
       <div className={styles['not-found-container']}>
         <h5 className={styles.title}>404 - Not Found</h5>
         <Link icon="link" text="emptyspaceheart.com" url="/" internal={true} />
