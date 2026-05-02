@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
 import { IconTrophy } from '@tabler/icons-react';
 import SEO from '../components/SEO';
+import Breathe from '../components/Breathe';
 import LocationFilter from './speedrunning/LocationFilter';
 import Pagination from './speedrunning/Pagination';
 import SpeedrunningTable from './speedrunning/SpeedrunningTable';
@@ -14,6 +15,7 @@ import {
 } from './speedrunning/types';
 import type { DropdownGroup } from './speedrunning/DropdownFilter';
 import { useLeaderboard } from './speedrunning/useLeaderboard';
+import WingedStrawberry from '../assets/gifs/winged_strawberry.gif';
 import styles from './Speedrunning.module.css';
 
 const DEFAULT_LOCATION: LocationFilterValue = 'world';
@@ -232,6 +234,14 @@ function Speedrunning() {
         description="A filterable Celeste Any% leaderboard from speedrun.com"
       />
       <section className={styles.page}>
+        <div className={styles['img-wrapper']}>
+          <img
+            src={WingedStrawberry}
+            alt="Winged Strawberry"
+            className={styles.image}
+          />
+        </div>
+        <Breathe />
         <div className={styles.heading}>
           <h2>Speedrunning</h2>
           <a
