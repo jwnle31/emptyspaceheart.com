@@ -107,8 +107,6 @@ export function useSrcQueryState() {
     nextParams.set('location', location);
     nextParams.set('display', displayMode);
     nextParams.set('page', String(DEFAULT_PAGE));
-    nextParams.delete('category');
-    clearVariableParams(nextParams);
     setSearchParams(nextParams, { replace: true });
   };
 

@@ -92,6 +92,10 @@ export type GameLevelsResponse = {
   data: GameLevel[];
 };
 
+export type LevelCategoriesResponse = {
+  data: GameCategory[];
+};
+
 export type CategoryVariableValue = {
   label: string;
   rules?: string | null;

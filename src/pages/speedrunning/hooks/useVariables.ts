@@ -34,6 +34,7 @@ type VariableBuckets = {
 export function useVariables(
   categoryId: string | null = null,
   embeddedVariables?: Category['variables'] | null,
+  allowFetch = true,
 ) {
   const activeCategoryId = categoryId ?? '';
   const [variableBuckets, setVariableBuckets] = useState<VariableBuckets>({
@@ -71,6 +72,16 @@ export function useVariables(
                   (variable) => variable['is-subcategory'],
                 ),
               ),
+            });
+          }
+
+          return;
+        }
+
+        if (!allowFetch) {
+          if (isCurrentRequest) {
+            setVariableBuckets({
+              subcategoryFilters: [],
             });
           }
 
@@ -121,7 +132,7 @@ export function useVariables(
       isCurrentRequest = false;
       controller.abort();
     };
-  }, [categoryId, embeddedVariables, activeCategoryId]);
+  }, [categoryId, embeddedVariables, allowFetch, activeCategoryId]);
 
   return { ...variableBuckets, isLoading, error };
 }

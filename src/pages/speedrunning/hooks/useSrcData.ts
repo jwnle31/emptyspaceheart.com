@@ -28,6 +28,7 @@ export function useSrcData({
 >) {
   const {
     fullGameCategories,
+    levelCategories,
     levels,
     isLoading: categoriesLoading,
     error: categoriesError,
@@ -38,12 +39,11 @@ export function useSrcData({
       ? levels.find((level) => level.id === requestedLevelId)?.id ??
         getDefaultLevelId(levels)
       : null;
-
   const {
-    categories: levelCategories,
-    isLoading: levelCategoriesLoading,
-    error: levelCategoriesError,
-  } = useLevelCategories(scope === 'level' ? selectedLevelId : null);
+    categories: selectedLevelCategories,
+    isLoading: selectedLevelCategoriesLoading,
+    error: selectedLevelCategoriesError,
+  } = useLevelCategories(selectedLevelId);
 
   const activeCategories = scope === 'level' ? levelCategories : fullGameCategories;
   const selectedCategoryId =
@@ -54,12 +54,24 @@ export function useSrcData({
   const selectedCategory = activeCategories.find(
     (category) => category.value === selectedCategoryId,
   );
+  const selectedLevelCategory =
+    scope === 'level'
+      ? selectedLevelCategories.find(
+          (category) => category.value === selectedCategoryId,
+        )
+      : null;
 
   const {
     subcategoryFilters,
     isLoading: variablesLoading,
     error: variablesError,
-  } = useVariables(selectedCategoryId, selectedCategory?.variables);
+  } = useVariables(
+    selectedCategoryId,
+    scope === 'level'
+      ? selectedLevelCategory?.variables
+      : selectedCategory?.variables,
+    scope !== 'level',
+  );
 
   const variableSelectionKey = subcategoryFilters
     .map((variable) => {
@@ -110,15 +122,15 @@ export function useSrcData({
   const pageLoading =
     isLoading ||
     categoriesLoading ||
-    variablesLoading ||
-    (scope === 'level' ? levelCategoriesLoading : false);
+    selectedLevelCategoriesLoading ||
+    variablesLoading;
   const pageError =
-    error ?? categoriesError ?? levelCategoriesError ?? variablesError;
+    error ?? categoriesError ?? selectedLevelCategoriesError ?? variablesError;
 
   return {
     activeCategories,
     categoriesLoading,
-    levelCategoriesLoading,
+    selectedLevelCategoriesLoading,
     pageError,
     pageLoading,
     rows,

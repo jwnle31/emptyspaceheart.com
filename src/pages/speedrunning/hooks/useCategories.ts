@@ -5,15 +5,17 @@ import {
   type GameResponse,
   GAME_CATEGORIES_URL,
   GAME_LEVELS_URL,
+  type GameCategory,
   type GameLevel,
 } from '../types';
 
-const CATEGORY_CACHE_KEY = 'speedrunning-categories-cache-v5';
+const CATEGORY_CACHE_KEY = 'speedrunning-categories-cache-v6';
 const CATEGORY_CACHE_TTL_MS = 2 * 24 * 60 * 60 * 1000;
 
 type CategoryCache = {
   timestamp: number;
   fullGameCategories: CategoryOption[];
+  levelCategories: CategoryOption[];
   levels: GameLevel[];
 };
 
@@ -35,6 +37,7 @@ function readCachedCategories() {
       !cached ||
       typeof cached.timestamp !== 'number' ||
       !Array.isArray(cached.fullGameCategories) ||
+      !Array.isArray(cached.levelCategories) ||
       !Array.isArray(cached.levels) ||
       Date.now() - cached.timestamp > CATEGORY_CACHE_TTL_MS
     ) {
@@ -44,6 +47,7 @@ function readCachedCategories() {
     return {
       timestamp: cached.timestamp,
       fullGameCategories: cached.fullGameCategories.map(normalizeCategoryOption),
+      levelCategories: cached.levelCategories.map(normalizeCategoryOption),
       levels: cached.levels,
     };
   } catch {
@@ -53,6 +57,7 @@ function readCachedCategories() {
 
 function writeCachedCategories(
   fullGameCategories: CategoryOption[],
+  levelCategories: CategoryOption[],
   levels: GameLevel[],
 ) {
   if (typeof window === 'undefined') {
@@ -63,6 +68,7 @@ function writeCachedCategories(
     const payload: CategoryCache = {
       timestamp: Date.now(),
       fullGameCategories,
+      levelCategories,
       levels,
     };
 
@@ -85,6 +91,9 @@ export function useCategories() {
   const [fullGameCategories, setFullGameCategories] = useState<CategoryOption[]>(
     () => cachedCategories?.fullGameCategories ?? [],
   );
+  const [levelCategories, setLevelCategories] = useState<CategoryOption[]>(
+    () => cachedCategories?.levelCategories ?? [],
+  );
   const [levels, setLevels] = useState<GameLevel[]>(
     () => cachedCategories?.levels ?? [],
   );
@@ -96,6 +105,7 @@ export function useCategories() {
 
     if (cached) {
       setFullGameCategories(cached.fullGameCategories);
+      setLevelCategories(cached.levelCategories);
       setLevels(cached.levels);
       setIsLoading(false);
       return;
@@ -135,9 +145,18 @@ export function useCategories() {
             scope: 'full-game' as const,
           }));
 
+        const nextLevelCategories: CategoryOption[] = game.data.categories.data
+          .filter((category) => category.type === 'per-level')
+          .map(mapCategoryOption('level'));
+
         setFullGameCategories(nextFullGameCategories);
+        setLevelCategories(nextLevelCategories);
         setLevels(levelsPayload.data);
-        writeCachedCategories(nextFullGameCategories, levelsPayload.data);
+        writeCachedCategories(
+          nextFullGameCategories,
+          nextLevelCategories,
+          levelsPayload.data,
+        );
       } catch (caughtError) {
         if (
           caughtError instanceof DOMException &&
@@ -163,5 +182,26 @@ export function useCategories() {
     return () => controller.abort();
   }, []);
 
-  return { fullGameCategories, levels, isLoading, error };
+  return { fullGameCategories, levelCategories, levels, isLoading, error };
+}
+
+function mapCategoryOption(scope: 'full-game' | 'level') {
+  return ({
+    id,
+    name,
+    miscellaneous,
+    type,
+    weblink,
+    variables,
+  }: GameCategory): CategoryOption => ({
+    id,
+    name,
+    label: name,
+    value: id,
+    weblink,
+    variables,
+    miscellaneous,
+    type,
+    scope,
+  });
 }
