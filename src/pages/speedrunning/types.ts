@@ -34,8 +34,16 @@ export type LeaderboardRun = {
     weblink: string;
     values: Record<string, string>;
     date: string | null;
+    timing?: 'realtime' | 'realtime_noloads' | 'ingame';
     times: {
       primary_t: number;
+      realtime?: number;
+      realtime_noloads?: number;
+      ingame?: number;
+      realtime_t?: number;
+      realtime_noloads_t?: number;
+      ingame_t?: number;
+      [key: string]: number | undefined;
     };
     videos?: {
       links?: Array<{
@@ -189,6 +197,7 @@ export type Player = {
 
 export type LeaderboardResponse = {
   data: {
+    timing: 'realtime' | 'realtime_noloads' | 'ingame';
     runs: LeaderboardRun[];
     players: {
       data: Player[];
@@ -201,7 +210,7 @@ export type LeaderboardRow = {
   runner: string;
   runnerUrl: string;
   time: string;
-  seconds: number;
+  seconds: number | null;
   date: string;
   year: string;
   country: string;

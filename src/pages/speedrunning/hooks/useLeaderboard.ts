@@ -40,6 +40,23 @@ function buildLeaderboardUrl(
   return `${baseUrl}?${params.toString()}`;
 }
 
+function getBoardTimingSeconds(
+  run: LeaderboardResponse['data']['runs'][number]['run'],
+  boardTiming: LeaderboardResponse['data']['timing'],
+) : { seconds: number | null; isPrimaryFallback: boolean } {
+  const timingWithSuffix = run.times[`${boardTiming}_t`];
+
+  if (typeof timingWithSuffix === 'number' && timingWithSuffix > 0) {
+    return { seconds: timingWithSuffix, isPrimaryFallback: false };
+  }
+
+  if (typeof run.times.primary_t === 'number' && run.times.primary_t > 0) {
+    return { seconds: run.times.primary_t, isPrimaryFallback: true };
+  }
+
+  return { seconds: null, isPrimaryFallback: false };
+}
+
 function getCacheKey(
   gameId: string,
   scope: LeaderboardScope,
@@ -53,7 +70,7 @@ function getCacheKey(
     .map(({ id, value }) => `${id}=${value}`)
     .join('&');
 
-  return `speedrunning-leaderboard-cache-v5-${gameId}-${scope}-${levelId ?? 'full'}-${categoryId}-${selectionKey}`;
+  return `speedrunning-leaderboard-cache-v7-${gameId}-${scope}-${levelId ?? 'full'}-${categoryId}-${selectionKey}`;
 }
 
 type LeaderboardCache = {
@@ -198,6 +215,7 @@ export function useLeaderboard(
         }
 
         const leaderboard = (await leaderboardResponse.json()) as LeaderboardResponse;
+        const boardTiming = leaderboard.data.timing;
         const playersById = new Map(
           leaderboard.data.players.data.map((player) => [player.id, player]),
         );
@@ -205,6 +223,7 @@ export function useLeaderboard(
         const nextRows = leaderboard.data.runs.map(({ place, run }) => {
           const runPlayer = run.players[0];
           const player = runPlayer.id ? playersById.get(runPlayer.id) : null;
+          const timing = getBoardTimingSeconds(run, boardTiming);
           const runner =
             player?.names?.international ?? runPlayer.name ?? 'Guest';
           const country =
@@ -218,8 +237,13 @@ export function useLeaderboard(
             place,
             runner,
             runnerUrl: player?.weblink ?? run.weblink,
-            time: formatTime(run.times.primary_t),
-            seconds: run.times.primary_t,
+            time:
+              timing.seconds === null
+                ? '—'
+                : timing.isPrimaryFallback
+                  ? `(${formatTime(timing.seconds)})`
+                  : formatTime(timing.seconds),
+            seconds: timing.seconds,
             date,
             year: date ? date.slice(0, 4) : 'Unknown',
             country,
@@ -268,3 +292,4 @@ export function useLeaderboard(
 
   return { rows, isLoading, error };
 }
+

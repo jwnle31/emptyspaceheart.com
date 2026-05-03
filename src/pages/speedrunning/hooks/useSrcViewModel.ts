@@ -116,7 +116,8 @@ export function useSrcViewModel() {
       left: (typeof filteredRows)[number],
       right: (typeof filteredRows)[number],
     ) =>
-      left.seconds - right.seconds ||
+      (left.seconds ?? Number.POSITIVE_INFINITY) -
+        (right.seconds ?? Number.POSITIVE_INFINITY) ||
       left.place - right.place ||
       left.runner.localeCompare(right.runner);
 
