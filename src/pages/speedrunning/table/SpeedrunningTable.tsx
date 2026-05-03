@@ -97,7 +97,11 @@ function SpeedrunningTable({
                         {location === 'world' ? row.place : pageStart + index + 1}
                       </span>
                       {location !== 'world' && (
-                        <span className={styles['mobile-rank-sub']}>{row.place}</span>
+                        <span
+                          className={`${styles['mobile-rank-sub']} ${styles['mobile-only']}`}
+                        >
+                          {row.place}
+                        </span>
                       )}
                     </td>
                     {location !== 'world' && <td className={styles['desktop-global']}>{row.place}</td>}
