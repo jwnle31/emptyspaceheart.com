@@ -29,6 +29,7 @@ function buildVariableFilters(
 
 type VariableBuckets = {
   subcategoryFilters: CategoryVariableFilter[];
+  loadedCategoryId: string | null;
 };
 
 export function useVariables(
@@ -39,6 +40,7 @@ export function useVariables(
   const activeCategoryId = categoryId ?? '';
   const [variableBuckets, setVariableBuckets] = useState<VariableBuckets>({
     subcategoryFilters: [],
+    loadedCategoryId: null,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -47,6 +49,7 @@ export function useVariables(
     if (!categoryId) {
       setVariableBuckets({
         subcategoryFilters: [],
+        loadedCategoryId: null,
       });
       setError(null);
       setIsLoading(false);
@@ -60,6 +63,7 @@ export function useVariables(
       try {
         setVariableBuckets({
           subcategoryFilters: [],
+          loadedCategoryId: null,
         });
         setIsLoading(true);
         setError(null);
@@ -72,6 +76,7 @@ export function useVariables(
                   (variable) => variable['is-subcategory'],
                 ),
               ),
+              loadedCategoryId: activeCategoryId,
             });
           }
 
@@ -82,6 +87,7 @@ export function useVariables(
           if (isCurrentRequest) {
             setVariableBuckets({
               subcategoryFilters: [],
+              loadedCategoryId: null,
             });
           }
 
@@ -104,6 +110,7 @@ export function useVariables(
         if (isCurrentRequest) {
           setVariableBuckets({
             subcategoryFilters: buildVariableFilters(subcategoryVariables),
+            loadedCategoryId: activeCategoryId,
           });
         }
       } catch (caughtError) {

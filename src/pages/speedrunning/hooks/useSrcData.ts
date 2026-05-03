@@ -43,10 +43,12 @@ export function useSrcData({
     fullGameCategories,
     levelCategories,
     levels,
+    loadedGameId,
     isLoading: categoriesLoading,
     error: categoriesError,
   } = useCategories(selectedGameId);
 
+  const categoriesReady = loadedGameId === selectedGameId && !categoriesLoading;
   const hasFullGameScope = fullGameCategories.length > 0;
   const hasLevelScope = levelCategories.length > 0;
   const effectiveScope =
@@ -63,7 +65,7 @@ export function useSrcData({
           : scope;
 
   const selectedLevelId =
-    effectiveScope === 'level'
+    categoriesReady && effectiveScope === 'level'
       ? levels.find((level) => level.id === requestedLevelId)?.id ??
         getDefaultLevelId(levels)
       : null;
@@ -73,8 +75,13 @@ export function useSrcData({
     error: selectedLevelCategoriesError,
   } = useLevelCategories(selectedLevelId);
 
-  const activeCategories = effectiveScope === 'level' ? levelCategories : fullGameCategories;
+  const activeCategories = categoriesReady
+    ? effectiveScope === 'level'
+      ? levelCategories
+      : fullGameCategories
+    : [];
   const selectedCategoryId =
+    categoriesReady &&
     requestedCategoryId &&
     activeCategories.some((category) => category.value === requestedCategoryId)
       ? requestedCategoryId
@@ -83,7 +90,7 @@ export function useSrcData({
     (category) => category.value === selectedCategoryId,
   );
   const selectedLevelCategory =
-    effectiveScope === 'level'
+    categoriesReady && effectiveScope === 'level'
       ? selectedLevelCategories.find(
           (category) => category.value === selectedCategoryId,
         )
@@ -91,14 +98,15 @@ export function useSrcData({
 
   const {
     subcategoryFilters,
+    loadedCategoryId: loadedVariablesCategoryId,
     isLoading: variablesLoading,
     error: variablesError,
   } = useVariables(
     selectedCategoryId,
-    effectiveScope === 'level'
+    categoriesReady && effectiveScope === 'level'
       ? selectedLevelCategory?.variables
       : selectedCategory?.variables,
-    effectiveScope !== 'level',
+    categoriesReady && effectiveScope !== 'level',
   );
 
   const variableSelectionKey = subcategoryFilters
@@ -140,12 +148,26 @@ export function useSrcData({
     [variableSelections],
   );
 
+  const variablesReady =
+    !variablesLoading &&
+    loadedVariablesCategoryId === selectedCategoryId &&
+    subcategoryFilters.length === leaderboardVariableSelections.length;
+
+  const leaderboardReady =
+    categoriesReady &&
+    !selectedLevelCategoriesLoading &&
+    variablesReady &&
+    Boolean(selectedCategoryId) &&
+    (effectiveScope !== 'level' || Boolean(selectedLevelId)) &&
+    (effectiveScope !== 'level' || Boolean(selectedLevelCategory));
+
   const { rows, isLoading, error } = useLeaderboard(
     selectedGameId,
     effectiveScope,
     selectedCategoryId,
     selectedLevelId,
     leaderboardVariableSelections,
+    leaderboardReady,
   );
 
   const pageLoading =

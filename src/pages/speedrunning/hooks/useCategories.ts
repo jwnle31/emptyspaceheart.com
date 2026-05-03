@@ -46,6 +46,7 @@ function readCachedCategories(gameId: string | null) {
 
     return {
       timestamp: cached.timestamp,
+      gameId: cached.gameId,
       fullGameCategories: cached.fullGameCategories.map(normalizeCategoryOption),
       levelCategories: cached.levelCategories.map(normalizeCategoryOption),
       levels: cached.levels,
@@ -90,6 +91,9 @@ function normalizeCategoryOption(category: CategoryOption) {
 
 export function useCategories(gameId: string | null) {
   const cachedCategories = readCachedCategories(gameId);
+  const [loadedGameId, setLoadedGameId] = useState<string | null>(
+    () => cachedCategories?.gameId ?? null,
+  );
   const [fullGameCategories, setFullGameCategories] = useState<CategoryOption[]>(
     () => cachedCategories?.fullGameCategories ?? [],
   );
@@ -106,6 +110,7 @@ export function useCategories(gameId: string | null) {
     const cached = readCachedCategories(gameId);
 
     if (cached) {
+      setLoadedGameId(cached.gameId);
       setFullGameCategories(cached.fullGameCategories);
       setLevelCategories(cached.levelCategories);
       setLevels(cached.levels);
@@ -118,6 +123,7 @@ export function useCategories(gameId: string | null) {
     async function loadCategories() {
       try {
         if (!gameId) {
+          setLoadedGameId(null);
           setFullGameCategories([]);
           setLevelCategories([]);
           setLevels([]);
@@ -173,6 +179,7 @@ export function useCategories(gameId: string | null) {
         setFullGameCategories(nextFullGameCategories);
         setLevelCategories(nextLevelCategories);
         setLevels(levelsPayload.data);
+        setLoadedGameId(gameId);
         writeCachedCategories(
           gameId,
           nextFullGameCategories,
@@ -204,7 +211,14 @@ export function useCategories(gameId: string | null) {
     return () => controller.abort();
   }, [gameId]);
 
-  return { fullGameCategories, levelCategories, levels, isLoading, error };
+  return {
+    fullGameCategories,
+    levelCategories,
+    levels,
+    loadedGameId,
+    isLoading,
+    error,
+  };
 }
 
 function mapCategoryOption(scope: 'full-game' | 'level') {

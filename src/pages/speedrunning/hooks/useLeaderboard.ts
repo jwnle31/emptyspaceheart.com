@@ -131,8 +131,13 @@ export function useLeaderboard(
   categoryId: string | null = null,
   levelId?: string | null,
   variableSelections: VariableSelection[] = [],
+  enabled = true,
 ) {
-  const shouldLoad = Boolean(gameId) && Boolean(categoryId) && (scope === 'full-game' || Boolean(levelId));
+  const shouldLoad =
+    enabled &&
+    Boolean(gameId) &&
+    Boolean(categoryId) &&
+    (scope === 'full-game' || Boolean(levelId));
   const activeCategoryId = categoryId ?? '';
   const activeLevelId = levelId ?? undefined;
   const activeGameId = gameId ?? '';
@@ -259,7 +264,7 @@ export function useLeaderboard(
     loadLeaderboard();
 
     return () => controller.abort();
-  }, [gameId, scope, categoryId, levelId, variableSelections, shouldLoad, activeGameId, activeCategoryId, activeLevelId]);
+  }, [gameId, scope, categoryId, levelId, variableSelections, enabled, shouldLoad, activeGameId, activeCategoryId, activeLevelId]);
 
   return { rows, isLoading, error };
 }
