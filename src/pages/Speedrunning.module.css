@@ -644,6 +644,10 @@
 }
 
 @media (min-width: 40.0625rem) {
+  .table-wrapper:not(.region-mode) .spacer {
+    width: 1.75rem;
+  }
+
   .table-wrapper:not(.region-mode) .runner-cell {
     gap: 0.2rem;
   }
