@@ -14,12 +14,14 @@ import { useSrcQueryState } from './useSrcQueryState';
 export function useSrcViewModel() {
   const query = useSrcQueryState();
   const data = useSrcData(query);
+  const [isGameMenuOpen, setIsGameMenuOpen] = useState(false);
   const [isLocationMenuOpen, setIsLocationMenuOpen] = useState(false);
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
   const [isLevelMenuOpen, setIsLevelMenuOpen] = useState(false);
   const [openVariableId, setOpenVariableId] = useState<string | null>(null);
 
   const closeAllMenus = () => {
+    setIsGameMenuOpen(false);
     setIsLocationMenuOpen(false);
     setIsCategoryMenuOpen(false);
     setIsLevelMenuOpen(false);
@@ -62,6 +64,17 @@ export function useSrcViewModel() {
       },
     ];
   }, [countries]);
+
+  const gameGroups = useMemo<DropdownGroup[]>(() => {
+    return [
+      {
+        options: data.games.map((game) => ({
+          value: game.value,
+          label: game.label,
+        })),
+      },
+    ];
+  }, [data.games]);
 
   const categoryGroups = useMemo<DropdownGroup[]>(() => {
     return [
@@ -202,6 +215,11 @@ export function useSrcViewModel() {
     closeAllMenus();
   };
 
+  const handleGameSelect = (nextGameId: string) => {
+    query.setGame(nextGameId);
+    closeAllMenus();
+  };
+
   const handleDisplaySelect = (nextDisplay: 'person' | 'region') => {
     query.setDisplayMode(nextDisplay);
   };
@@ -240,13 +258,19 @@ export function useSrcViewModel() {
     displayedRows,
     error: data.pageError,
     filteredRows,
+    hasFullGameScope: data.hasFullGameScope,
+    hasLevelScope: data.hasLevelScope,
     handleCategorySelect,
     handleDisplaySelect,
+    handleGameSelect,
     handleLevelSelect,
     handleLocationSelect,
     handlePageSelect,
     handleScopeSelect,
     handleVariableSelect,
+    gameGroups,
+    games: data.games,
+    isGameMenuOpen,
     isCategoryMenuOpen,
     isLevelMenuOpen,
     isLocationMenuOpen,
@@ -259,11 +283,14 @@ export function useSrcViewModel() {
     pageStart,
     pagedRows,
     scope: query.scope,
+    effectiveScope: data.effectiveScope,
     selectedCategoryId: data.selectedCategoryId,
     selectedLevelId: data.selectedLevelId,
+    selectedGameId: data.selectedGameId,
     setIsCategoryMenuOpen,
     setIsLevelMenuOpen,
     setIsLocationMenuOpen,
+    setIsGameMenuOpen,
     setOpenVariableId,
     subcategoryFilters: data.subcategoryFilters,
     summaryText,

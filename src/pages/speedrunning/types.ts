@@ -10,10 +10,8 @@ export type DropdownGroup = {
   options: DropdownOption[];
 };
 
-export const GAME_ID = 'o1y9j9v6';
-export const DEFAULT_CATEGORY_ID = '7kjpl1gk';
-export const GAME_CATEGORIES_URL = `https://www.speedrun.com/api/v1/games/${GAME_ID}?embed=categories`;
-export const GAME_LEVELS_URL = `https://www.speedrun.com/api/v1/games/${GAME_ID}/levels?embed=categories`;
+export const SERIES_ID = 'q4zj23gn';
+export const SERIES_GAMES_URL = `https://www.speedrun.com/api/v1/series/${SERIES_ID}/games`;
 export const RUNS_PER_PAGE = 100;
 export const CONTINENT_OPTIONS = [
   'Africa',
@@ -94,6 +92,19 @@ export type GameLevelsResponse = {
 
 export type LevelCategoriesResponse = {
   data: GameCategory[];
+};
+
+export type SeriesGame = {
+  id: string;
+  names?: {
+    international?: string;
+  };
+  abbreviation?: string;
+  weblink: string;
+};
+
+export type SeriesGamesResponse = {
+  data: SeriesGame[];
 };
 
 export type CategoryVariableValue = {
@@ -213,6 +224,14 @@ export type CategoryOption = {
   type: 'per-game' | 'per-level';
   levelName?: string;
   scope: 'full-game' | 'level';
+};
+
+export type GameOption = {
+  id: string;
+  label: string;
+  value: string;
+  weblink: string;
+  leading?: ReactNode;
 };
 
 export type LeaderboardScope = 'full-game' | 'level';

@@ -32,6 +32,10 @@ function parseScopeParam(value: string | null): LeaderboardScope {
   return value === 'level' ? 'level' : DEFAULT_SCOPE;
 }
 
+function parseGameParam(value: string | null) {
+  return value ?? '';
+}
+
 function parseLevelParam(value: string | null) {
   return value ?? '';
 }
@@ -55,6 +59,7 @@ export function useSrcQueryState() {
   const displayMode = parseDisplayParam(searchParams.get('display'));
   const page = parsePageParam(searchParams.get('page'));
   const scope = parseScopeParam(searchParams.get('scope'));
+  const requestedGameId = parseGameParam(searchParams.get('game'));
   const requestedLevelId = parseLevelParam(searchParams.get('level'));
   const requestedCategoryId = searchParams.get('category');
 
@@ -100,6 +105,18 @@ export function useSrcQueryState() {
     setSearchParams(nextParams, { replace: true });
   };
 
+  const setGame = (nextGameId: string) => {
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.set('game', nextGameId);
+    nextParams.set('location', location);
+    nextParams.set('display', displayMode);
+    nextParams.set('page', String(DEFAULT_PAGE));
+    nextParams.delete('level');
+    nextParams.delete('category');
+    clearVariableParams(nextParams);
+    setSearchParams(nextParams, { replace: true });
+  };
+
   const setLevel = (nextLevelId: string) => {
     const nextParams = new URLSearchParams(searchParams);
     nextParams.set('scope', 'level');
@@ -141,12 +158,14 @@ export function useSrcQueryState() {
     location,
     page,
     requestedCategoryId,
+    requestedGameId,
     requestedLevelId,
     scope,
     searchParams,
     setCategory,
     setDisplayMode,
     setLevel,
+    setGame,
     setLocation,
     setPage,
     setScope,

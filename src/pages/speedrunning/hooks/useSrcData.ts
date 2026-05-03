@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useGames } from './useGames';
 import { useCategories } from './useCategories';
 import { useLeaderboard } from './useLeaderboard';
 import { useLevelCategories } from './useLevelCategories';
@@ -19,23 +20,50 @@ function getDefaultLevelId(levels: GameLevel[]) {
 
 export function useSrcData({
   requestedCategoryId,
+  requestedGameId,
   requestedLevelId,
   scope,
   searchParams,
 }: Pick<
   SrcQueryState,
-  'requestedCategoryId' | 'requestedLevelId' | 'scope' | 'searchParams'
+  'requestedCategoryId' | 'requestedGameId' | 'requestedLevelId' | 'scope' | 'searchParams'
 >) {
+  const {
+    games,
+    isLoading: gamesLoading,
+    error: gamesError,
+  } = useGames();
+
+  const selectedGameId =
+    requestedGameId && games.some((game) => game.value === requestedGameId)
+      ? requestedGameId
+      : games[0]?.value ?? null;
+
   const {
     fullGameCategories,
     levelCategories,
     levels,
     isLoading: categoriesLoading,
     error: categoriesError,
-  } = useCategories();
+  } = useCategories(selectedGameId);
+
+  const hasFullGameScope = fullGameCategories.length > 0;
+  const hasLevelScope = levelCategories.length > 0;
+  const effectiveScope =
+    scope === 'level'
+      ? hasLevelScope
+        ? 'level'
+        : hasFullGameScope
+          ? 'full-game'
+          : scope
+      : hasFullGameScope
+        ? 'full-game'
+        : hasLevelScope
+          ? 'level'
+          : scope;
 
   const selectedLevelId =
-    scope === 'level'
+    effectiveScope === 'level'
       ? levels.find((level) => level.id === requestedLevelId)?.id ??
         getDefaultLevelId(levels)
       : null;
@@ -45,7 +73,7 @@ export function useSrcData({
     error: selectedLevelCategoriesError,
   } = useLevelCategories(selectedLevelId);
 
-  const activeCategories = scope === 'level' ? levelCategories : fullGameCategories;
+  const activeCategories = effectiveScope === 'level' ? levelCategories : fullGameCategories;
   const selectedCategoryId =
     requestedCategoryId &&
     activeCategories.some((category) => category.value === requestedCategoryId)
@@ -55,7 +83,7 @@ export function useSrcData({
     (category) => category.value === selectedCategoryId,
   );
   const selectedLevelCategory =
-    scope === 'level'
+    effectiveScope === 'level'
       ? selectedLevelCategories.find(
           (category) => category.value === selectedCategoryId,
         )
@@ -67,10 +95,10 @@ export function useSrcData({
     error: variablesError,
   } = useVariables(
     selectedCategoryId,
-    scope === 'level'
+    effectiveScope === 'level'
       ? selectedLevelCategory?.variables
       : selectedCategory?.variables,
-    scope !== 'level',
+    effectiveScope !== 'level',
   );
 
   const variableSelectionKey = subcategoryFilters
@@ -113,7 +141,8 @@ export function useSrcData({
   );
 
   const { rows, isLoading, error } = useLeaderboard(
-    scope,
+    selectedGameId,
+    effectiveScope,
     selectedCategoryId,
     selectedLevelId,
     leaderboardVariableSelections,
@@ -121,20 +150,31 @@ export function useSrcData({
 
   const pageLoading =
     isLoading ||
+    gamesLoading ||
     categoriesLoading ||
     selectedLevelCategoriesLoading ||
     variablesLoading;
   const pageError =
-    error ?? categoriesError ?? selectedLevelCategoriesError ?? variablesError;
+    error ??
+    gamesError ??
+    categoriesError ??
+    selectedLevelCategoriesError ??
+    variablesError;
 
   return {
     activeCategories,
     categoriesLoading,
+    games,
+    gamesLoading,
     selectedLevelCategoriesLoading,
     pageError,
     pageLoading,
+    effectiveScope,
+    hasFullGameScope,
+    hasLevelScope,
     rows,
     levels,
+    selectedGameId,
     selectedCategory,
     selectedCategoryId,
     selectedLevelId,

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import {
-  GAME_ID,
   type LeaderboardResponse,
   type LeaderboardRow,
   type LeaderboardScope,
@@ -20,6 +19,7 @@ type VariableSelection = {
 const LEADERBOARD_CACHE_TTL_MS = 2 * 24 * 60 * 60 * 1000;
 
 function buildLeaderboardUrl(
+  gameId: string,
   scope: LeaderboardScope,
   categoryId: string,
   levelId?: string | null,
@@ -27,8 +27,8 @@ function buildLeaderboardUrl(
 ) {
   const baseUrl =
     scope === 'level' && levelId
-      ? `https://www.speedrun.com/api/v1/leaderboards/${GAME_ID}/level/${levelId}/${categoryId}`
-      : `https://www.speedrun.com/api/v1/leaderboards/${GAME_ID}/category/${categoryId}`;
+      ? `https://www.speedrun.com/api/v1/leaderboards/${gameId}/level/${levelId}/${categoryId}`
+      : `https://www.speedrun.com/api/v1/leaderboards/${gameId}/category/${categoryId}`;
 
   const params = new URLSearchParams();
   params.set('embed', 'players');
@@ -41,6 +41,7 @@ function buildLeaderboardUrl(
 }
 
 function getCacheKey(
+  gameId: string,
   scope: LeaderboardScope,
   categoryId: string,
   levelId?: string | null,
@@ -52,7 +53,7 @@ function getCacheKey(
     .map(({ id, value }) => `${id}=${value}`)
     .join('&');
 
-  return `speedrunning-leaderboard-cache-v5-${scope}-${levelId ?? 'full'}-${categoryId}-${selectionKey}`;
+  return `speedrunning-leaderboard-cache-v5-${gameId}-${scope}-${levelId ?? 'full'}-${categoryId}-${selectionKey}`;
 }
 
 type LeaderboardCache = {
@@ -61,6 +62,7 @@ type LeaderboardCache = {
 };
 
 function readCachedLeaderboard(
+  gameId: string,
   scope: LeaderboardScope,
   categoryId: string,
   levelId?: string | null,
@@ -72,7 +74,7 @@ function readCachedLeaderboard(
 
   try {
     const rawCache = window.localStorage.getItem(
-      getCacheKey(scope, categoryId, levelId, variableSelections),
+      getCacheKey(gameId, scope, categoryId, levelId, variableSelections),
     );
 
     if (!rawCache) {
@@ -97,6 +99,7 @@ function readCachedLeaderboard(
 }
 
 function writeCachedLeaderboard(
+  gameId: string,
   scope: LeaderboardScope,
   categoryId: string,
   rows: LeaderboardRow[],
@@ -114,7 +117,7 @@ function writeCachedLeaderboard(
     };
 
     window.localStorage.setItem(
-      getCacheKey(scope, categoryId, levelId, variableSelections),
+      getCacheKey(gameId, scope, categoryId, levelId, variableSelections),
       JSON.stringify(payload),
     );
   } catch {
@@ -123,16 +126,18 @@ function writeCachedLeaderboard(
 }
 
 export function useLeaderboard(
+  gameId: string | null,
   scope: LeaderboardScope,
   categoryId: string | null = null,
   levelId?: string | null,
   variableSelections: VariableSelection[] = [],
 ) {
-  const shouldLoad = Boolean(categoryId) && (scope === 'full-game' || Boolean(levelId));
+  const shouldLoad = Boolean(gameId) && Boolean(categoryId) && (scope === 'full-game' || Boolean(levelId));
   const activeCategoryId = categoryId ?? '';
   const activeLevelId = levelId ?? undefined;
+  const activeGameId = gameId ?? '';
   const cachedLeaderboard = shouldLoad && categoryId
-    ? readCachedLeaderboard(scope, activeCategoryId, activeLevelId, variableSelections)
+    ? readCachedLeaderboard(activeGameId, scope, activeCategoryId, activeLevelId, variableSelections)
     : null;
   const [rows, setRows] = useState<LeaderboardRow[]>(
     () => cachedLeaderboard ?? [],
@@ -152,6 +157,7 @@ export function useLeaderboard(
     setError(null);
 
     const cachedRows = readCachedLeaderboard(
+      activeGameId,
       scope,
       activeCategoryId,
       activeLevelId,
@@ -171,6 +177,7 @@ export function useLeaderboard(
     async function loadLeaderboard() {
       try {
         const leaderboardUrl = buildLeaderboardUrl(
+          activeGameId,
           scope,
           activeCategoryId,
           activeLevelId,
@@ -222,6 +229,7 @@ export function useLeaderboard(
 
         setRows(nextRows);
         writeCachedLeaderboard(
+          activeGameId,
           scope,
           activeCategoryId,
           nextRows,
@@ -251,7 +259,7 @@ export function useLeaderboard(
     loadLeaderboard();
 
     return () => controller.abort();
-  }, [scope, categoryId, levelId, variableSelections, shouldLoad, activeCategoryId, activeLevelId]);
+  }, [gameId, scope, categoryId, levelId, variableSelections, shouldLoad, activeGameId, activeCategoryId, activeLevelId]);
 
   return { rows, isLoading, error };
 }

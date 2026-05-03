@@ -3,8 +3,6 @@ import {
   type CategoryOption,
   type GameLevelsResponse,
   type GameResponse,
-  GAME_CATEGORIES_URL,
-  GAME_LEVELS_URL,
   type GameCategory,
   type GameLevel,
 } from '../types';
@@ -14,12 +12,13 @@ const CATEGORY_CACHE_TTL_MS = 2 * 24 * 60 * 60 * 1000;
 
 type CategoryCache = {
   timestamp: number;
+  gameId: string;
   fullGameCategories: CategoryOption[];
   levelCategories: CategoryOption[];
   levels: GameLevel[];
 };
 
-function readCachedCategories() {
+function readCachedCategories(gameId: string | null) {
   if (typeof window === 'undefined') {
     return null;
   }
@@ -35,6 +34,7 @@ function readCachedCategories() {
 
     if (
       !cached ||
+      cached.gameId !== gameId ||
       typeof cached.timestamp !== 'number' ||
       !Array.isArray(cached.fullGameCategories) ||
       !Array.isArray(cached.levelCategories) ||
@@ -56,6 +56,7 @@ function readCachedCategories() {
 }
 
 function writeCachedCategories(
+  gameId: string,
   fullGameCategories: CategoryOption[],
   levelCategories: CategoryOption[],
   levels: GameLevel[],
@@ -67,6 +68,7 @@ function writeCachedCategories(
   try {
     const payload: CategoryCache = {
       timestamp: Date.now(),
+      gameId,
       fullGameCategories,
       levelCategories,
       levels,
@@ -86,8 +88,8 @@ function normalizeCategoryOption(category: CategoryOption) {
   };
 }
 
-export function useCategories() {
-  const cachedCategories = readCachedCategories();
+export function useCategories(gameId: string | null) {
+  const cachedCategories = readCachedCategories(gameId);
   const [fullGameCategories, setFullGameCategories] = useState<CategoryOption[]>(
     () => cachedCategories?.fullGameCategories ?? [],
   );
@@ -101,7 +103,7 @@ export function useCategories() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const cached = readCachedCategories();
+    const cached = readCachedCategories(gameId);
 
     if (cached) {
       setFullGameCategories(cached.fullGameCategories);
@@ -115,9 +117,28 @@ export function useCategories() {
 
     async function loadCategories() {
       try {
+        if (!gameId) {
+          setFullGameCategories([]);
+          setLevelCategories([]);
+          setLevels([]);
+          return;
+        }
+
+        setIsLoading(true);
+        setError(null);
+        setFullGameCategories([]);
+        setLevelCategories([]);
+        setLevels([]);
+
         const [gameResponse, levelsResponse] = await Promise.all([
-          fetch(GAME_CATEGORIES_URL, { signal: controller.signal }),
-          fetch(GAME_LEVELS_URL, { signal: controller.signal }),
+          fetch(
+            `https://www.speedrun.com/api/v1/games/${gameId}?embed=categories`,
+            { signal: controller.signal },
+          ),
+          fetch(
+            `https://www.speedrun.com/api/v1/games/${gameId}/levels?embed=categories`,
+            { signal: controller.signal },
+          ),
         ]);
 
         if (!gameResponse.ok) {
@@ -153,6 +174,7 @@ export function useCategories() {
         setLevelCategories(nextLevelCategories);
         setLevels(levelsPayload.data);
         writeCachedCategories(
+          gameId,
           nextFullGameCategories,
           nextLevelCategories,
           levelsPayload.data,
@@ -180,7 +202,7 @@ export function useCategories() {
     loadCategories();
 
     return () => controller.abort();
-  }, []);
+  }, [gameId]);
 
   return { fullGameCategories, levelCategories, levels, isLoading, error };
 }

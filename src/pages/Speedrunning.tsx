@@ -3,6 +3,7 @@ import { IconTrophy } from '@tabler/icons-react';
 import Breathe from '../components/Breathe';
 import SEO from '../components/SEO';
 import WingedStrawberry from '../assets/gifs/winged_strawberry.gif';
+import GameFilter from './speedrunning/components/GameFilter';
 import CategoryFilter from './speedrunning/components/CategoryFilter';
 import LevelFilter from './speedrunning/components/LevelFilter';
 import LocationFilter from './speedrunning/components/LocationFilter';
@@ -22,12 +23,17 @@ function SpeedrunningView({
   currentPage,
   displayMode,
   error,
+  effectiveScope,
   handleCategorySelect,
   handleDisplaySelect,
+  handleGameSelect,
   handleLevelSelect,
   handleLocationSelect,
   handleScopeSelect,
   handleVariableSelect,
+  gameGroups,
+  games,
+  isGameMenuOpen,
   isCategoryMenuOpen,
   isLevelMenuOpen,
   isLocationMenuOpen,
@@ -39,17 +45,20 @@ function SpeedrunningView({
   pageLoading,
   pageStart,
   pagedRows,
-  scope,
   handlePageSelect,
   selectedCategoryId,
   selectedLevelId,
+  selectedGameId,
   setIsCategoryMenuOpen,
   setIsLevelMenuOpen,
+  setIsGameMenuOpen,
   setIsLocationMenuOpen,
   setOpenVariableId,
   subcategoryFilters,
   summaryText,
   variableSelections,
+  hasFullGameScope,
+  hasLevelScope,
 }: SpeedrunningViewProps) {
   const setPage = (nextPage: number) => {
     handlePageSelect(nextPage);
@@ -65,6 +74,19 @@ function SpeedrunningView({
     setIsLevelMenuOpen(false);
     setOpenVariableId(null);
     setIsLocationMenuOpen(true);
+  };
+
+  const toggleGameMenu = () => {
+    if (isGameMenuOpen) {
+      setIsGameMenuOpen(false);
+      return;
+    }
+
+    setIsLocationMenuOpen(false);
+    setIsCategoryMenuOpen(false);
+    setIsLevelMenuOpen(false);
+    setOpenVariableId(null);
+    setIsGameMenuOpen(true);
   };
 
   const toggleCategoryMenu = () => {
@@ -91,6 +113,8 @@ function SpeedrunningView({
     setIsLevelMenuOpen(true);
   };
 
+  const selectedGame = games.find(({ id }) => id === selectedGameId);
+
   if (!pageLoading && !error && currentPage > pageCount) {
     return <Navigate to="/404" replace />;
   }
@@ -115,7 +139,7 @@ function SpeedrunningView({
           <h2>Speedrunning</h2>
           <a
             className={styles['speedrun-link']}
-            href="https://www.speedrun.com/celeste?h=Any&x=7kjpl1gk"
+            href={selectedGame?.weblink ?? 'https://www.speedrun.com'}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="speedrun.com"
@@ -126,6 +150,15 @@ function SpeedrunningView({
 
         <div className={styles.controls}>
           <div className={styles['controls-row']}>
+            <GameFilter
+              games={games}
+              selectedGameId={selectedGameId}
+              groups={gameGroups}
+              isOpen={isGameMenuOpen}
+              onToggle={toggleGameMenu}
+              onSelect={handleGameSelect}
+            />
+
             <div className={styles['mode-filter']}>
               <span>Scope</span>
               <div
@@ -133,36 +166,40 @@ function SpeedrunningView({
                 role="tablist"
                 aria-label="Scope mode"
               >
-                <button
-                  type="button"
-                  className={
-                    scope === 'full-game'
-                      ? styles['display-toggle-active']
-                      : undefined
-                  }
-                  onClick={() => {
-                    handleScopeSelect('full-game');
-                  }}
-                >
-                  Full Game
-                </button>
-                <button
-                  type="button"
-                  className={
-                    scope === 'level'
-                      ? styles['display-toggle-active']
-                      : undefined
-                  }
-                  onClick={() => {
-                    handleScopeSelect('level');
-                  }}
-                >
-                  Level
-                </button>
+                {hasFullGameScope && (
+                  <button
+                    type="button"
+                    className={
+                      effectiveScope === 'full-game'
+                        ? styles['display-toggle-active']
+                        : undefined
+                    }
+                    onClick={() => {
+                      handleScopeSelect('full-game');
+                    }}
+                  >
+                    Full Game
+                  </button>
+                )}
+                {hasLevelScope && (
+                  <button
+                    type="button"
+                    className={
+                      effectiveScope === 'level'
+                        ? styles['display-toggle-active']
+                        : undefined
+                    }
+                    onClick={() => {
+                      handleScopeSelect('level');
+                    }}
+                  >
+                    Level
+                  </button>
+                )}
               </div>
             </div>
 
-            {scope === 'level' && (
+            {effectiveScope === 'level' && (
               <LevelFilter
                 levels={levels}
                 selectedLevelId={selectedLevelId}
