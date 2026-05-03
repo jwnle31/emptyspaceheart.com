@@ -29,3 +29,21 @@
   color: var(--theme-color-hover);
   transition: color 0.2s ease-in;
 }
+
+@media (max-width: 40rem) {
+  .footer {
+    font-size: 0.6875rem;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .footer-menu {
+    font-size: 0.8125rem;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .socials {
+    margin-top: 0.75rem;
+  }
+}
