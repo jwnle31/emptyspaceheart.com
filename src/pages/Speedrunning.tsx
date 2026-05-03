@@ -24,6 +24,7 @@ function SpeedrunningView({
   displayMode,
   error,
   effectiveScope,
+  displayedRows,
   handleCategorySelect,
   handleDisplaySelect,
   handleGameSelect,
@@ -45,6 +46,7 @@ function SpeedrunningView({
   pageLoading,
   pageStart,
   pagedRows,
+  leaderboardReady,
   handlePageSelect,
   selectedCategoryId,
   selectedLevelId,
@@ -115,7 +117,13 @@ function SpeedrunningView({
 
   const selectedGame = games.find(({ id }) => id === selectedGameId);
 
-  if (!pageLoading && !error && currentPage > pageCount) {
+  if (
+    !pageLoading &&
+    leaderboardReady &&
+    !error &&
+    displayedRows.length > 0 &&
+    currentPage > pageCount
+  ) {
     return <Navigate to="/404" replace />;
   }
 

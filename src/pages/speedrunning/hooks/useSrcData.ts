@@ -188,6 +188,7 @@ export function useSrcData({
     categoriesLoading,
     games,
     gamesLoading,
+    leaderboardReady,
     selectedLevelCategoriesLoading,
     pageError,
     pageLoading,

@@ -284,6 +284,7 @@ export function useSrcViewModel() {
     pageStart,
     pagedRows,
     scope: query.scope,
+    leaderboardReady: data.leaderboardReady,
     effectiveScope: data.effectiveScope,
     selectedCategoryId: data.selectedCategoryId,
     selectedLevelId: data.selectedLevelId,
