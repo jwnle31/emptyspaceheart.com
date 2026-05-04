@@ -68,9 +68,9 @@ body.transitions-enabled {
 :root.dark body {
   background-color: var(--theme-color-bg);
   color: var(--theme-color);
-  --theme-color-bg: #171717;
-  --theme-color: #e7e4de;
-  --theme-color-hover: #a6a19a;
+  --theme-color-bg: #121212;
+  --theme-color: #f2f8fc;
+  --theme-color-hover: #6b6b6b;
   --gh-social-count: #f0f6fc;
   --gh-social-count-bg: #0d1117;
   --gh-bg-img: linear-gradient(180deg, #212830, #1a2026 90%);
