@@ -46,7 +46,7 @@ body {
   color: var(--theme-color);
   --theme-color-bg: #f2f8fc;
   --theme-color: #121212;
-  --theme-color-hover: #a6a19a;
+  --theme-color-hover: #999999;
   --gh-social-count: #25292e;
   --gh-social-count-bg: #fff;
   --gh-bg-img: linear-gradient(180deg, #f6f8fa, #ebf0f4 90%);
@@ -70,7 +70,7 @@ body.transitions-enabled {
   color: var(--theme-color);
   --theme-color-bg: #121212;
   --theme-color: #f2f8fc;
-  --theme-color-hover: #a6a19a;
+  --theme-color-hover: #999999;
   --gh-social-count: #f0f6fc;
   --gh-social-count-bg: #0d1117;
   --gh-bg-img: linear-gradient(180deg, #212830, #1a2026 90%);
