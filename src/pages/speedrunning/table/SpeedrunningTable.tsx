@@ -12,10 +12,52 @@ type SpeedrunningTableProps = {
   pageStart: number;
 };
 
+const MONTH_IN_MS = 30 * 24 * 60 * 60 * 1000;
+
 function isSeparatorRow(
   row: DisplayLeaderboardItem,
 ): row is { rowType: 'separator'; rowKey: string; label: string } {
   return row.rowType === 'separator';
+}
+
+function parseRunDate(date: string) {
+  if (!date || date === 'Unknown') {
+    return null;
+  }
+
+  const [year, month, day] = date.split('-').map(Number);
+
+  if (!year || !month || !day) {
+    return null;
+  }
+
+  return Date.UTC(year, month - 1, day);
+}
+
+function isRunRecent(date: string) {
+  const parsedDate = parseRunDate(date);
+
+  if (parsedDate === null) {
+    return false;
+  }
+
+  return Date.now() - parsedDate <= MONTH_IN_MS;
+}
+
+function getPersonRankTone(rank: number) {
+  if (rank === 1) {
+    return 'gold';
+  }
+
+  if (rank === 2) {
+    return 'silver';
+  }
+
+  if (rank === 3) {
+    return 'bronze';
+  }
+
+  return null;
 }
 
 function SpeedrunningTable({
@@ -60,8 +102,22 @@ function SpeedrunningTable({
               );
             }
 
+            const displayedRank = rankRegions
+              ? row.displayRank ?? 0
+              : location === 'world'
+                ? row.place
+                : pageStart + index + 1;
+            const rankTone = rankRegions ? null : getPersonRankTone(displayedRank);
+            const isRecent = !rankRegions && isRunRecent(row.date);
+            const rowClassName = [
+              rankTone ? styles[`rank-${rankTone}`] : '',
+              isRecent ? styles['recent-run'] : '',
+            ]
+              .filter(Boolean)
+              .join(' ');
+
             return (
-              <tr key={row.rowKey}>
+              <tr key={row.rowKey} className={rowClassName || undefined}>
                 {rankRegions ? (
                   <>
                     <td>{row.displayRank ?? 0}</td>
@@ -92,9 +148,21 @@ function SpeedrunningTable({
                   </>
                 ) : (
                   <>
-                    <td className={styles['mobile-rank-cell']}>
-                      <span className={styles['mobile-rank-main']}>
-                        {location === 'world' ? row.place : pageStart + index + 1}
+                    <td
+                      className={
+                        rankTone
+                          ? `${styles['mobile-rank-cell']} ${styles[`rank-${rankTone}`]}`
+                          : styles['mobile-rank-cell']
+                      }
+                    >
+                      <span
+                        className={
+                          rankTone
+                            ? `${styles['mobile-rank-main']} ${styles[`rank-${rankTone}`]}`
+                            : styles['mobile-rank-main']
+                        }
+                      >
+                        {displayedRank}
                       </span>
                       {location !== 'world' && (
                         <span
@@ -136,7 +204,13 @@ function SpeedrunningTable({
                     {row.date || 'Unknown'}
                   </span>
                 </td>
-                <td className={rankRegions ? `${styles.time} ${styles['mobile-time-cell']}` : `${styles.time} ${styles['mobile-time-cell']}`}>
+                <td
+                  className={
+                    rankRegions
+                      ? `${styles.time} ${styles['mobile-time-cell']}`
+                      : `${styles.time} ${styles['mobile-time-cell']}`
+                  }
+                >
                   <span>{row.time}</span>
                   <div className={styles['mobile-meta']}>
                     <span
@@ -169,7 +243,15 @@ function SpeedrunningTable({
                     </div>
                   </div>
                 </td>
-                <td className={rankRegions ? styles['region-hidden-cell'] : styles['desktop-date']}>{row.date || 'Unknown'}</td>
+                <td
+                  className={
+                    rankRegions
+                      ? styles['region-hidden-cell']
+                      : `${styles['desktop-date']} ${isRecent ? styles['recent-date'] : ''}`
+                  }
+                >
+                  {row.date || 'Unknown'}
+                </td>
                 <td className={rankRegions ? styles['region-hidden-cell'] : styles['desktop-links']}>
                   <div className={styles.links}>
                     <a

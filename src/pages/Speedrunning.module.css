@@ -402,6 +402,34 @@
   opacity: 0.45;
 }
 
+.rank-gold td:first-child,
+.rank-silver td:first-child,
+.rank-bronze td:first-child,
+.recent-run td:first-child {
+  color: var(--rank-color);
+  background: color-mix(in srgb, var(--rank-color) 12%, transparent);
+}
+
+.rank-gold td:first-child {
+  --rank-color: #b6932b;
+  box-shadow: inset 0.22rem 0 0 #b6932b;
+}
+
+.rank-silver td:first-child {
+  --rank-color: #8d8d8d;
+  box-shadow: inset 0.22rem 0 0 #8d8d8d;
+}
+
+.rank-bronze td:first-child {
+  --rank-color: #9d6a3c;
+  box-shadow: inset 0.22rem 0 0 #9d6a3c;
+}
+
+.recent-run td:first-child {
+  --rank-color: #4c8a67;
+  box-shadow: inset 0.22rem 0 0 #4c8a67;
+}
+
 @media (max-width: 40rem) {
   .pagination {
     width: 100%;
