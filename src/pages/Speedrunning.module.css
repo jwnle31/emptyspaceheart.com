@@ -406,29 +406,54 @@
 .rank-silver td:first-child,
 .rank-bronze td:first-child,
 .recent-run td:first-child {
-  color: var(--rank-color);
-  background: color-mix(in srgb, var(--rank-color) 12%, transparent);
+  color: var(--theme-color);
+  background: color-mix(in srgb, var(--rank-color) 10%, var(--theme-color-bg));
 }
 
 .rank-gold td:first-child {
-  --rank-color: #b6932b;
-  box-shadow: inset 0.22rem 0 0 #b6932b;
+  --rank-color: #7f5a00;
+  box-shadow: inset 0.2rem 0 0 #7f5a00;
 }
 
 .rank-silver td:first-child {
-  --rank-color: #8d8d8d;
-  box-shadow: inset 0.22rem 0 0 #8d8d8d;
+  --rank-color: #4f4f4f;
+  box-shadow: inset 0.2rem 0 0 #4f4f4f;
 }
 
 .rank-bronze td:first-child {
-  --rank-color: #9d6a3c;
-  box-shadow: inset 0.22rem 0 0 #9d6a3c;
+  --rank-color: #7a4015;
+  box-shadow: inset 0.2rem 0 0 #7a4015;
 }
 
 .recent-run td:first-child {
-  --rank-color: #4c8a67;
-  box-shadow: inset 0.22rem 0 0 #4c8a67;
+  --rank-color: #2d6549;
+  box-shadow: inset 0.2rem 0 0 #2d6549;
 }
+
+:global(:root.dark) .rank-gold td:first-child {
+  --rank-color: #f0d070;
+  background: color-mix(in srgb, #f0d070 40%, var(--theme-color-bg));
+  box-shadow: inset 0.2rem 0 0 #f0d070;
+}
+
+:global(:root.dark) .rank-silver td:first-child {
+  --rank-color: #d7d7d7;
+  background: color-mix(in srgb, #d7d7d7 40%, var(--theme-color-bg));
+  box-shadow: inset 0.2rem 0 0 #d7d7d7;
+}
+
+:global(:root.dark) .rank-bronze td:first-child {
+  --rank-color: #e2a06a;
+  background: color-mix(in srgb, #e2a06a 40%, var(--theme-color-bg));
+  box-shadow: inset 0.2rem 0 0 #e2a06a;
+}
+
+:global(:root.dark) .recent-run td:first-child {
+  --rank-color: #8cc8a6;
+  background: color-mix(in srgb, #8cc8a6 40%, var(--theme-color-bg));
+  box-shadow: inset 0.2rem 0 0 #8cc8a6;
+}
+
 
 @media (max-width: 40rem) {
   .pagination {
