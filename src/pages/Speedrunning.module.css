@@ -407,27 +407,27 @@
 .rank-bronze td:first-child,
 .recent-run td:first-child {
   color: var(--theme-color);
-  background: color-mix(in srgb, var(--rank-color) 10%, var(--theme-color-bg));
+  background: color-mix(in srgb, var(--rank-color) 12%, var(--theme-color-bg));
 }
 
 .rank-gold td:first-child {
-  --rank-color: #7f5a00;
-  box-shadow: inset 0.2rem 0 0 #7f5a00;
+  --rank-color: #c8a855;
+  box-shadow: inset 0.2rem 0 0 #c8a855;
 }
 
 .rank-silver td:first-child {
-  --rank-color: #4f4f4f;
-  box-shadow: inset 0.2rem 0 0 #4f4f4f;
+  --rank-color: #a3a3a3;
+  box-shadow: inset 0.2rem 0 0 #a3a3a3;
 }
 
 .rank-bronze td:first-child {
-  --rank-color: #7a4015;
-  box-shadow: inset 0.2rem 0 0 #7a4015;
+  --rank-color: #c68a5f;
+  box-shadow: inset 0.2rem 0 0 #c68a5f;
 }
 
 .recent-run td:first-child {
-  --rank-color: #2d6549;
-  box-shadow: inset 0.2rem 0 0 #2d6549;
+  --rank-color: #7ea78d;
+  box-shadow: inset 0.2rem 0 0 #7ea78d;
 }
 
 :global(:root.dark) .rank-gold td:first-child {
