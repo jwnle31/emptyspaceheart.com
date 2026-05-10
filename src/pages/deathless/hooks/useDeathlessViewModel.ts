@@ -25,7 +25,6 @@ import {
 export function useDeathlessViewModel() {
   const { tiers, players, globalCounts, loading, error } = useDeathlessData();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [search, setSearch] = useState('');
   const [includeZeroes, setIncludeZeroes] = useState(false);
   const [isMobileLayout, setIsMobileLayout] = useState(false);
   const [isLocationMenuOpen, setIsLocationMenuOpen] = useState(false);
@@ -124,8 +123,6 @@ export function useDeathlessViewModel() {
   }, [weightedTierScores]);
 
   const rankedPlayers = useMemo(() => {
-    const normalizedSearch = search.trim().toLowerCase();
-
     const filtered = filteredPlayers
       .map<RankedPlayer>((entry) => {
         const tierProfile = rankingTiers.map(
@@ -145,9 +142,6 @@ export function useDeathlessViewModel() {
         };
       })
       .filter((entry) => includeZeroes || entry.total > 0)
-      .filter((entry) =>
-        entry.player.name.toLowerCase().includes(normalizedSearch),
-      )
       .sort((left, right) => {
         if (rankingMode === 'weighted') {
           const scoreDiff = right.weightedScoreKey - left.weightedScoreKey;
@@ -197,7 +191,6 @@ export function useDeathlessViewModel() {
     includeZeroes,
     rankingMode,
     rankingTiers,
-    search,
     weightedTierScores,
   ]);
 
@@ -316,8 +309,8 @@ export function useDeathlessViewModel() {
   );
 
   const totalClears = useMemo(
-    () => players.reduce((sum, entry) => sum + entry.total, 0),
-    [players],
+    () => rankedPlayers.reduce((sum, entry) => sum + entry.total, 0),
+    [rankedPlayers],
   );
 
   const updateSearchParams = (updates: Record<string, string>) => {
@@ -361,8 +354,6 @@ export function useDeathlessViewModel() {
   return {
     loading,
     error,
-    search,
-    setSearch,
     includeZeroes,
     setIncludeZeroes,
     rankingMode,

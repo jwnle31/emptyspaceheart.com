@@ -516,7 +516,10 @@
   max-width: 1rem;
   min-height: 0.75rem;
   max-height: 0.75rem;
-  margin-right: 0;
+  margin-right: 0.35rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
 }
 
 .player-flag-placeholder {
@@ -528,7 +531,10 @@
   max-width: 1rem;
   min-height: 0.75rem;
   max-height: 0.75rem;
-  margin-right: 0;
+  margin-right: 0.35rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
   visibility: hidden;
 }
 
@@ -542,6 +548,10 @@
 }
 
 .mobile-score {
+  display: none;
+}
+
+.mobile-total {
   display: none;
 }
 
@@ -762,43 +772,43 @@
   opacity: 0.45;
 }
 
-.rank-gold td:first-child,
-.rank-silver td:first-child,
-.rank-bronze td:first-child {
+.rank-gold .rank-cell,
+.rank-silver .rank-cell,
+.rank-bronze .rank-cell {
   color: var(--theme-color);
 }
 
-.rank-gold td:first-child {
+.rank-gold .rank-cell {
   --rank-color: #c8a855;
   background: color-mix(in srgb, var(--rank-color) 12%, var(--theme-color-bg));
   box-shadow: inset 0.2rem 0 0 var(--rank-color);
 }
 
-.rank-silver td:first-child {
+.rank-silver .rank-cell {
   --rank-color: #a3a3a3;
   background: color-mix(in srgb, var(--rank-color) 12%, var(--theme-color-bg));
   box-shadow: inset 0.2rem 0 0 var(--rank-color);
 }
 
-.rank-bronze td:first-child {
+.rank-bronze .rank-cell {
   --rank-color: #c68a5f;
   background: color-mix(in srgb, var(--rank-color) 12%, var(--theme-color-bg));
   box-shadow: inset 0.2rem 0 0 var(--rank-color);
 }
 
-:global(:root.dark) .rank-gold td:first-child {
+:global(:root.dark) .rank-gold .rank-cell {
   --rank-color: #f0d070;
   background: color-mix(in srgb, #f0d070 40%, var(--theme-color-bg));
   box-shadow: inset 0.2rem 0 0 #f0d070;
 }
 
-:global(:root.dark) .rank-silver td:first-child {
+:global(:root.dark) .rank-silver .rank-cell {
   --rank-color: #d7d7d7;
   background: color-mix(in srgb, #d7d7d7 40%, var(--theme-color-bg));
   box-shadow: inset 0.2rem 0 0 #d7d7d7;
 }
 
-:global(:root.dark) .rank-bronze td:first-child {
+:global(:root.dark) .rank-bronze .rank-cell {
   --rank-color: #e2a06a;
   background: color-mix(in srgb, #e2a06a 40%, var(--theme-color-bg));
   box-shadow: inset 0.2rem 0 0 #e2a06a;
@@ -849,172 +859,58 @@
   }
 
   .table-wrapper {
-    overflow-x: hidden;
+    overflow-x: auto;
   }
 
   .table-wrapper table {
-    display: block;
+    width: max-content;
+    min-width: 100%;
     table-layout: fixed;
-    width: 100%;
     font-size: 0.71875rem;
   }
 
-  .table-wrapper > table > thead {
-    display: block;
-    border-bottom: 0.0625rem solid var(--theme-color);
+  .table-wrapper th,
+  .table-wrapper td {
+    padding: 0.5rem 0.45rem;
+    white-space: nowrap;
   }
 
-  .table-wrapper > table > thead > tr,
-  .table-wrapper > table > tbody > tr {
-    display: grid;
-    grid-template-columns: 2.5rem minmax(0, 1fr) 2.75rem;
-    column-gap: 0.4rem;
+  .rank-head,
+  .rank-cell {
+    width: 3rem;
+    min-width: 3rem;
+    text-align: center;
   }
 
-  .table-wrapper > table > thead > tr {
-    grid-template-areas: 'rank player total';
-    padding: 0.35rem 0.45rem 0.2rem;
+  .player-head,
+  .player-cell {
+    width: 10rem;
+    min-width: 10rem;
   }
 
-  .table-wrapper > table > tbody {
-    display: block;
+  .region-head,
+  .region-cell {
+    width: 10rem;
+    min-width: 10rem;
   }
 
-  .table-wrapper > table > tbody > tr {
-    grid-template-areas:
-      'rank player total'
-      'profile profile profile';
-    row-gap: 0.35rem;
-    padding: 0.55rem 0.45rem;
-    border-bottom: 0.0625rem solid var(--theme-color);
-  }
-
-  .table-wrapper > table > tbody > tr:last-child {
-    border-bottom: none;
-  }
-
-  .table-wrapper > table > thead > tr > th,
-  .table-wrapper > table > tbody > tr > td {
-    display: block;
-    padding: 0;
-    border-bottom: none;
-    white-space: normal;
-    min-width: 0;
-  }
-
-  .rank-head {
-    grid-area: rank;
-  }
-
-  .player-head {
-    grid-area: player;
-  }
-
-  .region-head {
-    grid-area: player;
-  }
-
-  .total-head {
-    grid-area: total;
+  .total-head,
+  .total-cell {
+    width: 2.75rem;
+    min-width: 2.75rem;
     text-align: right;
   }
 
   .score-head,
-  .profile-head {
-    display: none;
-  }
-
-  .rank-cell {
-    grid-area: rank;
-    align-self: center;
-    width: auto;
-  }
-
   .score-cell {
-    display: none;
+    width: 5.5rem;
+    min-width: 5.5rem;
   }
 
+  .profile-head,
   .profile-cell {
-    grid-area: profile;
-    grid-column: 1 / -1;
-    width: auto;
-  }
-
-  .profile-details {
-    font-size: 0.5625rem;
-    padding: 0.18rem 0.22rem;
-  }
-
-  .profile-fingerprint {
-    gap: 0.16rem;
-    flex-wrap: wrap;
-  }
-
-  .profile-row {
-    gap: 0.3rem;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    width: 100%;
-  }
-
-  .profile-preview-and-more {
-    flex: 1 1 auto;
-    width: 100%;
-  }
-
-  .profile-fingerprint-pill,
-  .profile-more-badge {
-    padding: 0.1rem 0.25rem;
-    gap: 0.22rem;
-  }
-
-  .profile-fingerprint-tier,
-  .profile-fingerprint-count {
-    font-size: 0.5625rem;
-  }
-
-  .total-head {
-    width: auto;
-    min-width: 0;
-    max-width: none;
-    text-align: right;
-    align-self: center;
-  }
-
-  .total-cell {
-    grid-area: total;
-    width: auto;
-    min-width: 0;
-    max-width: none;
-    text-align: right;
-    align-self: center;
-  }
-
-  .player-cell {
-    grid-area: player;
-    min-width: 0;
-    width: auto;
-  }
-
-  .region-cell {
-    grid-area: player;
-    min-width: 0;
-    width: auto;
-  }
-
-  .player-link {
-    gap: 0.2rem;
-    align-items: center;
-    min-width: 0;
-  }
-
-  .player-flag,
-  .player-flag-placeholder {
-    margin: 0.08rem 0.16rem 0.08rem 0.08rem;
-  }
-
-  .region-meta {
-    margin-top: 0.18rem;
+    width: 9rem;
+    min-width: 9rem;
   }
 
   .player-name {
@@ -1022,82 +918,54 @@
     line-height: 1.1;
   }
 
-  .region-mode .score-head,
-  .region-mode .score-cell,
-  .region-mode .profile-head {
-    display: none;
-  }
-
-  .region-mode .rank-head,
-  .region-mode .rank-cell {
-    width: 2.5rem;
-  }
-
-  .region-mode .total-head,
-  .region-mode .total-cell {
-    width: 2.75rem;
-    min-width: 0;
-    max-width: none;
-  }
-
-  .region-mode .region-head,
-  .region-mode .region-cell {
-    width: auto;
-    min-width: 0;
-  }
-
-  .table-wrapper.region-mode > table > thead > tr,
-  .table-wrapper.region-mode > table > tbody > tr {
-    grid-template-columns: 2.5rem minmax(0, 1fr) 2.75rem;
-  }
-
-  .table-wrapper.region-mode > table > thead > tr {
-    grid-template-areas: 'rank player total';
-    padding-top: 0.35rem;
-    padding-bottom: 0.2rem;
-  }
-
-  .table-wrapper.region-mode > table > tbody > tr {
-    grid-template-areas:
-      'rank player total'
-      '. profile profile';
-    row-gap: 0.45rem;
-  }
-
-  .region-mode .region-cell {
-    overflow: hidden;
-  }
-
-  .region-mode .profile-cell {
-    display: block;
-    grid-area: profile;
-    grid-column: 2 / -1;
-    width: auto;
-    margin-top: 0.3rem;
-  }
-
-  .profile-cell {
-    grid-column: 2 / -1;
-  }
-
-  .region-mode .region-main {
+  .region-main {
     font-size: 0.625rem;
   }
 
-  .region-mode .region-meta {
-    flex-wrap: wrap;
+  .region-meta {
+    margin-top: 0.18rem;
   }
 
-  .region-mode .player-link {
-    gap: 0.28rem;
-  }
-
-  .mobile-score {
+  .mobile-total {
     display: block;
-    margin-top: 0.15rem;
-    font-size: 0.5625rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.25rem;
+    font-size: 0.625rem;
     color: var(--theme-color-hover);
+    font-weight: 400;
     line-height: 1.1;
+  }
+
+  .profile-cell,
+  .total-cell {
+    display: none;
+  }
+
+  .profile-row {
+    justify-content: flex-start;
+    margin-top: 0.15rem;
+  }
+
+  .profile-preview-and-more {
+    gap: 0.2rem;
+  }
+
+  .profile-preview-column {
+    gap: 0.2rem;
+  }
+
+  .profile-fingerprint-shell {
+    gap: 0.2rem;
+  }
+
+  .profile-fingerprint-row {
+    gap: 0.2rem;
+  }
+
+  .profile-fingerprint-pill,
+  .profile-more-badge {
+    padding: 0.08rem 0.22rem;
+    gap: 0.2rem;
   }
 
   .pagination {

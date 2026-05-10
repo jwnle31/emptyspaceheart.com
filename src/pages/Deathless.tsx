@@ -12,8 +12,6 @@ function Deathless() {
   const {
     loading,
     error,
-    search,
-    setSearch,
     includeZeroes,
     setIncludeZeroes,
     rankingMode,
@@ -136,19 +134,6 @@ function Deathless() {
                 </button>
               </div>
             </div>
-
-            <label className={styles.control}>
-              <span>Search</span>
-              <input
-                type="search"
-                value={search}
-                onChange={(event) => {
-                  setSearch(event.target.value);
-                  handlePageChange(1);
-                }}
-                placeholder="Player name"
-              />
-            </label>
 
             <LocationFilter
               countries={countries}

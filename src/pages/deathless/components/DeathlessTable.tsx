@@ -23,19 +23,19 @@ function getPlayerAccentClassName(
 }
 
 function getSeparatorColSpan(
-  displayMode: DisplayModeValue,
   rankingMode: RankingMode,
   isMobileLayout: boolean,
 ) {
-  const baseColumns = displayMode === 'region' ? 4 : 4;
+  const baseColumns = isMobileLayout ? 3 : 4;
   return rankingMode === 'weighted' && !isMobileLayout ? baseColumns + 1 : baseColumns;
 }
 
 function renderPlayerCell(
   row: Extract<DeathlessDisplayRow, { rowType: 'row' }>,
   displayMode: DisplayModeValue,
-  rankingMode: RankingMode,
   weightedDisplayScale: number,
+  profileSummary: ProfileSummaryEntry[],
+  isMobileLayout: boolean,
 ) {
   const playerAccentStyle = getPlayerAccentStyle(row.player);
 
@@ -75,6 +75,24 @@ function renderPlayerCell(
           {row.displayScope ?? 'World'}
         </span>
         <span className={styles['region-meta']}>{content}</span>
+        {isMobileLayout && (
+          <div className={styles['profile-row']}>
+            <div className={styles['profile-preview-and-more']}>
+              <div className={styles['profile-preview-column']}>
+                {profileSummary.length > 0 ? (
+                  <ProfileFingerprint
+                    preview={getProfilePreviewMetrics(
+                      profileSummary,
+                      weightedDisplayScale,
+                    )}
+                  />
+                ) : (
+                  <span className={styles['profile-empty']}>0</span>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </td>
     );
   }
@@ -82,11 +100,28 @@ function renderPlayerCell(
   return (
     <td className={styles['player-cell']}>
       {content}
-      {rankingMode === 'weighted' && (
-        <span className={styles['mobile-score']}>
-          Score{' '}
-          {formatNumber(Math.round(row.weightedScore * weightedDisplayScale))}
+      {isMobileLayout && (
+        <span className={styles['mobile-total']}>
+          Total: {formatNumber(row.total)}
         </span>
+      )}
+      {isMobileLayout && (
+        <div className={styles['profile-row']}>
+          <div className={styles['profile-preview-and-more']}>
+            <div className={styles['profile-preview-column']}>
+              {profileSummary.length > 0 ? (
+                <ProfileFingerprint
+                  preview={getProfilePreviewMetrics(
+                    profileSummary,
+                    weightedDisplayScale,
+                  )}
+                />
+              ) : (
+                <span className={styles['profile-empty']}>0</span>
+              )}
+            </div>
+          </div>
+        </div>
       )}
     </td>
   );
@@ -135,7 +170,10 @@ export default function DeathlessTable({
             {!isMobileLayout && (
               <th className={styles['profile-head']}>Tier profile</th>
             )}
-            <th className={styles['total-head']}>Total</th>
+            {!isMobileLayout && <th className={styles['total-head']}>Total</th>}
+            {rankingMode === 'weighted' && isMobileLayout && (
+              <th className={styles['score-head']}>Score</th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -145,11 +183,7 @@ export default function DeathlessTable({
                 <tr key={row.rowKey}>
                   <td
                     className={styles['section-row']}
-                    colSpan={getSeparatorColSpan(
-                      displayMode,
-                      rankingMode,
-                      isMobileLayout,
-                    )}
+                    colSpan={getSeparatorColSpan(rankingMode, isMobileLayout)}
                   >
                     {row.label}
                   </td>
@@ -158,28 +192,32 @@ export default function DeathlessTable({
             }
 
             const profileSummary = profileSummaries.get(row.player.id) ?? [];
+            const podiumClassName =
+              displayMode === 'person' && row.rank === 1
+                ? styles['rank-gold']
+                : displayMode === 'person' && row.rank === 2
+                  ? styles['rank-silver']
+                  : displayMode === 'person' && row.rank === 3
+                    ? styles['rank-bronze']
+                    : undefined;
 
             return (
-              <tr
-                key={row.rowKey}
-                className={
-                  displayMode === 'person' && row.rank === 1
-                    ? styles['rank-gold']
-                    : displayMode === 'person' && row.rank === 2
-                      ? styles['rank-silver']
-                      : displayMode === 'person' && row.rank === 3
-                        ? styles['rank-bronze']
-                        : undefined
-                }
-              >
-                <td className={styles['rank-cell']}>
+              <tr key={row.rowKey} className={podiumClassName}>
+                <td
+                  className={
+                    podiumClassName
+                      ? `${styles['rank-cell']} ${podiumClassName}`
+                      : styles['rank-cell']
+                  }
+                >
                   {formatNumber(row.displayRank ?? row.rank)}
                 </td>
                 {renderPlayerCell(
                   row,
                   displayMode,
-                  rankingMode,
                   weightedDisplayScale,
+                  profileSummary,
+                  isMobileLayout,
                 )}
                 {rankingMode === 'weighted' && !isMobileLayout && (
                   <td className={styles['score-cell']}>
@@ -190,25 +228,40 @@ export default function DeathlessTable({
                     </div>
                   </td>
                 )}
-                <td className={styles['profile-cell']}>
-                  <div className={styles['profile-row']}>
-                    <div className={styles['profile-preview-and-more']}>
-                      <div className={styles['profile-preview-column']}>
-                        {profileSummary.length > 0 ? (
-                          <ProfileFingerprint
-                            preview={getProfilePreviewMetrics(
-                              profileSummary,
-                              weightedDisplayScale,
-                            )}
-                          />
-                        ) : (
-                          <span className={styles['profile-empty']}>0</span>
-                        )}
+                {!isMobileLayout && (
+                  <td className={styles['profile-cell']}>
+                    <div className={styles['profile-row']}>
+                      <div className={styles['profile-preview-and-more']}>
+                        <div className={styles['profile-preview-column']}>
+                          {profileSummary.length > 0 ? (
+                            <ProfileFingerprint
+                              preview={getProfilePreviewMetrics(
+                                profileSummary,
+                                weightedDisplayScale,
+                              )}
+                            />
+                          ) : (
+                            <span className={styles['profile-empty']}>0</span>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </td>
-                <td className={styles['total-cell']}>{formatNumber(row.total)}</td>
+                  </td>
+                )}
+                {!isMobileLayout && (
+                  <td className={styles['total-cell']}>
+                    {formatNumber(row.total)}
+                  </td>
+                )}
+                {rankingMode === 'weighted' && isMobileLayout && (
+                  <td className={styles['score-cell']}>
+                    <div className={styles['score-value']}>
+                      {formatNumber(
+                        Math.round(row.weightedScore * weightedDisplayScale),
+                      )}
+                    </div>
+                  </td>
+                )}
               </tr>
             );
           })}
