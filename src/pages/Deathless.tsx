@@ -1,4 +1,4 @@
-import { IconTrophy } from '@tabler/icons-react';
+import { IconSkull } from '@tabler/icons-react';
 import Breathe from '../components/Breathe';
 import SEO from '../components/SEO';
 import Goldberry from '../assets/gifs/goldberry.gif';
@@ -8,7 +8,7 @@ import LocationFilter from './deathless/components/LocationFilter';
 import Pagination from './deathless/components/Pagination';
 import WeightedLegend from './deathless/components/WeightedLegend';
 import { useDeathlessViewModel } from './deathless/hooks/useDeathlessViewModel';
-import { formatNumber, GOLD_BERRIES_API_DOCS } from './deathless/utils';
+import { formatNumber } from './deathless/utils';
 
 function Deathless() {
   const {
@@ -58,12 +58,12 @@ function Deathless() {
           </div>
           <a
             className={styles['docs-link']}
-            href={GOLD_BERRIES_API_DOCS}
+            href="https://goldberries.net/"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Goldberries API docs"
+            aria-label="Goldberries"
           >
-            <IconTrophy size={16} />
+            <IconSkull size={16} />
           </a>
         </div>
 
@@ -219,6 +219,10 @@ function Deathless() {
                   handlePageChange(Math.min(pageCount, effectivePage + 1));
                 }}
               />
+            )}
+
+            {rankingMode === 'weighted' && (
+              <Breathe />
             )}
 
             {rankingMode === 'weighted' && (

@@ -39,6 +39,16 @@ function renderPlayerCell(
   isMobileLayout: boolean,
 ) {
   const playerAccentStyle = getPlayerAccentStyle(row.player);
+  const showCountryFlag = displayMode !== 'region';
+  const regionFlag = row.player.countryCode ? (
+    <span
+      className={`fi fi-${row.player.countryCode} ${styles['region-flag']}`}
+      title={row.player.country ?? row.player.countryCode}
+      aria-hidden="true"
+    />
+  ) : (
+    <span className={styles['region-flag-placeholder']} aria-hidden="true" />
+  );
 
   const content = (
     <a
@@ -48,23 +58,33 @@ function renderPlayerCell(
       className={styles['player-link']}
       title={row.player.name}
     >
-      {row.player.countryCode ? (
+      {showCountryFlag ? (
+        row.player.countryCode ? (
+          <span
+            className={`fi fi-${row.player.countryCode} ${styles['player-flag']}`}
+            title={row.player.country ?? row.player.countryCode}
+            aria-hidden="true"
+          />
+        ) : (
+          <span
+            className={styles['player-flag-placeholder']}
+            aria-hidden="true"
+          />
+        )
+      ) : null}
+      {showCountryFlag ? (
         <span
-          className={`fi fi-${row.player.countryCode} ${styles['player-flag']}`}
-          title={row.player.country ?? row.player.countryCode}
+          className={getPlayerAccentClassName(row.player)}
+          style={playerAccentStyle}
           aria-hidden="true"
         />
       ) : (
         <span
-          className={styles['player-flag-placeholder']}
+          className={getPlayerAccentClassName(row.player)}
+          style={playerAccentStyle}
           aria-hidden="true"
         />
       )}
-      <span
-        className={getPlayerAccentClassName(row.player)}
-        style={playerAccentStyle}
-        aria-hidden="true"
-      />
       <span className={styles['player-name']}>{row.player.name}</span>
     </a>
   );
@@ -73,7 +93,10 @@ function renderPlayerCell(
     return (
       <td className={styles['region-cell']}>
         <span className={styles['region-main']}>
-          {row.displayScope ?? 'World'}
+          {regionFlag}
+          <span className={styles['region-main-label']}>
+            {row.displayScope ?? 'World'}
+          </span>
         </span>
         <span className={styles['region-meta']}>{content}</span>
         {isMobileLayout && (

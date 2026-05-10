@@ -116,6 +116,11 @@
   outline-offset: 0.125rem;
 }
 
+.location-menu button:focus,
+.location-menu button:focus-visible {
+  outline: none;
+}
+
 .location-menu {
   position: absolute;
   top: calc(100% + 0.35rem);
@@ -264,7 +269,7 @@
   text-transform: none;
   letter-spacing: 0;
   line-height: 1;
-  margin: 1.25rem 0 1.25rem;
+  margin: 0 0 1.25rem;
 }
 
 .weighted-formula {
@@ -461,12 +466,37 @@
 }
 
 .region-main {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
   font-weight: 900;
   color: var(--theme-color);
+  min-width: 0;
+}
+
+.region-main-label {
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.region-flag,
+.region-flag-placeholder {
+  display: inline-block;
+  width: 1rem;
+  height: 0.75rem;
+  flex: 0 0 auto;
+  min-width: 1rem;
+  max-width: 1rem;
+  min-height: 0.75rem;
+  max-height: 0.75rem;
+  box-sizing: border-box;
+  margin-right: 0.2rem;
+}
+
+.region-flag-placeholder {
+  visibility: hidden;
 }
 
 .region-meta {
@@ -475,6 +505,10 @@
   gap: 0.35rem;
   min-width: 0;
   margin-top: 0.2rem;
+}
+
+.region-meta .player-name {
+  font-size: 0.5625rem;
 }
 
 .section-row {
@@ -940,12 +974,23 @@
     line-height: 1.1;
   }
 
-  .region-main {
-    font-size: 0.625rem;
-  }
-
   .region-meta {
     margin-top: 0.18rem;
+  }
+
+  .region-meta .player-swatch {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  .region-meta .player-flag,
+  .region-meta .player-flag-placeholder {
+    width: 0.875rem;
+    height: 0.625rem;
+    min-width: 0.875rem;
+    max-width: 0.875rem;
+    min-height: 0.625rem;
+    max-height: 0.625rem;
   }
 
   .mobile-total {
