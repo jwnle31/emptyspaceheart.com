@@ -1,5 +1,7 @@
 import { IconTrophy } from '@tabler/icons-react';
+import Breathe from '../components/Breathe';
 import SEO from '../components/SEO';
+import Goldberry from '../assets/gifs/goldberry.gif';
 import styles from './Deathless.module.css';
 import DeathlessTable from './deathless/components/DeathlessTable';
 import LocationFilter from './deathless/components/LocationFilter';
@@ -46,6 +48,10 @@ function Deathless() {
         description="Goldberries deathless challenge rankings by tier profile"
       />
       <section className={styles.page}>
+        <div className={styles['img-wrapper']}>
+          <img src={Goldberry} alt="Goldberry" className={styles.image} />
+        </div>
+        <Breathe />
         <div className={styles.heading}>
           <div>
             <h2>Deathless Challenge</h2>

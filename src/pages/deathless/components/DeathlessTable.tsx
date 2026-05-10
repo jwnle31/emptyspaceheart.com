@@ -168,7 +168,7 @@ export default function DeathlessTable({
               <th className={styles['score-head']}>Score</th>
             )}
             {!isMobileLayout && (
-              <th className={styles['profile-head']}>Tier profile</th>
+              <th className={styles['profile-head']}>Tier Profile</th>
             )}
             {!isMobileLayout && <th className={styles['total-head']}>Total</th>}
             {rankingMode === 'weighted' && isMobileLayout && (

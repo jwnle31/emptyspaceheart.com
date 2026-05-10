@@ -17,6 +17,15 @@
   font-weight: 900;
 }
 
+.img-wrapper {
+  text-align: center;
+}
+
+.image {
+  height: 2.5rem;
+  margin-bottom: 3rem;
+}
+
 .description {
   margin-top: 0.25rem;
   margin-bottom: 1rem;
@@ -822,6 +831,11 @@
 @media (max-width: 40rem) {
   .page {
     width: min(calc(100vw - 1.5rem), 100%);
+  }
+
+  .image {
+    height: 2rem;
+    margin-bottom: 2rem;
   }
 
   .heading {

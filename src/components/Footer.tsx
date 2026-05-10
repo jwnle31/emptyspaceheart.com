@@ -16,7 +16,8 @@ function Footer() {
           <a href="/deathless" className={styles.link}>
             Deathless
           </a>
-          <span> · </span>
+        </div>
+        <div className={styles['footer-menu-secondary']}>
           <a
             href="https://cloud.umami.is/share/dap298M75AbdWQGb/emptyspaceheart.com"
             target="_blank"
