@@ -1,4 +1,9 @@
 import { useEffect, useState } from 'react';
+import {
+  getCountryContinent,
+  getCountryName,
+  getFlagIconCode,
+} from '../../utils/country';
 
 type DifficultyTier = {
   id: number;
@@ -11,11 +16,15 @@ type DeathlessPlayerAccount = {
   is_suspended?: boolean;
   name_color_start?: string;
   name_color_end?: string;
+  country?: string;
 };
 
 type DeathlessPlayer = {
   id: number;
   name: string;
+  country?: string;
+  countryCode?: string;
+  continent?: string;
   account?: DeathlessPlayerAccount | null;
 };
 
@@ -41,6 +50,7 @@ type DeathlessDataState = {
 const CACHE_TTL_MS = 2 * 24 * 60 * 60 * 1000;
 const DIFFICULTY_CACHE_KEY = 'deathless:difficulty:v1';
 const PLAYER_CACHE_KEY = 'deathless:player-tier-clear-counts:v1';
+const PLAYER_META_CACHE_KEY = 'deathless:player-all-customization:v2';
 const GLOBAL_STATS_CACHE_KEY = 'deathless:global-stats:v1';
 
 function readCache<T>(key: string): T | null {
@@ -109,7 +119,11 @@ async function fetchJson<T>(url: string, signal: AbortSignal): Promise<T> {
   return (await response.json()) as T;
 }
 
-async function fetchWithCache<T>(key: string, url: string, signal: AbortSignal) {
+async function fetchWithCache<T>(
+  key: string,
+  url: string,
+  signal: AbortSignal,
+) {
   const cached = readCache<T>(key);
   if (cached) {
     return cached;
@@ -140,6 +154,106 @@ function toArray<T>(value: unknown): T[] {
   return [];
 }
 
+function extractCountryInfo(entry: unknown) {
+  if (!entry || typeof entry !== 'object') {
+    return {};
+  }
+
+  const source = entry as {
+    country?:
+      | string
+      | {
+          code?: unknown;
+          name?: unknown;
+          names?: { international?: unknown };
+        };
+    country_code?: unknown;
+    countryCode?: unknown;
+    account?: {
+      country?: unknown;
+    };
+    location?: {
+      country?: {
+        code?: unknown;
+        names?: { international?: unknown };
+      };
+    };
+    country_name?: unknown;
+    countryName?: unknown;
+  };
+
+  const countryCode =
+    typeof source.countryCode === 'string'
+      ? source.countryCode
+      : typeof source.country_code === 'string'
+        ? source.country_code
+        : source.country &&
+            typeof source.country === 'object' &&
+            typeof source.country.code === 'string'
+          ? source.country.code
+          : typeof source.account?.country === 'string'
+            ? source.account.country
+            : typeof source.location?.country?.code === 'string'
+              ? source.location.country.code
+              : typeof source.country === 'string'
+                ? source.country
+                : undefined;
+
+  const countryName =
+    typeof source.countryName === 'string'
+      ? source.countryName
+      : typeof source.country_name === 'string'
+        ? source.country_name
+        : source.country &&
+            typeof source.country === 'object' &&
+            typeof source.country.name === 'string'
+          ? source.country.name
+          : source.country &&
+              typeof source.country === 'object' &&
+              typeof source.country.names?.international === 'string'
+            ? source.country.names.international
+            : typeof source.location?.country?.names?.international === 'string'
+              ? source.location.country.names.international
+              : typeof source.country === 'string' && countryCode
+                ? source.country
+                : undefined;
+
+  return {
+    countryCode: getFlagIconCode(countryCode),
+    country: countryName ?? getCountryName(countryCode),
+    continent: getCountryContinent(countryCode),
+  };
+}
+
+function extractPlayerId(entry: unknown) {
+  if (!entry || typeof entry !== 'object') {
+    return undefined;
+  }
+
+  const source = entry as {
+    id?: unknown;
+    player?: { id?: unknown };
+    user?: { id?: unknown };
+  };
+
+  const directId = Number(source.id);
+  if (Number.isFinite(directId)) {
+    return directId;
+  }
+
+  const nestedPlayerId = Number(source.player?.id);
+  if (Number.isFinite(nestedPlayerId)) {
+    return nestedPlayerId;
+  }
+
+  const nestedUserId = Number(source.user?.id);
+  if (Number.isFinite(nestedUserId)) {
+    return nestedUserId;
+  }
+
+  return undefined;
+}
+
 export type {
   DifficultyTier,
   DeathlessPlayer,
@@ -160,32 +274,64 @@ export function useDeathlessData(): DeathlessDataState {
 
     async function loadData() {
       try {
-        const [tierData, playerData, globalStatsData] = await Promise.all([
-          fetchWithCache<unknown>(
-            DIFFICULTY_CACHE_KEY,
-            'https://goldberries.net/api/difficulty?id=all',
-            controller.signal,
-          ),
-          fetchWithCache<unknown>(
-            PLAYER_CACHE_KEY,
-            'https://goldberries.net/api/stats/player-tier-clear-counts',
-            controller.signal,
-          ),
-          fetchWithCache<unknown>(
-            GLOBAL_STATS_CACHE_KEY,
-            'https://goldberries.net/api/stats/global',
-            controller.signal,
-          ),
-        ]);
+        const [tierData, playerData, playerMetaData, globalStatsData] =
+          await Promise.all([
+            fetchWithCache<unknown>(
+              DIFFICULTY_CACHE_KEY,
+              'https://goldberries.net/api/difficulty?id=all',
+              controller.signal,
+            ),
+            fetchWithCache<unknown>(
+              PLAYER_CACHE_KEY,
+              'https://goldberries.net/api/stats/player-tier-clear-counts',
+              controller.signal,
+            ),
+            fetchWithCache<unknown>(
+              PLAYER_META_CACHE_KEY,
+              'https://goldberries.net/api/player/all?customization=true',
+              controller.signal,
+            ),
+            fetchWithCache<unknown>(
+              GLOBAL_STATS_CACHE_KEY,
+              'https://goldberries.net/api/stats/global',
+              controller.signal,
+            ),
+          ]);
 
         if (!active) {
           return;
         }
 
         const normalizedTiers = toArray<DifficultyTier>(tierData).sort(
-          (left, right) => right.sort - left.sort || left.name.localeCompare(right.name),
+          (left, right) =>
+            right.sort - left.sort || left.name.localeCompare(right.name),
         );
-        const normalizedPlayers = toArray<DeathlessPlayerTierClearCounts>(playerData);
+        const playerMetaById = new Map<
+          number,
+          { country?: string; countryCode?: string; continent?: string }
+        >();
+        toArray<unknown>(playerMetaData).forEach((entry) => {
+          const id = extractPlayerId(entry);
+          if (id === undefined) {
+            return;
+          }
+
+          const existing = playerMetaById.get(id) ?? {};
+          playerMetaById.set(id, {
+            ...existing,
+            ...extractCountryInfo(entry),
+          });
+        });
+
+        const normalizedPlayers = toArray<DeathlessPlayerTierClearCounts>(
+          playerData,
+        ).map((entry) => ({
+          ...entry,
+          player: {
+            ...entry.player,
+            ...playerMetaById.get(entry.player.id),
+          },
+        }));
         const normalizedGlobalCounts = (() => {
           if (!globalStatsData || typeof globalStatsData !== 'object') {
             return {};
