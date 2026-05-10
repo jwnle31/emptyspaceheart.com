@@ -356,11 +356,21 @@
   border: 0.125rem solid var(--theme-color);
 }
 
+.weighted-legend-table-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, max-content));
+  gap: 0;
+}
+
 .weighted-legend-table {
   width: max-content;
   border-collapse: collapse;
   table-layout: fixed;
   font-size: 0.75rem;
+}
+
+.weighted-legend-table + .weighted-legend-table {
+  border-left: 0.0625rem solid var(--theme-color);
 }
 
 .weighted-legend-table th,
@@ -378,6 +388,17 @@
 
 .weighted-legend-table tbody tr:hover {
   background: color-mix(in srgb, var(--theme-color) 7%, transparent);
+}
+
+@media (max-width: 40rem) {
+  .weighted-legend-table-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .weighted-legend-table + .weighted-legend-table {
+    border-left: 0;
+    border-top: 0.0625rem solid var(--theme-color);
+  }
 }
 
 .weighted-legend-table tbody tr:last-child td {

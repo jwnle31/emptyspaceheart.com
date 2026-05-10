@@ -84,31 +84,45 @@ export default function WeightedLegend({
       <details className={styles['weighted-legend-details']}>
         <summary>Tier table</summary>
         <div className={styles['weighted-legend-table-wrap']}>
-          <table className={styles['weighted-legend-table']}>
-            <thead>
-              <tr>
-                <th>Tier</th>
-                <th>Score</th>
-                <th>Share</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rankingTiers.map((tier) => {
-                const tierWeight = weightedTierScores.get(tier.id);
-                if (!tierWeight) {
-                  return null;
-                }
-
-                return (
-                  <tr key={tier.id}>
-                    <td>{tier.sort}</td>
-                    <td>{formatNumber(Math.round(tierWeight.weight * weightedDisplayScale))}</td>
-                    <td>{tierWeight.cumulativeShare.toFixed(5)}</td>
+          <div className={styles['weighted-legend-table-grid']}>
+            {[
+              rankingTiers.filter(({ sort }) => sort >= 12),
+              rankingTiers.filter(({ sort }) => sort <= 11 && sort > 0),
+            ].map((tiers, columnIndex) => (
+              <table
+                key={columnIndex}
+                className={styles['weighted-legend-table']}
+              >
+                <thead>
+                  <tr>
+                    <th>Tier</th>
+                    <th>Score</th>
+                    <th>Share</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {tiers.map((tier) => {
+                    const tierWeight = weightedTierScores.get(tier.id);
+                    if (!tierWeight) {
+                      return null;
+                    }
+
+                    return (
+                      <tr key={tier.id}>
+                        <td>{tier.sort}</td>
+                        <td>
+                          {formatNumber(
+                            Math.round(tierWeight.weight * weightedDisplayScale),
+                          )}
+                        </td>
+                        <td>{tierWeight.cumulativeShare.toFixed(5)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            ))}
+          </div>
         </div>
       </details>
     </section>
