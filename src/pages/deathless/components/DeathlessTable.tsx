@@ -33,6 +33,7 @@ function getSeparatorColSpan(
 function renderPlayerCell(
   row: Extract<DeathlessDisplayRow, { rowType: 'row' }>,
   displayMode: DisplayModeValue,
+  rankingMode: RankingMode,
   weightedDisplayScale: number,
   profileSummary: ProfileSummaryEntry[],
   isMobileLayout: boolean,
@@ -85,6 +86,7 @@ function renderPlayerCell(
                       profileSummary,
                       weightedDisplayScale,
                     )}
+                    showTooltips={rankingMode === 'weighted'}
                   />
                 ) : (
                   <span className={styles['profile-empty']}>0</span>
@@ -110,12 +112,13 @@ function renderPlayerCell(
           <div className={styles['profile-preview-and-more']}>
             <div className={styles['profile-preview-column']}>
               {profileSummary.length > 0 ? (
-                <ProfileFingerprint
-                  preview={getProfilePreviewMetrics(
-                    profileSummary,
-                    weightedDisplayScale,
-                  )}
-                />
+              <ProfileFingerprint
+                preview={getProfilePreviewMetrics(
+                  profileSummary,
+                  weightedDisplayScale,
+                )}
+                showTooltips={rankingMode === 'weighted'}
+              />
               ) : (
                 <span className={styles['profile-empty']}>0</span>
               )}
@@ -215,6 +218,7 @@ export default function DeathlessTable({
                 {renderPlayerCell(
                   row,
                   displayMode,
+                  rankingMode,
                   weightedDisplayScale,
                   profileSummary,
                   isMobileLayout,
@@ -239,6 +243,7 @@ export default function DeathlessTable({
                                 profileSummary,
                                 weightedDisplayScale,
                               )}
+                              showTooltips={rankingMode === 'weighted'}
                             />
                           ) : (
                             <span className={styles['profile-empty']}>0</span>

@@ -654,6 +654,14 @@
   outline: none;
 }
 
+.profile-fingerprint-pill-static {
+  cursor: default;
+}
+
+.profile-fingerprint-pill-static:hover {
+  color: var(--theme-color);
+}
+
 .profile-fingerprint-tier {
   min-width: 0;
   white-space: nowrap;

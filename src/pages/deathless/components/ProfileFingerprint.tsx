@@ -10,20 +10,25 @@ function ProfileBadge({
   entry,
   className,
   expanded,
+  showTooltip,
   onToggle,
 }: {
   entry: NonNullable<ReturnType<typeof getProfilePreviewMetrics>>[number];
   className: string;
   expanded: boolean;
+  showTooltip: boolean;
   onToggle: () => void;
 }) {
+  const buttonClassName = showTooltip ? className : `${className} ${styles['profile-fingerprint-pill-static']}`;
+
   return (
     <div className={styles['profile-fingerprint-badge-shell']}>
       <button
         type="button"
-        className={className}
+        className={buttonClassName}
         style={{ '--band-color': entry.color } as CSSProperties}
-        onClick={onToggle}
+        onClick={showTooltip ? onToggle : undefined}
+        aria-pressed={showTooltip ? expanded : undefined}
       >
         <span className={styles['profile-fingerprint-tier']}>
           {formatTierLabel(entry.tierName)}
@@ -32,7 +37,7 @@ function ProfileBadge({
           x {formatNumber(entry.clears)}
         </span>
       </button>
-      {expanded && (
+      {showTooltip && expanded && (
         <div
           className={styles['profile-fingerprint-tooltip']}
           style={{ '--band-color': entry.color } as CSSProperties}
@@ -46,8 +51,10 @@ function ProfileBadge({
 
 export default function ProfileFingerprint({
   preview,
+  showTooltips = true,
 }: {
   preview: ReturnType<typeof getProfilePreviewMetrics>;
+  showTooltips?: boolean;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [activeTooltipTierId, setActiveTooltipTierId] = useState<number | null>(
@@ -68,7 +75,8 @@ export default function ProfileFingerprint({
             key={entry.tierId}
             entry={entry}
             className={styles['profile-fingerprint-pill']}
-            expanded={activeTooltipTierId === entry.tierId}
+            expanded={showTooltips && activeTooltipTierId === entry.tierId}
+            showTooltip={showTooltips}
             onToggle={() => {
               setActiveTooltipTierId((current) =>
                 current === entry.tierId ? null : entry.tierId,
