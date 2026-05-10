@@ -5,9 +5,17 @@ function Footer() {
     <>
       <footer className={styles.footer}>
         <div className={styles['footer-menu']}>
-          <a href="/" className={styles.link}>Home</a>
+          <a href="/" className={styles.link}>
+            Home
+          </a>
           <span> · </span>
-          <a href="/speedrunning" className={styles.link}>Speedrunning</a>
+          <a href="/speedrunning" className={styles.link}>
+            Speedrunning
+          </a>
+          <span> · </span>
+          <a href="/deathless" className={styles.link}>
+            Deathless
+          </a>
           <span> · </span>
           <a
             href="https://cloud.umami.is/share/dap298M75AbdWQGb/emptyspaceheart.com"
@@ -18,7 +26,9 @@ function Footer() {
             Data
           </a>
           <span> · </span>
-          <a href="/about" className={styles.link}>About</a>
+          <a href="/about" className={styles.link}>
+            About
+          </a>
         </div>
         <div className={styles.socials}>
           <a

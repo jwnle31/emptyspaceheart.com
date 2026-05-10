@@ -33,7 +33,9 @@
 }
 
 .menu {
-  font-family: 'JetBrainsMono';
+  font-family:
+    'JetBrainsMono',
+    sans-serif;
   position: absolute;
   top: 100%;
   left: 50%;
@@ -58,7 +60,9 @@
 .menu button {
   background: none;
   border: none;
-  font-family: JetBrainsMono;
+  font-family:
+    'JetBrainsMono',
+    sans-serif;
   font-size: 0.875rem;
   cursor: pointer;
   padding: 0.5rem 0.75rem;
