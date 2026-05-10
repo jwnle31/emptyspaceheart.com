@@ -178,6 +178,8 @@ export default function DeathlessTable({
     <div
       className={`${styles['table-wrapper']} ${
         displayMode === 'region' ? styles['region-mode'] : ''
+      } ${rankingMode === 'absolute' ? styles['absolute-mode'] : ''} ${
+        rankingMode === 'weighted' ? styles['weighted-mode'] : ''
       }`}
     >
       <table>

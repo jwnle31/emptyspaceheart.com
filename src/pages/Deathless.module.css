@@ -391,13 +391,28 @@
 }
 
 @media (max-width: 40rem) {
+  .weighted-legend-table-wrap {
+    width: 100%;
+  }
+
   .weighted-legend-table-grid {
     grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .weighted-legend-table {
+    width: 100%;
+    max-width: 100%;
   }
 
   .weighted-legend-table + .weighted-legend-table {
     border-left: 0;
     border-top: 0.0625rem solid var(--theme-color);
+  }
+
+  .weighted-legend-table th,
+  .weighted-legend-table td {
+    padding: 0.45rem 0.5rem;
   }
 }
 
@@ -440,7 +455,13 @@
 
 .rank-head,
 .rank-cell {
-  width: 4.5rem;
+  width: 3rem;
+  min-width: 3rem;
+  max-width: 3rem;
+  box-sizing: border-box;
+  text-align: center;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
 }
 
 .score-head,
@@ -956,13 +977,23 @@
   .rank-cell {
     width: 3rem;
     min-width: 3rem;
+    max-width: 3rem;
+    box-sizing: border-box;
     text-align: center;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
   }
 
   .player-head,
   .player-cell {
-    width: 10rem;
-    min-width: 10rem;
+    width: auto;
+    min-width: 0;
+  }
+
+  .absolute-mode .player-head,
+  .absolute-mode .player-cell {
+    width: auto;
+    min-width: 0;
   }
 
   .region-head,
