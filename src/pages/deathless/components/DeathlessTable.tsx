@@ -112,7 +112,9 @@ function renderPlayerCell(
                     showTooltips={rankingMode === 'weighted'}
                   />
                 ) : (
-                  <span className={styles['profile-empty']}>0</span>
+                  <span className={styles['profile-empty']} aria-hidden="true">
+                    &nbsp;
+                  </span>
                 )}
               </div>
             </div>
@@ -143,7 +145,9 @@ function renderPlayerCell(
                 showTooltips={rankingMode === 'weighted'}
               />
               ) : (
-                <span className={styles['profile-empty']}>0</span>
+                <span className={styles['profile-empty']} aria-hidden="true">
+                  &nbsp;
+                </span>
               )}
             </div>
           </div>
@@ -269,7 +273,12 @@ export default function DeathlessTable({
                               showTooltips={rankingMode === 'weighted'}
                             />
                           ) : (
-                            <span className={styles['profile-empty']}>0</span>
+                            <span
+                              className={styles['profile-empty']}
+                              aria-hidden="true"
+                            >
+                              &nbsp;
+                            </span>
                           )}
                         </div>
                       </div>
