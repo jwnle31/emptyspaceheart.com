@@ -1,4 +1,4 @@
-﻿import { IconSkull } from '@tabler/icons-react';
+﻿import { IconSkull, IconX } from '@tabler/icons-react';
 import Breathe from '../components/Breathe';
 import SEO from '../components/SEO';
 import Goldberry from '../assets/gifs/goldberry.gif';
@@ -154,18 +154,36 @@ function Deathless() {
               onSelect={handleLocationChange}
             />
 
-            <label className={styles.control}>
-              <span>Search</span>
-              <input
-                type="search"
-                value={nameSearch}
-                placeholder="Filter by player name"
-                onChange={(event) => {
-                  setNameSearch(event.target.value);
-                  handlePageChange(1);
-                }}
-              />
-            </label>
+            {displayMode === 'person' && (
+              <label className={styles.control}>
+                <span>Search</span>
+                <div className={styles['search-control']}>
+                  <input
+                    type="search"
+                    value={nameSearch}
+                    className={styles['search-input']}
+                    placeholder="Filter by player name"
+                    onChange={(event) => {
+                      setNameSearch(event.target.value);
+                      handlePageChange(1);
+                    }}
+                  />
+                  {nameSearch && (
+                    <button
+                      type="button"
+                      className={styles['search-clear']}
+                      aria-label="Clear search"
+                      onClick={() => {
+                        setNameSearch('');
+                        handlePageChange(1);
+                      }}
+                    >
+                      <IconX size={14} stroke={2.5} />
+                    </button>
+                  )}
+                </div>
+              </label>
+            )}
 
             <label className={styles['toggle-control']}>
               <input
@@ -237,9 +255,7 @@ function Deathless() {
               />
             )}
 
-            {rankingMode === 'weighted' && (
-              <Breathe />
-            )}
+            {rankingMode === 'weighted' && <Breathe />}
 
             {rankingMode === 'weighted' && (
               <WeightedLegend
@@ -256,4 +272,3 @@ function Deathless() {
 }
 
 export default Deathless;
-

@@ -52,6 +52,12 @@ export function useDeathlessViewModel() {
   );
   const location = parseLocationParam(searchParams.get('location'));
 
+  useEffect(() => {
+    if (displayMode === 'region' && nameSearch) {
+      setNameSearch('');
+    }
+  }, [displayMode, nameSearch]);
+
   const currentPageParam = Number(searchParams.get('page') ?? '1');
   const currentPage =
     Number.isFinite(currentPageParam) && currentPageParam > 0 ? currentPageParam : 1;
@@ -211,7 +217,8 @@ export function useDeathlessViewModel() {
 
   const rankedPlayers = useMemo(
     () => {
-      const normalizedNameSearch = nameSearch.trim().toLowerCase();
+      const normalizedNameSearch =
+        displayMode === 'person' ? nameSearch.trim().toLowerCase() : '';
 
       if (!normalizedNameSearch) {
         return rankedPlayersAll;
@@ -221,7 +228,7 @@ export function useDeathlessViewModel() {
         entry.player.name.toLowerCase().includes(normalizedNameSearch),
       );
     },
-    [nameSearch, rankedPlayersAll],
+    [displayMode, nameSearch, rankedPlayersAll],
   );
 
   const personRows = useMemo<DeathlessDisplayRow[]>(
@@ -416,4 +423,5 @@ export function useDeathlessViewModel() {
     handleLocationChange,
   };
 }
+
 
