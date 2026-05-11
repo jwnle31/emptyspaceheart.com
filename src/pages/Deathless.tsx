@@ -25,6 +25,8 @@ function Deathless() {
     locationGroups,
     isLocationMenuOpen,
     setIsLocationMenuOpen,
+    nameSearch,
+    setNameSearch,
     weightedTierScores,
     weightedDisplayScale,
     pageCount,
@@ -151,6 +153,19 @@ function Deathless() {
               }}
               onSelect={handleLocationChange}
             />
+
+            <label className={styles.control}>
+              <span>Search</span>
+              <input
+                type="search"
+                value={nameSearch}
+                placeholder="Filter by player name"
+                onChange={(event) => {
+                  setNameSearch(event.target.value);
+                  handlePageChange(1);
+                }}
+              />
+            </label>
 
             <label className={styles['toggle-control']}>
               <input

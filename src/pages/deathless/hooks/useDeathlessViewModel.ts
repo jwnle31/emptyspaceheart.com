@@ -25,6 +25,7 @@ export function useDeathlessViewModel() {
   const { tiers, players, globalCounts, loading, error } = useDeathlessData();
   const [searchParams, setSearchParams] = useSearchParams();
   const [includeZeroes, setIncludeZeroes] = useState(false);
+  const [nameSearch, setNameSearch] = useState('');
   const [isMobileLayout, setIsMobileLayout] = useState(false);
   const [isLocationMenuOpen, setIsLocationMenuOpen] = useState(false);
 
@@ -83,7 +84,7 @@ export function useDeathlessViewModel() {
     [countries],
   );
 
-  const filteredPlayers = useMemo(() => {
+  const locationFilteredPlayers = useMemo(() => {
     if (location === 'world') {
       return players;
     }
@@ -199,18 +200,28 @@ export function useDeathlessViewModel() {
   };
   
   const rankedPlayersAll = useMemo(
-    () => buildRankedPlayers(players),
-    [players, includeZeroes, rankingMode, rankingTiers, weightedTierScores],
+    () => buildRankedPlayers(locationFilteredPlayers),
+    [includeZeroes, locationFilteredPlayers, rankingMode, rankingTiers, weightedTierScores],
   );
 
   const globalRankByPlayerId = useMemo(
-    () => new Map<number, number>(rankedPlayersAll.map((row) => [row.player.id, row.rank])),
-    [rankedPlayersAll],
+    () => new Map<number, number>(buildRankedPlayers(players).map((row) => [row.player.id, row.rank])),
+    [players, includeZeroes, rankingMode, rankingTiers, weightedTierScores],
   );
 
   const rankedPlayers = useMemo(
-    () => buildRankedPlayers(filteredPlayers),
-    [filteredPlayers, includeZeroes, rankingMode, rankingTiers, weightedTierScores],
+    () => {
+      const normalizedNameSearch = nameSearch.trim().toLowerCase();
+
+      if (!normalizedNameSearch) {
+        return rankedPlayersAll;
+      }
+
+      return rankedPlayersAll.filter((entry) =>
+        entry.player.name.toLowerCase().includes(normalizedNameSearch),
+      );
+    },
+    [nameSearch, rankedPlayersAll],
   );
 
   const personRows = useMemo<DeathlessDisplayRow[]>(
@@ -386,6 +397,8 @@ export function useDeathlessViewModel() {
     displayedRows,
     isLocationMenuOpen,
     setIsLocationMenuOpen,
+    nameSearch,
+    setNameSearch,
     weightedTierScores,
     weightedDisplayScale,
     rankedPlayers,
