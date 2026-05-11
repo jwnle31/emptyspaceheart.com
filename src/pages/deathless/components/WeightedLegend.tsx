@@ -95,7 +95,7 @@ export default function WeightedLegend({
         rescaled by <Latex expression="d" /> so the easiest tier reads as 100 points per clear.
       </div>
       <details className={styles['weighted-legend-details']}>
-        <summary>Tier table</summary>
+        <summary>Tier Table</summary>
         <div className={styles['weighted-legend-table-wrap']}>
           <div className={styles['weighted-legend-table-grid']}>
             {[
