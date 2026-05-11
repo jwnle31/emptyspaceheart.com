@@ -37,9 +37,10 @@ function LocationFilter({
         ? selectedLocation.slice('continent:'.length)
         : selectedCountryOption?.name ?? 'World';
 
-  const selectedLeading = selectedCountryOption?.code ? (
-    <span className={`fi fi-${selectedCountryOption.code}`} />
-  ) : undefined;
+  const selectedLeading =
+    selectedCountryOption?.code && selectedCountryOption.code !== 'unknown' ? (
+      <span className={`fi fi-${selectedCountryOption.code}`} />
+    ) : undefined;
 
   return (
     <DropdownFilter

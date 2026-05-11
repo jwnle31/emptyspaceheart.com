@@ -57,7 +57,7 @@ export function useDeathlessViewModel() {
     Number.isFinite(currentPageParam) && currentPageParam > 0 ? currentPageParam : 1;
 
   const countries = useMemo<CountryOption[]>(() => {
-    const countriesByCode = new Map<string, string>();
+    const countriesByCode = new Map<string, string>([['unknown', 'Unknown']]);
 
     players.forEach((row) => {
       if (!row.player.countryCode) {
@@ -72,9 +72,11 @@ export function useDeathlessViewModel() {
       }
     });
 
-    return Array.from(countriesByCode, ([code, name]) => ({ code, name })).sort(
+    const countryList = Array.from(countriesByCode, ([code, name]) => ({ code, name })).sort(
       (left, right) => left.name.localeCompare(right.name),
     );
+
+    return countryList;
   }, [players]);
 
   const locationGroups = useMemo(
@@ -93,6 +95,10 @@ export function useDeathlessViewModel() {
     }
 
     const countryCode = location.slice('country:'.length);
+    if (countryCode === 'unknown') {
+      return players.filter((entry) => !entry.player.countryCode);
+    }
+
     return players.filter((entry) => entry.player.countryCode === countryCode);
   }, [location, players]);
 
@@ -122,15 +128,20 @@ export function useDeathlessViewModel() {
     return minimumWeight > 0 ? DISPLAY_POINT_BASE / minimumWeight : 0;
   }, [weightedTierScores]);
 
-  const rankedPlayers = useMemo(() => {
-    const filtered = filteredPlayers
+  const buildRankedPlayers = (sourcePlayers: typeof players) => {
+    const filtered = sourcePlayers
       .map<RankedPlayer>((entry) => {
         const tierProfile = rankingTiers.map(
           (tier) => entry.clears[String(tier.id)] ?? 0,
         );
         const weightedScoreResult =
           rankingMode === 'weighted'
-            ? scorePlayer(entry.clears, rankingTiers, weightedTierScores, SCORE_SCALE)
+            ? scorePlayer(
+                entry.clears,
+                rankingTiers,
+                weightedTierScores,
+                SCORE_SCALE,
+              )
             : { score: 0, scoreKey: 0 };
 
         return {
@@ -186,13 +197,22 @@ export function useDeathlessViewModel() {
 
       return result;
     }, []);
-  }, [
-    filteredPlayers,
-    includeZeroes,
-    rankingMode,
-    rankingTiers,
-    weightedTierScores,
-  ]);
+  };
+  
+  const rankedPlayersAll = useMemo(
+    () => buildRankedPlayers(players),
+    [players, includeZeroes, rankingMode, rankingTiers, weightedTierScores],
+  );
+
+  const globalRankByPlayerId = useMemo(
+    () => new Map<number, number>(rankedPlayersAll.map((row) => [row.player.id, row.rank])),
+    [rankedPlayersAll],
+  );
+
+  const rankedPlayers = useMemo(
+    () => buildRankedPlayers(filteredPlayers),
+    [filteredPlayers, includeZeroes, rankingMode, rankingTiers, weightedTierScores],
+  );
 
   const personRows = useMemo<DeathlessDisplayRow[]>(
     () =>
@@ -201,8 +221,9 @@ export function useDeathlessViewModel() {
         rowType: 'row',
         rowKey: `person-${row.player.id}-${index}`,
         displayRank: row.rank,
+        globalRank: globalRankByPlayerId.get(row.player.id),
       })),
-    [rankedPlayers],
+    [globalRankByPlayerId, rankedPlayers],
   );
 
   const regionRows = useMemo<DeathlessDisplayRow[]>(() => {
@@ -245,6 +266,7 @@ export function useDeathlessViewModel() {
         rowKey: `${rowKeyPrefix}-${row.player.id}-${displayRank}`,
         displayRank,
         displayScope,
+        globalRank: globalRankByPlayerId.get(row.player.id),
       });
     };
 
@@ -281,7 +303,7 @@ export function useDeathlessViewModel() {
     });
 
     return rankedRows;
-  }, [rankedPlayers]);
+  }, [globalRankByPlayerId, rankedPlayers]);
 
   const displayedRows = displayMode === 'person' ? personRows : regionRows;
 

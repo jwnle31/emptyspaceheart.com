@@ -6,7 +6,7 @@ import {
   getPlayerAccentStyle,
 } from '../utils';
 import ProfileFingerprint from './ProfileFingerprint';
-import type { DisplayModeValue } from '../location';
+import type { DisplayModeValue, LocationFilterValue } from '../location';
 import type { DeathlessPlayerTierClearCounts } from '../useDeathlessData';
 
 function getPlayerAccentClassName(
@@ -23,11 +23,22 @@ function getPlayerAccentClassName(
 }
 
 function getSeparatorColSpan(
+  displayMode: DisplayModeValue,
+  location: LocationFilterValue,
   rankingMode: RankingMode,
   isMobileLayout: boolean,
 ) {
-  const baseColumns = isMobileLayout ? 3 : 4;
-  return rankingMode === 'weighted' && !isMobileLayout ? baseColumns + 1 : baseColumns;
+  if (displayMode === 'region') {
+    const baseColumns = isMobileLayout ? 2 : 4;
+    return rankingMode === 'weighted' ? baseColumns + 1 : baseColumns;
+  }
+
+  if (isMobileLayout) {
+    return rankingMode === 'weighted' ? 3 : 2;
+  }
+
+  const baseColumns = location !== 'world' ? 5 : 4;
+  return rankingMode === 'weighted' ? baseColumns + 1 : baseColumns;
 }
 
 function renderPlayerCell(
@@ -159,6 +170,7 @@ function renderPlayerCell(
 
 type DeathlessTableProps = {
   displayMode: DisplayModeValue;
+  location: LocationFilterValue;
   rankingMode: RankingMode;
   rows: DeathlessDisplayRow[];
   profileSummaries: Map<number, ProfileSummaryEntry[]>;
@@ -168,6 +180,7 @@ type DeathlessTableProps = {
 
 export default function DeathlessTable({
   displayMode,
+  location,
   rankingMode,
   rows,
   profileSummaries,
@@ -193,6 +206,9 @@ export default function DeathlessTable({
             ) : (
               <>
                 <th className={styles['rank-head']}>#</th>
+                {location !== 'world' && !isMobileLayout && (
+                  <th className={styles['global-head']}>Global</th>
+                )}
                 <th className={styles['player-head']}>Player</th>
               </>
             )}
@@ -215,7 +231,12 @@ export default function DeathlessTable({
                 <tr key={row.rowKey}>
                   <td
                     className={styles['section-row']}
-                    colSpan={getSeparatorColSpan(rankingMode, isMobileLayout)}
+                    colSpan={getSeparatorColSpan(
+                      displayMode,
+                      location,
+                      rankingMode,
+                      isMobileLayout,
+                    )}
                   >
                     {row.label}
                   </td>
@@ -243,7 +264,21 @@ export default function DeathlessTable({
                   }
                 >
                   {formatNumber(row.displayRank ?? row.rank)}
+                  {displayMode === 'person' &&
+                    location !== 'world' &&
+                    isMobileLayout && (
+                      <span className={styles['mobile-rank-sub']}>
+                        {formatNumber(row.globalRank ?? row.rank)}
+                      </span>
+                    )}
                 </td>
+                {displayMode === 'person' &&
+                  location !== 'world' &&
+                  !isMobileLayout && (
+                    <td className={styles['global-cell']}>
+                      {formatNumber(row.globalRank ?? row.rank)}
+                    </td>
+                  )}
                 {renderPlayerCell(
                   row,
                   displayMode,

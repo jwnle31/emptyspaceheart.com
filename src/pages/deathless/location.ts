@@ -62,7 +62,10 @@ export function buildLocationGroups(countries: CountryOption[]): DropdownGroup[]
       options: countries.map(({ name, code }) => ({
         value: `country:${code}` as const,
         label: name,
-        leading: createElement('span', { className: `fi fi-${code}` }),
+        leading:
+          code === 'unknown'
+            ? undefined
+            : createElement('span', { className: `fi fi-${code}` }),
       })),
     },
   ];

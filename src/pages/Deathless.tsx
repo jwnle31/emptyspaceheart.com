@@ -201,6 +201,7 @@ function Deathless() {
 
             <DeathlessTable
               displayMode={displayMode}
+              location={location}
               rankingMode={rankingMode}
               rows={pageRows}
               profileSummaries={profileSummaries}

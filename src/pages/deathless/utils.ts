@@ -48,6 +48,7 @@ export type RankedPlayer = DeathlessPlayerTierClearCounts & {
   weightedScore: number;
   weightedScoreKey: number;
   rank: number;
+  globalRank?: number;
 };
 
 export type DeathlessDisplayRow =
@@ -61,6 +62,7 @@ export type DeathlessDisplayRow =
       rowKey: string;
       displayRank?: number;
       displayScope?: string;
+      globalRank?: number;
     });
 
 export function formatNumber(value: number) {

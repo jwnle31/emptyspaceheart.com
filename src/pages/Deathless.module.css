@@ -464,6 +464,17 @@
   padding-right: 0.25rem;
 }
 
+.global-head,
+.global-cell {
+  width: 3rem;
+  min-width: 3rem;
+  max-width: 3rem;
+  box-sizing: border-box;
+  text-align: center;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
 .score-head,
 .score-cell {
   width: 6rem;
@@ -640,6 +651,18 @@
   display: none;
 }
 
+.mobile-only {
+  display: none;
+}
+
+.mobile-rank-sub {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.5625rem;
+  color: var(--theme-color-hover);
+  line-height: 1.1;
+}
+
 .score-cell,
 .total-cell {
   font-weight: 900;
@@ -704,7 +727,8 @@
 
 .profile-fingerprint-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  align-content: flex-start;
   gap: 0.25rem;
   min-width: 0;
   width: 100%;
@@ -716,6 +740,7 @@
   align-items: center;
   gap: 0.3rem;
   min-width: 0;
+  flex: 0 0 auto;
   padding: 0.14rem 0.35rem;
   border: 0.0625rem solid color-mix(in srgb, var(--band-color) 62%, var(--theme-color));
   border-radius: 0.25rem;
@@ -789,6 +814,7 @@
   align-items: center;
   gap: 0.3rem;
   min-width: 0;
+  flex: 0 0 auto;
   padding: 0.14rem 0.35rem;
   border: 0.0625rem solid color-mix(in srgb, var(--band-color) 62%, var(--theme-color));
   border-radius: 0.25rem;
@@ -961,7 +987,7 @@
   }
 
   .table-wrapper table {
-    width: max-content;
+    width: 100%;
     min-width: 100%;
     table-layout: fixed;
     font-size: 0.71875rem;
@@ -975,6 +1001,17 @@
 
   .rank-head,
   .rank-cell {
+    width: 3rem;
+    min-width: 3rem;
+    max-width: 3rem;
+    box-sizing: border-box;
+    text-align: center;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+  }
+
+  .global-head,
+  .global-cell {
     width: 3rem;
     min-width: 3rem;
     max-width: 3rem;
@@ -1061,30 +1098,54 @@
   }
 
   .profile-row {
-    justify-content: flex-start;
+    display: block;
     margin-top: 0.15rem;
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
   }
 
   .profile-preview-and-more {
-    gap: 0.2rem;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
   }
 
   .profile-preview-column {
-    gap: 0.2rem;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
   }
 
   .profile-fingerprint-shell {
+    display: block;
     gap: 0.2rem;
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
   }
 
   .profile-fingerprint-row {
+    display: flex;
     gap: 0.2rem;
+    width: 100%;
+    max-width: 100%;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    white-space: normal;
+  }
+
+  .profile-fingerprint-badge-shell {
+    max-width: 100%;
   }
 
   .profile-fingerprint-pill,
   .profile-more-badge {
     padding: 0.08rem 0.22rem;
     gap: 0.2rem;
+    white-space: nowrap;
   }
 
   .pagination {
