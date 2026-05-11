@@ -466,9 +466,9 @@
 
 .global-head,
 .global-cell {
-  width: 3rem;
-  min-width: 3rem;
-  max-width: 3rem;
+  width: 4rem;
+  min-width: 4rem;
+  max-width: 4rem;
   box-sizing: border-box;
   text-align: center;
   padding-left: 0.25rem;
@@ -1012,9 +1012,9 @@
 
   .global-head,
   .global-cell {
-    width: 3rem;
-    min-width: 3rem;
-    max-width: 3rem;
+    width: 4rem;
+    min-width: 4rem;
+    max-width: 4rem;
     box-sizing: border-box;
     text-align: center;
     padding-left: 0.2rem;
