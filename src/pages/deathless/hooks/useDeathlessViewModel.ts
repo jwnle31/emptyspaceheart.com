@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+﻿import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useDeathlessData } from '../useDeathlessData';
 import {
@@ -12,7 +12,6 @@ import {
 import {
   buildTierWeights,
   compareTierProfiles,
-  DISPLAY_POINT_BASE,
   getProfileSummary,
   PAGE_SIZE,
   SCORE_SCALE,
@@ -125,7 +124,7 @@ export function useDeathlessViewModel() {
     }
 
     const minimumWeight = Math.min(...tierWeights);
-    return minimumWeight > 0 ? DISPLAY_POINT_BASE / minimumWeight : 0;
+    return minimumWeight > 0 ? 100 / minimumWeight : 0;
   }, [weightedTierScores]);
 
   const buildRankedPlayers = (sourcePlayers: typeof players) => {
@@ -404,3 +403,4 @@ export function useDeathlessViewModel() {
     handleLocationChange,
   };
 }
+

@@ -1,4 +1,4 @@
-import Latex from './Latex';
+﻿import Latex from './Latex';
 import { formatNumber } from '../utils';
 import styles from '../../Deathless.module.css';
 
@@ -22,12 +22,17 @@ export default function WeightedLegend({
         />
         <Latex
           className={styles['weighted-formula']}
-          expression="p(t)=100\cdot\frac{1/Q(t)}{\operatorname{mean}(1/Q)}"
+          expression="p(t)=\frac{1}{Q(t)}"
           displayMode
         />
         <Latex
           className={styles['weighted-formula']}
-          expression="S=\sum_t c_t\,p(t)"
+          expression="d=\frac{100}{\min_t p(t)}"
+          displayMode
+        />
+        <Latex
+          className={styles['weighted-formula']}
+          expression="S=d\sum_t c_t\,p(t)"
           displayMode
         />
       </div>
@@ -67,7 +72,15 @@ export default function WeightedLegend({
             <Latex expression="p(t)" />
           </dt>
           <dd>
-            = normalized points per clear for tier <Latex expression="t" />
+            = inverse cumulative share for tier <Latex expression="t" />
+          </dd>
+        </div>
+        <div>
+          <dt>
+            <Latex expression="d" />
+          </dt>
+          <dd>
+            = readability rescale that sets the easiest tier to 100 points per clear
           </dd>
         </div>
         <div>
@@ -78,8 +91,8 @@ export default function WeightedLegend({
         </div>
       </dl>
       <div className={styles['weighted-legend-note']}>
-        The score is the additive sum of <Latex expression="c_t \times p(t)" /> and the display scale is
-        normalized only for readability.
+        The score is the additive sum of <Latex expression="c_t \times p(t)" /> and is then
+        rescaled by <Latex expression="d" /> so the easiest tier reads as 100 points per clear.
       </div>
       <details className={styles['weighted-legend-details']}>
         <summary>Tier table</summary>
@@ -128,3 +141,4 @@ export default function WeightedLegend({
     </section>
   );
 }
+

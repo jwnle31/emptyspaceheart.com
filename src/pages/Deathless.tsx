@@ -1,4 +1,4 @@
-import { IconSkull } from '@tabler/icons-react';
+﻿import { IconSkull } from '@tabler/icons-react';
 import Breathe from '../components/Breathe';
 import SEO from '../components/SEO';
 import Goldberry from '../assets/gifs/goldberry.gif';
@@ -179,7 +179,7 @@ function Deathless() {
         <p className={styles.description}>
           {rankingMode === 'absolute'
             ? 'Absolute mode ranks players by the full tier-clear profile, from higher tiers down.'
-            : 'Weighted mode defines a tier weight from the cumulative global tail probability at or above that tier, then scores each player by the linear sum of their tier clears multiplied by those weights. The weighting is data-driven and parameter-free aside from display scaling, so the score surface shifts as the underlying tier distribution changes.'}
+            : 'Weighted mode defines a tier value from the cumulative global tail probability at or above that tier, then scores each player by the linear sum of their tier clears multiplied by those values. A separate display rescale sets the easiest tier to 100 points per clear, and the score surface shifts as the underlying tier distribution changes.'}
         </p>
 
         {error ? (
@@ -241,3 +241,4 @@ function Deathless() {
 }
 
 export default Deathless;
+

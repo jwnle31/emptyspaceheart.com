@@ -1,10 +1,9 @@
-import { type CSSProperties } from 'react';
+﻿import { type CSSProperties } from 'react';
 import { type DeathlessPlayerTierClearCounts } from './useDeathlessData';
 
 export const PAGE_SIZE = 100;
 export const GOLD_BERRIES_API_DOCS = 'https://goldberries.net/api-docs';
 export const SCORE_SCALE = 1_000_000;
-export const DISPLAY_POINT_BASE = 100;
 
 export const DIFFICULTY_COLORS: Record<number, string> = {
   26: '#bd60ff',
@@ -149,16 +148,12 @@ export function buildTierWeights(
     };
   });
 
-  const meanRawWeight =
-    rawWeights.reduce((sum, entry) => sum + entry.rawWeight, 0) /
-    rawWeights.length;
-
   const weights = new Map<number, { cumulativeShare: number; weight: number }>();
 
   rawWeights.forEach((entry) => {
     weights.set(entry.tierId, {
       cumulativeShare: entry.cumulativeShare,
-      weight: meanRawWeight > 0 ? entry.rawWeight / meanRawWeight : 0,
+      weight: entry.rawWeight,
     });
   });
 
@@ -218,3 +213,4 @@ export function getProfilePreviewMetrics(
     tooltip: `${formatNumber(Math.round(entry.tierWeight * weightedScale))} × ${formatNumber(entry.clears)} = ${formatNumber(Math.round(entry.tierWeight * entry.clears * weightedScale))}`,
   }));
 }
+
