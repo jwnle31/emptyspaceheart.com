@@ -1,24 +1,6 @@
 import type { CSSProperties } from 'react';
-import countryData from 'flag-icons/country.json';
+export { getCountryContinent, getFlagIconCode } from '../../utils/country';
 import type { Player } from './types';
-
-type CountryMetadata = {
-  code: string;
-  continent?: string;
-};
-
-const continentByCountryCode = new Map(
-  (countryData as CountryMetadata[]).map(({ code, continent }) => [
-    code.toLowerCase(),
-    continent,
-  ]),
-);
-
-const continentOverrides = new Map<string, string>([
-  ['ic', 'Europe'],
-  ['es-ga', 'Europe'],
-  ['es-pv', 'Europe'],
-]);
 
 export function formatTime(totalSeconds: number) {
   const minutes = Math.floor(totalSeconds / 60);
@@ -34,29 +16,6 @@ export function formatTime(totalSeconds: number) {
   }
 
   return `${minutes}:${seconds.toFixed(3).padStart(6, '0')}`;
-}
-
-export function getFlagIconCode(countryCode?: string) {
-  const normalizedCode = countryCode?.toLowerCase();
-
-  if (normalizedCode === 'es/cn') {
-    return 'ic';
-  }
-
-  return normalizedCode?.replace('/', '-');
-}
-
-export function getCountryContinent(countryCode?: string) {
-  const normalizedCode = getFlagIconCode(countryCode);
-
-  if (!normalizedCode) {
-    return undefined;
-  }
-
-  return (
-    continentOverrides.get(normalizedCode) ??
-    continentByCountryCode.get(normalizedCode)
-  );
 }
 
 export function getRunnerNameStyle(player?: Player | null) {

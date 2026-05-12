@@ -85,7 +85,9 @@
   border: 0.125rem solid var(--theme-color);
   background: var(--theme-color-bg);
   color: var(--theme-color);
-  font-family: JetBrainsMono;
+  font-family:
+    'JetBrainsMono',
+    sans-serif;
   font-size: 0.875rem;
   padding: 0.5rem 0.75rem;
   cursor: pointer;
@@ -153,7 +155,9 @@
   border-right: 0.0625rem solid var(--theme-color);
   background: var(--theme-color-bg);
   color: var(--theme-color);
-  font-family: JetBrainsMono;
+  font-family:
+    'JetBrainsMono',
+    sans-serif;
   font-size: 0.875rem;
   line-height: 1;
   padding: 0 0.9rem;
@@ -387,7 +391,9 @@
   border: 0.125rem solid var(--theme-color);
   background: var(--theme-color-bg);
   color: var(--theme-color);
-  font-family: JetBrainsMono;
+  font-family:
+    'JetBrainsMono',
+    sans-serif;
   font-size: 0.875rem;
   padding: 0.4rem 0.75rem;
   cursor: pointer;

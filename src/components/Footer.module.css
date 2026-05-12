@@ -11,6 +11,11 @@
   font-size: 1rem;
 }
 
+.footer-menu-secondary {
+  font-size: 0.95rem;
+  margin-top: 0.35rem;
+}
+
 .socials {
   margin-top: 1rem;
 }
@@ -41,6 +46,13 @@
     font-size: 0.8125rem;
     text-align: center;
     line-height: 1.4;
+  }
+
+  .footer-menu-secondary {
+    font-size: 0.8125rem;
+    text-align: center;
+    line-height: 1.4;
+    margin-top: 0.15rem;
   }
 
   .socials {

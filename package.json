@@ -12,6 +12,7 @@
   "dependencies": {
     "@tabler/icons-react": "^3.41.1",
     "flag-icons": "^7.5.0",
+    "katex": "^0.16.45",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-helmet-async": "^3.0.0",
