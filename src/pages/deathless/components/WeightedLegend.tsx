@@ -99,7 +99,9 @@ export default function WeightedLegend({
         </span>
         <span className={styles['weighted-legend-note-caveat']}>
           These values are tied to the current tier distribution, so they may
-          shift significantly as the distribution changes.
+          shift significantly as the distribution changes; higher-tier values
+          may look inflated at first, but they settle quickly as more clears
+          accumulate at that tier.
         </span>
       </div>
       <details className={styles['weighted-legend-details']}>
