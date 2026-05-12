@@ -1,5 +1,5 @@
 ﻿import { type CSSProperties } from 'react';
-import { type DeathlessPlayerTierClearCounts } from './useDeathlessData';
+import { type DeathlessPlayerTierClearCounts } from './hooks/useDeathlessData';
 
 export const PAGE_SIZE = 100;
 export const GOLD_BERRIES_API_DOCS = 'https://goldberries.net/api-docs';

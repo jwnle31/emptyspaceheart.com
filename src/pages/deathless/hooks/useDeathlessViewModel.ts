@@ -1,6 +1,6 @@
 ﻿import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useDeathlessData } from '../useDeathlessData';
+import { useDeathlessData } from './useDeathlessData';
 import {
   buildLocationGroups,
   type CountryOption,

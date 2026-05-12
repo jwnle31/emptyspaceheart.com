@@ -7,7 +7,7 @@ import {
 } from '../utils';
 import ProfileFingerprint from './ProfileFingerprint';
 import type { DisplayModeValue, LocationFilterValue } from '../location';
-import type { DeathlessPlayerTierClearCounts } from '../useDeathlessData';
+import type { DeathlessPlayerTierClearCounts } from '../hooks/useDeathlessData';
 
 function getPlayerAccentClassName(
   player: DeathlessPlayerTierClearCounts['player'],
