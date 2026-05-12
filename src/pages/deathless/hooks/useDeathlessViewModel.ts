@@ -246,45 +246,167 @@ export function useDeathlessViewModel() {
   const regionRows = useMemo<DeathlessDisplayRow[]>(() => {
     const rankedRows: DeathlessDisplayRow[] = [];
 
-    const getBestRow = (
+    const hashKey = (value: string) => {
+      let hash = 0;
+
+      for (let index = 0; index < value.length; index += 1) {
+        hash = (hash * 31 + value.charCodeAt(index)) | 0;
+      }
+
+      return Math.abs(hash) + 1;
+    };
+
+    const buildAggregateRows = (
       sourceRows: RankedPlayer[],
-      selector: (row: RankedPlayer) => string | undefined,
-    ) => {
-      const bestByKey = new Map<string, RankedPlayer>();
+      rowKeyPrefix: string,
+      groupKeySelector: (row: RankedPlayer) => string,
+      displayLabelSelector: (row: RankedPlayer, key: string) => string,
+    ): Array<RankedPlayer & { displayScope: string }> => {
+      const groups = new Map<
+        string,
+        {
+          clears: Record<string, number>;
+          total: number;
+          label: string;
+          player: RankedPlayer['player'];
+          rows: RankedPlayer[];
+        }
+      >();
 
       sourceRows.forEach((row) => {
-        const key = selector(row);
+        const key = groupKeySelector(row);
+        const label = displayLabelSelector(row, key);
+        const current = groups.get(key);
 
-        if (!key) {
+        if (!current) {
+          groups.set(key, {
+            clears: { ...row.clears },
+            total: row.total,
+            label,
+            player: {
+              ...row.player,
+              name: label,
+              countryCode:
+                row.player.countryCode && row.player.countryCode !== 'unknown'
+                  ? row.player.countryCode
+                  : undefined,
+              country: row.player.country ?? label,
+              continent: row.player.continent ?? undefined,
+              account: null,
+            },
+            rows: [row],
+          });
           return;
         }
 
-        if (!bestByKey.has(key)) {
-          bestByKey.set(key, row);
+        current.rows.push(row);
+        current.total += row.total;
+
+        Object.entries(row.clears).forEach(([tierId, clears]) => {
+          current.clears[tierId] = (current.clears[tierId] ?? 0) + clears;
+        });
+      });
+
+      const aggregateRows = Array.from(groups.entries()).map(
+        ([key, group]): RankedPlayer & { displayScope: string } => {
+        const tierProfile = rankingTiers.map((tier) => group.clears[String(tier.id)] ?? 0);
+        const weightedScoreResult =
+          rankingMode === 'weighted'
+            ? scorePlayer(
+                group.clears,
+                rankingTiers,
+                weightedTierScores,
+                SCORE_SCALE,
+              )
+            : { score: 0, scoreKey: 0 };
+
+        const player =
+          rowKeyPrefix === 'country'
+            ? {
+                ...group.player,
+                id: hashKey(`${rowKeyPrefix}:${key}`),
+                name: group.label,
+                countryCode: key === 'unknown' ? undefined : key,
+                country: group.label,
+                account: null,
+              }
+            : rowKeyPrefix === 'continent'
+              ? {
+                  ...group.player,
+                  id: hashKey(`${rowKeyPrefix}:${key}`),
+                  name: group.label,
+                  countryCode: undefined,
+                  country: group.label,
+                  continent: group.label,
+                  account: null,
+                }
+              : {
+                  ...group.player,
+                  id: hashKey(`${rowKeyPrefix}:${key}`),
+                  name: group.label,
+                  countryCode: undefined,
+                  country: group.label,
+                  continent: undefined,
+                  account: null,
+                };
+
+        return {
+          ...group.rows[0],
+          player,
+          clears: group.clears,
+          total: group.total,
+          tierProfile,
+          weightedScore: weightedScoreResult.score,
+          weightedScoreKey: weightedScoreResult.scoreKey,
+          rank: 0,
+          displayScope: group.label,
+        };
+      });
+
+      const visibleAggregateRows = aggregateRows.filter(
+        (row) => row.displayScope !== 'Unknown',
+      );
+
+      visibleAggregateRows.sort((left, right) => {
+        if (rankingMode === 'weighted') {
+          const scoreDiff = right.weightedScoreKey - left.weightedScoreKey;
+          if (scoreDiff !== 0) {
+            return scoreDiff;
+          }
+        } else {
+          const tierDiff = compareTierProfiles(left.tierProfile, right.tierProfile);
+          if (tierDiff !== 0) {
+            return tierDiff;
+          }
         }
+
+        const totalDiff = right.total - left.total;
+        if (totalDiff !== 0) {
+          return totalDiff;
+        }
+
+        return left.displayScope!.localeCompare(right.displayScope!);
       });
 
-      return Array.from(bestByKey.values());
-    };
+      return visibleAggregateRows.reduce<Array<RankedPlayer & { displayScope: string }>>((result, entry, index) => {
+        const previous = result[result.length - 1];
+        const isTie =
+          previous &&
+          (rankingMode === 'weighted'
+            ? previous.weightedScoreKey === entry.weightedScoreKey
+            : previous.total === entry.total &&
+              previous.tierProfile.length === entry.tierProfile.length &&
+              previous.tierProfile.every(
+                (value, valueIndex) => value === entry.tierProfile[valueIndex],
+              ));
 
-    const worldBest = rankedPlayers[0];
-    const continentBests = getBestRow(rankedPlayers, (row) => row.player.continent);
-    const countryBests = getBestRow(rankedPlayers, (row) => row.player.countryCode);
+        result.push({
+          ...entry,
+          rank: isTie ? previous.rank : index + 1,
+        });
 
-    const pushRow = (
-      row: RankedPlayer,
-      displayScope: string,
-      rowKeyPrefix: string,
-      displayRank: number,
-    ) => {
-      rankedRows.push({
-        ...row,
-        rowType: 'row',
-        rowKey: `${rowKeyPrefix}-${row.player.id}-${displayRank}`,
-        displayRank,
-        displayScope,
-        globalRank: globalRankByPlayerId.get(row.player.id),
-      });
+        return result;
+      }, []);
     };
 
     rankedRows.push({
@@ -292,35 +414,57 @@ export function useDeathlessViewModel() {
       rowKey: 'region-world',
       label: 'World',
     });
-    if (worldBest) {
-      pushRow(worldBest, 'World', 'world', 1);
-    }
+    rankedRows.push(
+      ...buildAggregateRows(
+        rankedPlayersAll,
+        'world',
+        () => 'world',
+        () => 'World',
+      ).map((row) => ({
+        ...row,
+        rowType: 'row' as const,
+        rowKey: `world-${row.player.id}-${row.rank}`,
+      })),
+    );
 
     rankedRows.push({
       rowType: 'separator',
       rowKey: 'region-continents',
       label: 'Continents',
     });
-    continentBests.forEach((row, index) => {
-      pushRow(row, row.player.continent ?? 'Unknown', 'continent', index + 1);
-    });
+    rankedRows.push(
+      ...buildAggregateRows(
+        rankedPlayersAll,
+        'continent',
+        (row) => row.player.continent ?? 'Unknown',
+        (_row, key) => key,
+      ).map((row) => ({
+        ...row,
+        rowType: 'row' as const,
+        rowKey: `continent-${row.player.id}-${row.rank}`,
+      })),
+    );
 
     rankedRows.push({
       rowType: 'separator',
       rowKey: 'region-countries',
       label: 'Countries',
     });
-    countryBests.forEach((row, index) => {
-      pushRow(
-        row,
-        row.player.country ?? row.player.countryCode ?? 'Unknown',
+    rankedRows.push(
+      ...buildAggregateRows(
+        rankedPlayersAll,
         'country',
-        index + 1,
-      );
-    });
+        (row) => row.player.countryCode ?? 'unknown',
+        (row) => row.player.country ?? row.player.countryCode ?? 'Unknown',
+      ).map((row) => ({
+        ...row,
+        rowType: 'row' as const,
+        rowKey: `country-${row.player.id}-${row.rank}`,
+      })),
+    );
 
     return rankedRows;
-  }, [globalRankByPlayerId, rankedPlayers]);
+  }, [rankingMode, rankingTiers, rankedPlayersAll, weightedTierScores]);
 
   const displayedRows = displayMode === 'person' ? personRows : regionRows;
 

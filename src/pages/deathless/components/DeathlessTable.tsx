@@ -29,8 +29,11 @@ function getSeparatorColSpan(
   isMobileLayout: boolean,
 ) {
   if (displayMode === 'region') {
-    const baseColumns = isMobileLayout ? 2 : 4;
-    return rankingMode === 'weighted' ? baseColumns + 1 : baseColumns;
+    if (isMobileLayout) {
+      return rankingMode === 'weighted' ? 3 : 2;
+    }
+
+    return rankingMode === 'weighted' ? 5 : 4;
   }
 
   if (isMobileLayout) {
@@ -51,6 +54,7 @@ function renderPlayerCell(
 ) {
   const playerAccentStyle = getPlayerAccentStyle(row.player);
   const showCountryFlag = displayMode !== 'region';
+  const showRegionFlag = displayMode !== 'region' || !!row.player.countryCode;
   const regionFlag = row.player.countryCode ? (
     <span
       className={`fi fi-${row.player.countryCode} ${styles['region-flag']}`}
@@ -104,12 +108,11 @@ function renderPlayerCell(
     return (
       <td className={styles['region-cell']}>
         <span className={styles['region-main']}>
-          {regionFlag}
+          {showRegionFlag ? regionFlag : null}
           <span className={styles['region-main-label']}>
             {row.displayScope ?? 'World'}
           </span>
         </span>
-        <span className={styles['region-meta']}>{content}</span>
         {isMobileLayout && (
           <div className={styles['profile-row']}>
             <div className={styles['profile-preview-and-more']}>
@@ -212,16 +215,16 @@ export default function DeathlessTable({
                 <th className={styles['player-head']}>Player</th>
               </>
             )}
-            {rankingMode === 'weighted' && !isMobileLayout && (
-              <th className={styles['score-head']}>Score</th>
-            )}
-            {!isMobileLayout && (
-              <th className={styles['profile-head']}>Tier Profile</th>
-            )}
+          {rankingMode === 'weighted' && !isMobileLayout && (
+            <th className={styles['score-head']}>Score</th>
+          )}
+          {!isMobileLayout && (
+            <th className={styles['profile-head']}>Tier Profile</th>
+          )}
             {!isMobileLayout && <th className={styles['total-head']}>Total</th>}
-            {rankingMode === 'weighted' && isMobileLayout && (
+          {rankingMode === 'weighted' && isMobileLayout && (
               <th className={styles['score-head']}>Score</th>
-            )}
+          )}
           </tr>
         </thead>
         <tbody>
@@ -287,6 +290,15 @@ export default function DeathlessTable({
                   profileSummary,
                   isMobileLayout,
                 )}
+                {rankingMode === 'weighted' && isMobileLayout && (
+                    <td className={styles['score-cell']}>
+                      <div className={styles['score-value']}>
+                        {formatNumber(
+                          Math.round(row.weightedScore * weightedDisplayScale),
+                        )}
+                      </div>
+                    </td>
+                  )}
                 {rankingMode === 'weighted' && !isMobileLayout && (
                   <td className={styles['score-cell']}>
                     <div className={styles['score-value']}>
@@ -325,15 +337,6 @@ export default function DeathlessTable({
                 {!isMobileLayout && (
                   <td className={styles['total-cell']}>
                     {formatNumber(row.total)}
-                  </td>
-                )}
-                {rankingMode === 'weighted' && isMobileLayout && (
-                  <td className={styles['score-cell']}>
-                    <div className={styles['score-value']}>
-                      {formatNumber(
-                        Math.round(row.weightedScore * weightedDisplayScale),
-                      )}
-                    </div>
                   </td>
                 )}
               </tr>

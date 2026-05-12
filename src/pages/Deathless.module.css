@@ -364,6 +364,17 @@
   line-height: 1.35;
 }
 
+.weighted-legend-note-base {
+  font-size: 0.6875rem;
+}
+
+.weighted-legend-note-caveat {
+  display: block;
+  margin-top: 2rem;
+  font-size: 0.6875rem;
+  font-weight: 900;
+}
+
 .weighted-legend-details {
   width: 100%;
 }
@@ -536,6 +547,7 @@
 .region-cell {
   width: 10rem;
   vertical-align: top;
+  overflow: hidden;
 }
 
 .score-cell {
@@ -569,9 +581,12 @@
   font-weight: 900;
   color: var(--theme-color);
   min-width: 0;
+  max-width: 100%;
 }
 
 .region-main-label {
+  display: block;
+  flex: 1 1 auto;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -594,18 +609,6 @@
 
 .region-flag-placeholder {
   visibility: hidden;
-}
-
-.region-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  min-width: 0;
-  margin-top: 0.2rem;
-}
-
-.region-meta .player-name {
-  font-size: 0.5625rem;
 }
 
 .section-row {
@@ -1083,6 +1086,19 @@
     min-width: 10rem;
   }
 
+  .region-mode .rank-head,
+  .region-mode .rank-cell {
+    width: 3rem;
+    min-width: 3rem;
+    max-width: 3rem;
+  }
+
+  .region-mode .region-head,
+  .region-mode .region-cell {
+    width: auto;
+    min-width: 0;
+  }
+
   .total-head,
   .total-cell {
     width: 2.75rem;
@@ -1107,25 +1123,6 @@
     line-height: 1.1;
   }
 
-  .region-meta {
-    margin-top: 0.18rem;
-  }
-
-  .region-meta .player-swatch {
-    width: 0.5rem;
-    height: 0.5rem;
-  }
-
-  .region-meta .player-flag,
-  .region-meta .player-flag-placeholder {
-    width: 0.875rem;
-    height: 0.625rem;
-    min-width: 0.875rem;
-    max-width: 0.875rem;
-    min-height: 0.625rem;
-    max-height: 0.625rem;
-  }
-
   .mobile-total {
     display: block;
     margin-top: 0.3rem;
@@ -1143,7 +1140,7 @@
 
   .profile-row {
     display: block;
-    margin-top: 0.15rem;
+    margin-top: 0.3rem;
     width: 100%;
     max-width: 100%;
     white-space: normal;

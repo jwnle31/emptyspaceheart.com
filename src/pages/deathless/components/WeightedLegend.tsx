@@ -80,7 +80,8 @@ export default function WeightedLegend({
             <Latex expression="d" />
           </dt>
           <dd>
-            = readability rescale that sets the easiest tier to 100 points per clear
+            = readability rescale that sets the easiest tier to 100 points per
+            clear
           </dd>
         </div>
         <div>
@@ -91,8 +92,15 @@ export default function WeightedLegend({
         </div>
       </dl>
       <div className={styles['weighted-legend-note']}>
-        The score is the additive sum of <Latex expression="c_t \times p(t)" /> and is then
-        rescaled by <Latex expression="d" /> so the easiest tier reads as 100 points per clear.
+        <span className={styles['weighted-legend-note-base']}>
+          The score is the additive sum of <Latex expression="c_t \times p(t)" />{' '}
+          and is then rescaled by <Latex expression="d" /> so the easiest tier
+          reads as 100 points per clear.
+        </span>
+        <span className={styles['weighted-legend-note-caveat']}>
+          These values are tied to the current tier distribution, so they may
+          shift significantly as the distribution changes.
+        </span>
       </div>
       <details className={styles['weighted-legend-details']}>
         <summary>Tier Table</summary>
@@ -125,7 +133,9 @@ export default function WeightedLegend({
                         <td>{tier.sort}</td>
                         <td>
                           {formatNumber(
-                            Math.round(tierWeight.weight * weightedDisplayScale),
+                            Math.round(
+                              tierWeight.weight * weightedDisplayScale,
+                            ),
                           )}
                         </td>
                         <td>{tierWeight.cumulativeShare.toFixed(5)}</td>
@@ -141,4 +151,3 @@ export default function WeightedLegend({
     </section>
   );
 }
-

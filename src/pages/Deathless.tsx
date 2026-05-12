@@ -211,8 +211,8 @@ function Deathless() {
 
         <p className={styles.description}>
           {rankingMode === 'absolute'
-            ? 'Absolute mode ranks players by the full tier-clear profile, from higher tiers down.'
-            : 'Weighted mode defines a tier value from the cumulative global tail probability at or above that tier, then scores each player by the linear sum of their tier clears multiplied by those values. A separate display rescale sets the easiest tier to 100 points per clear, and the score surface shifts as the underlying tier distribution changes.'}
+          ? 'Absolute mode ranks players by the full tier-clear profile, from higher tiers down.'
+            : 'Weighted mode defines a tier value from the cumulative global tail probability at or above that tier, then scores each player by the linear sum of their tier clears multiplied by those values; the result reflects the current distribution, so it is not a guarantee that a future clear at the same tier will increase the score by that amount.'}
         </p>
 
         {error ? (
