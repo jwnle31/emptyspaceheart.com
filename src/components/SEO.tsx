@@ -17,7 +17,7 @@ function SEO({
 
   const currentUrl = window.location.pathname;
   const fullUrl = `https://emptyspaceheart.com${currentUrl}`;
-  const imageUrl = 'https://emptyspaceheart.com/favicon.png';
+  const imageUrl = 'https://emptyspaceheart.com/embed.png';
 
   return (
     <Helmet>
