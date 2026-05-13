@@ -63,10 +63,19 @@
   flex-wrap: wrap;
 }
 
+.controls-primary,
+.controls-utility {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
 .controls-secondary {
   display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
+  align-items: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .controls-utility {

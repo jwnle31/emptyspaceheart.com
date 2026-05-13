@@ -157,65 +157,62 @@ function Deathless() {
               }}
               onSelect={handleLocationChange}
             />
-
-            <div className={styles['controls-secondary']}>
-              {displayMode === 'person' && (
-                <label className={styles.control}>
-                  <span>Search</span>
-                  <div className={styles['search-control']}>
-                    <input
-                      type="search"
-                      value={nameSearch}
-                      className={styles['search-input']}
-                      placeholder="Filter by player name"
-                      onChange={(event) => {
-                        setNameSearch(event.target.value);
-                        handlePageChange(1);
-                      }}
-                    />
-                    {nameSearch && (
-                      <button
-                        type="button"
-                        className={styles['search-clear']}
-                        aria-label="Clear search"
-                        onClick={() => {
-                          setNameSearch('');
-                          handlePageChange(1);
-                        }}
-                      >
-                        <IconX size={14} stroke={2.5} />
-                      </button>
-                    )}
-                  </div>
-                </label>
-              )}
-
-              <div className={styles['controls-utility']}>
-                {rankingMode === 'weighted' && (
-                  <label className={styles['toggle-control']}>
-                    <input
-                      type="checkbox"
-                      checked={useRawWeightedScore}
-                      onChange={(event) => {
-                        setUseRawWeightedScore(event.target.checked);
-                      }}
-                    />
-                    <span>Raw</span>
-                  </label>
-                )}
-
-                <label className={styles['toggle-control']}>
+            {displayMode === 'person' && (
+              <label className={styles.control}>
+                <span>Search</span>
+                <div className={styles['search-control']}>
                   <input
-                    type="checkbox"
-                    checked={includeZeroes}
+                    type="search"
+                    value={nameSearch}
+                    className={styles['search-input']}
+                    placeholder="Filter by player name"
                     onChange={(event) => {
-                      setIncludeZeroes(event.target.checked);
+                      setNameSearch(event.target.value);
                       handlePageChange(1);
                     }}
                   />
-                  <span>Include zeroes</span>
+                  {nameSearch && (
+                    <button
+                      type="button"
+                      className={styles['search-clear']}
+                      aria-label="Clear search"
+                      onClick={() => {
+                        setNameSearch('');
+                        handlePageChange(1);
+                      }}
+                    >
+                      <IconX size={14} stroke={2.5} />
+                    </button>
+                  )}
+                </div>
+              </label>
+            )}
+
+            <div className={styles['controls-utility']}>
+              {rankingMode === 'weighted' && (
+                <label className={styles['toggle-control']}>
+                  <input
+                    type="checkbox"
+                    checked={useRawWeightedScore}
+                    onChange={(event) => {
+                      setUseRawWeightedScore(event.target.checked);
+                    }}
+                  />
+                  <span>Raw</span>
                 </label>
-              </div>
+              )}
+
+              <label className={styles['toggle-control']}>
+                <input
+                  type="checkbox"
+                  checked={includeZeroes}
+                  onChange={(event) => {
+                    setIncludeZeroes(event.target.checked);
+                    handlePageChange(1);
+                  }}
+                />
+                <span>Include zeroes</span>
+              </label>
             </div>
           </div>
         </div>
@@ -238,9 +235,10 @@ function Deathless() {
                   Weighted mode defines a tier value from the cumulative global
                   tail probability at or above that tier, then scores each
                   player by the linear sum of their tier clears multiplied by
-                  those values; when Raw mode is turned off, the displayed
+                  those values. When Raw mode is turned off, the displayed
                   score is transformed by <Latex expression="\log_2(S+1)" />{' '}
-                  and then linearly rescaled to 1000.
+                  and then linearly rescaled to 1000. Clicking a tier pill
+                  shows that tier's raw score contribution.
                 </>
               )}
         </p>

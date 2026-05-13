@@ -27,12 +27,12 @@ export default function WeightedLegend({
         />
         <Latex
           className={styles['weighted-formula']}
-          expression="S=\sum_t c_t\,p(t)"
+          expression="S=\sum_{t} c_t\,p(t)"
           displayMode
         />
         <Latex
           className={styles['weighted-formula']}
-          expression="S_{\log 2}=1000\cdot\log_2(S+1)"
+          expression="S_{\log_2}=1000\cdot\log_2(S+1)"
           displayMode
         />
       </div>
@@ -86,11 +86,6 @@ export default function WeightedLegend({
         <span className={styles['weighted-legend-note-base']}>
           The score is the additive sum of <Latex expression="c_t \times p(t)" />{' '}
           with no additional rescaling.
-        </span>
-        <span className={styles['weighted-legend-note-caveat']}>
-          Raw mode shows the untransformed score; when Raw mode is turned off,
-          the displayed score is transformed by <Latex expression="\log_2(S+1)" />{' '}
-          and then linearly rescaled to 1000.
         </span>
       </div>
       <details className={styles['weighted-legend-details']}>
