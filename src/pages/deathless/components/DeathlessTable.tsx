@@ -44,6 +44,24 @@ function getSeparatorColSpan(
   return rankingMode === 'weighted' ? baseColumns + 1 : baseColumns;
 }
 
+function formatWeightedScore(
+  value: number,
+  useRawWeightedScore: boolean,
+  log2WeightedDisplayScale: number,
+) {
+  if (value <= 0) {
+    return formatNumber(0);
+  }
+
+  if (useRawWeightedScore) {
+    return formatNumber(Math.round(value));
+  }
+
+  return formatNumber(
+    Math.round(Math.log2(value + 1) * log2WeightedDisplayScale),
+  );
+}
+
 function renderPlayerCell(
   row: Extract<DeathlessDisplayRow, { rowType: 'row' }>,
   displayMode: DisplayModeValue,
@@ -178,6 +196,8 @@ type DeathlessTableProps = {
   rows: DeathlessDisplayRow[];
   profileSummaries: Map<number, ProfileSummaryEntry[]>;
   weightedDisplayScale: number;
+  log2WeightedDisplayScale: number;
+  useRawWeightedScore: boolean;
   isMobileLayout: boolean;
 };
 
@@ -188,6 +208,8 @@ export default function DeathlessTable({
   rows,
   profileSummaries,
   weightedDisplayScale,
+  log2WeightedDisplayScale,
+  useRawWeightedScore,
   isMobileLayout,
 }: DeathlessTableProps) {
   return (
@@ -293,8 +315,10 @@ export default function DeathlessTable({
                 {rankingMode === 'weighted' && isMobileLayout && (
                     <td className={styles['score-cell']}>
                       <div className={styles['score-value']}>
-                        {formatNumber(
-                          Math.round(row.weightedScore * weightedDisplayScale),
+                        {formatWeightedScore(
+                          row.weightedScore,
+                          useRawWeightedScore,
+                          log2WeightedDisplayScale,
                         )}
                       </div>
                     </td>
@@ -302,8 +326,10 @@ export default function DeathlessTable({
                 {rankingMode === 'weighted' && !isMobileLayout && (
                   <td className={styles['score-cell']}>
                     <div className={styles['score-value']}>
-                      {formatNumber(
-                        Math.round(row.weightedScore * weightedDisplayScale),
+                      {formatWeightedScore(
+                        row.weightedScore,
+                        useRawWeightedScore,
+                        log2WeightedDisplayScale,
                       )}
                     </div>
                   </td>

@@ -63,6 +63,24 @@
   flex-wrap: wrap;
 }
 
+.controls-secondary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.controls-utility {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.controls-utility .toggle-control {
+  width: auto;
+  min-width: 0;
+}
+
 .mode-filter {
   display: flex;
   flex-direction: column;
@@ -233,6 +251,10 @@
   align-items: center;
   min-height: 2.5rem;
   padding: 0 0.25rem;
+}
+
+.controls-secondary .control {
+  width: min(100%, 16rem);
 }
 
 .toggle-control input {

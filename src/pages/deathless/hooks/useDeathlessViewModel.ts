@@ -26,6 +26,7 @@ export function useDeathlessViewModel() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [includeZeroes, setIncludeZeroes] = useState(false);
   const [nameSearch, setNameSearch] = useState('');
+  const [useRawWeightedScore, setUseRawWeightedScore] = useState(false);
   const [isMobileLayout, setIsMobileLayout] = useState(false);
   const [isLocationMenuOpen, setIsLocationMenuOpen] = useState(false);
 
@@ -122,16 +123,7 @@ export function useDeathlessViewModel() {
   );
 
   const weightedDisplayScale = useMemo(() => {
-    const tierWeights = Array.from(weightedTierScores.values())
-      .map((entry) => entry.weight)
-      .filter((value) => value > 0);
-
-    if (tierWeights.length === 0) {
-      return 0;
-    }
-
-    const minimumWeight = Math.min(...tierWeights);
-    return minimumWeight > 0 ? 100 / minimumWeight : 0;
+    return 1;
   }, [weightedTierScores]);
 
   const buildRankedPlayers = (sourcePlayers: typeof players) => {
@@ -468,6 +460,26 @@ export function useDeathlessViewModel() {
 
   const displayedRows = displayMode === 'person' ? personRows : regionRows;
 
+  const log2WeightedDisplayScale = useMemo(() => {
+    if (rankingMode !== 'weighted') {
+      return 1;
+    }
+
+    const positiveScores = displayedRows
+      .filter((row): row is Extract<DeathlessDisplayRow, { rowType: 'row' }> => row.rowType === 'row')
+      .map((row) => row.weightedScore)
+      .filter((score) => score > 0);
+
+    if (positiveScores.length === 0) {
+      return 1;
+    }
+
+    const minimumScore = Math.min(...positiveScores);
+    const log2Minimum = Math.log2(minimumScore + 1);
+
+    return log2Minimum > 0 ? 1000 / log2Minimum : 1;
+  }, [displayedRows, rankingMode]);
+
   const pageCount = Math.max(1, Math.ceil(displayedRows.length / PAGE_SIZE));
   const effectivePage = Math.min(currentPage, pageCount);
   const pageStart =
@@ -552,6 +564,7 @@ export function useDeathlessViewModel() {
     setNameSearch,
     weightedTierScores,
     weightedDisplayScale,
+    log2WeightedDisplayScale,
     rankedPlayers,
     pageCount,
     effectivePage,
@@ -565,6 +578,8 @@ export function useDeathlessViewModel() {
     handleModeChange,
     handleDisplayModeChange,
     handleLocationChange,
+    useRawWeightedScore,
+    setUseRawWeightedScore,
   };
 }
 

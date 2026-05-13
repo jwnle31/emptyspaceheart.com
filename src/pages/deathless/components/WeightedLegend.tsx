@@ -27,12 +27,12 @@ export default function WeightedLegend({
         />
         <Latex
           className={styles['weighted-formula']}
-          expression="d=\frac{100}{\min_t p(t)}"
+          expression="S=\sum_t c_t\,p(t)"
           displayMode
         />
         <Latex
           className={styles['weighted-formula']}
-          expression="S=d\sum_t c_t\,p(t)"
+          expression="S_{\log 2}=1000\cdot\log_2(S+1)"
           displayMode
         />
       </div>
@@ -77,15 +77,6 @@ export default function WeightedLegend({
         </div>
         <div>
           <dt>
-            <Latex expression="d" />
-          </dt>
-          <dd>
-            = readability rescale that sets the easiest tier to 100 points per
-            clear
-          </dd>
-        </div>
-        <div>
-          <dt>
             <Latex expression="S" />
           </dt>
           <dd>= weighted score</dd>
@@ -94,14 +85,12 @@ export default function WeightedLegend({
       <div className={styles['weighted-legend-note']}>
         <span className={styles['weighted-legend-note-base']}>
           The score is the additive sum of <Latex expression="c_t \times p(t)" />{' '}
-          and is then rescaled by <Latex expression="d" /> so the easiest tier
-          reads as 100 points per clear.
+          with no additional rescaling.
         </span>
         <span className={styles['weighted-legend-note-caveat']}>
-          These values are tied to the current tier distribution, so they may
-          shift significantly as the distribution changes; higher-tier values
-          may look inflated at first, but they settle quickly as more clears
-          accumulate at that tier.
+          Raw mode shows the untransformed score; when Raw mode is turned off,
+          the displayed score is transformed by <Latex expression="\log_2(S+1)" />{' '}
+          and then linearly rescaled to 1000.
         </span>
       </div>
       <details className={styles['weighted-legend-details']}>
@@ -119,7 +108,7 @@ export default function WeightedLegend({
                 <thead>
                   <tr>
                     <th>Tier</th>
-                    <th>Score</th>
+                    <th>Raw Score</th>
                     <th>Share</th>
                   </tr>
                 </thead>
