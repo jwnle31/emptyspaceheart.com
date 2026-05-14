@@ -85,7 +85,8 @@ export default function WeightedLegend({
       <div className={styles['weighted-legend-note']}>
         <span className={styles['weighted-legend-note-base']}>
           The score is the additive sum of <Latex expression="c_t \times p(t)" />{' '}
-          with no additional rescaling.
+          with no additional rescaling. The log2 display is then scaled so the
+          lowest tier reads as 1000.
         </span>
       </div>
       <details className={styles['weighted-legend-details']}>

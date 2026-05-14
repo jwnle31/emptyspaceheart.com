@@ -237,8 +237,8 @@ function Deathless() {
                   player by the linear sum of their tier clears multiplied by
                   those values. When Raw mode is turned off, the displayed
                   score is transformed by <Latex expression="\log_2(S+1)" />{' '}
-                  and then linearly rescaled to 1000. Clicking a tier pill
-                  shows that tier's raw score contribution.
+                  and then linearly rescaled so the lowest tier reads as 1000.
+                  Clicking a tier pill shows that tier's raw score contribution.
                 </>
               )}
         </p>

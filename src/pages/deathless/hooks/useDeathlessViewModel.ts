@@ -465,20 +465,19 @@ export function useDeathlessViewModel() {
       return 1;
     }
 
-    const positiveScores = displayedRows
-      .filter((row): row is Extract<DeathlessDisplayRow, { rowType: 'row' }> => row.rowType === 'row')
-      .map((row) => row.weightedScore)
-      .filter((score) => score > 0);
+    const easiestTier = rankingTiers[rankingTiers.length - 1];
+    const lowestTierScore = easiestTier
+      ? weightedTierScores.get(easiestTier.id)?.weight ?? 0
+      : 0;
 
-    if (positiveScores.length === 0) {
+    if (lowestTierScore <= 0) {
       return 1;
     }
 
-    const minimumScore = Math.min(...positiveScores);
-    const log2Minimum = Math.log2(minimumScore + 1);
+    const log2Minimum = Math.log2(lowestTierScore + 1);
 
     return log2Minimum > 0 ? 1000 / log2Minimum : 1;
-  }, [displayedRows, rankingMode]);
+  }, [rankingMode, rankingTiers, weightedTierScores]);
 
   const pageCount = Math.max(1, Math.ceil(displayedRows.length / PAGE_SIZE));
   const effectivePage = Math.min(currentPage, pageCount);
