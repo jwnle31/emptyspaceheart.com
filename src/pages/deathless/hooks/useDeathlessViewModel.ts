@@ -9,6 +9,7 @@ import {
   parseDisplayParam,
   parseLocationParam,
 } from '../location';
+import { filterPlayersByLocation } from '../comparison';
 import {
   buildTierWeights,
   compareTierProfiles,
@@ -60,10 +61,6 @@ export function useDeathlessViewModel() {
     searchParams.get('display'),
   );
   const location = parseLocationParam(searchParams.get('location'));
-  const comparisonDateLabel = useMemo(() => {
-    const now = new Date();
-    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
-  }, []);
 
   useEffect(() => {
     if (displayMode === 'region' && nameSearch) {
@@ -103,41 +100,15 @@ export function useDeathlessViewModel() {
     [countries],
   );
 
-  const locationFilteredPlayers = useMemo(() => {
-    if (location === 'world') {
-      return players;
-    }
+  const locationFilteredPlayers = useMemo(
+    () => filterPlayersByLocation(players, location),
+    [location, players],
+  );
 
-    if (location.startsWith('continent:')) {
-      const continent = location.slice('continent:'.length);
-      return players.filter((entry) => entry.player.continent === continent);
-    }
-
-    const countryCode = location.slice('country:'.length);
-    if (countryCode === 'unknown') {
-      return players.filter((entry) => !entry.player.countryCode);
-    }
-
-    return players.filter((entry) => entry.player.countryCode === countryCode);
-  }, [location, players]);
-
-  const comparisonLocationFilteredPlayers = useMemo(() => {
-    if (location === 'world') {
-      return comparisonPlayers;
-    }
-
-    if (location.startsWith('continent:')) {
-      const continent = location.slice('continent:'.length);
-      return comparisonPlayers.filter((entry) => entry.player.continent === continent);
-    }
-
-    const countryCode = location.slice('country:'.length);
-    if (countryCode === 'unknown') {
-      return comparisonPlayers.filter((entry) => !entry.player.countryCode);
-    }
-
-    return comparisonPlayers.filter((entry) => entry.player.countryCode === countryCode);
-  }, [comparisonPlayers, location]);
+  const comparisonLocationFilteredPlayers = useMemo(
+    () => filterPlayersByLocation(comparisonPlayers, location),
+    [comparisonPlayers, location],
+  );
 
   const rankingTiers = useMemo(
     () =>
@@ -514,9 +485,13 @@ export function useDeathlessViewModel() {
       }, []);
     };
 
+    const comparisonRankedRows = buildRankedPlayers(
+      comparisonLocationFilteredPlayers,
+      comparisonWeightedTierScores,
+    );
     const comparisonWorldRows = buildAggregateRows(
       comparisonWeightedTierScores,
-      buildRankedPlayers(comparisonLocationFilteredPlayers, comparisonWeightedTierScores),
+      comparisonRankedRows,
       'world',
       () => 'world',
       () => 'World',
@@ -528,7 +503,7 @@ export function useDeathlessViewModel() {
     );
     const comparisonContinentRows = buildAggregateRows(
       comparisonWeightedTierScores,
-      buildRankedPlayers(comparisonLocationFilteredPlayers, comparisonWeightedTierScores),
+      comparisonRankedRows,
       'continent',
       (row) => row.player.continent ?? 'Unknown',
       (_row, key) => key,
@@ -540,7 +515,7 @@ export function useDeathlessViewModel() {
     );
     const comparisonCountryRows = buildAggregateRows(
       comparisonWeightedTierScores,
-      buildRankedPlayers(comparisonLocationFilteredPlayers, comparisonWeightedTierScores),
+      comparisonRankedRows,
       'country',
       (row) => row.player.countryCode ?? 'unknown',
       (row) => row.player.country ?? row.player.countryCode ?? 'Unknown',
@@ -758,7 +733,6 @@ export function useDeathlessViewModel() {
     handleLocationChange,
     useRawWeightedScore,
     setUseRawWeightedScore,
-    comparisonDateLabel,
   };
 }
 

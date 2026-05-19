@@ -4,6 +4,7 @@ import {
   getCountryName,
   getFlagIconCode,
 } from '../../../utils/country';
+import { getMonthStartKey } from '../comparison';
 
 type DifficultyTier = {
   id: number;
@@ -28,7 +29,7 @@ type DeathlessPlayer = {
   account?: DeathlessPlayerAccount | null;
 };
 
-type DeathlessPlayerTierClearCounts = {
+export type DeathlessPlayerTierClearCounts = {
   player: DeathlessPlayer;
   clears: Record<string, number>;
   total: number;
@@ -98,19 +99,6 @@ function writeCache<T>(key: string, data: T) {
   } catch {
     // Ignore storage failures.
   }
-}
-
-function formatDateKey(date: Date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-
-  return `${year}-${month}-${day}`;
-}
-
-function getFirstDayOfMonthKey() {
-  const now = new Date();
-  return formatDateKey(new Date(now.getFullYear(), now.getMonth(), 1));
 }
 
 function buildUrl(baseUrl: string, params: Record<string, string>) {
@@ -283,7 +271,6 @@ export type {
   DifficultyTier,
   DeathlessPlayer,
   DeathlessPlayerAccount,
-  DeathlessPlayerTierClearCounts,
 };
 
 export function useDeathlessData(): DeathlessDataState {
@@ -299,7 +286,7 @@ export function useDeathlessData(): DeathlessDataState {
   useEffect(() => {
     const controller = new AbortController();
     let active = true;
-    const firstDayOfMonth = getFirstDayOfMonthKey();
+    const firstDayOfMonth = getMonthStartKey();
     const comparisonCacheKey = `${PLAYER_COMPARISON_CACHE_KEY}:${firstDayOfMonth}`;
 
     async function loadData() {

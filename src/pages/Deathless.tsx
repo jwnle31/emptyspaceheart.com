@@ -8,6 +8,7 @@ import LocationFilter from './deathless/components/LocationFilter';
 import Pagination from './deathless/components/Pagination';
 import WeightedLegend from './deathless/components/WeightedLegend';
 import Latex from './deathless/components/Latex';
+import { getMonthStartKey } from './deathless/comparison';
 import { useDeathlessViewModel } from './deathless/hooks/useDeathlessViewModel';
 import { formatNumber } from './deathless/utils';
 
@@ -34,7 +35,6 @@ function Deathless() {
     log2WeightedDisplayScale,
     useRawWeightedScore,
     setUseRawWeightedScore,
-    comparisonDateLabel,
     showDifferences,
     setShowDifferences,
     pageCount,
@@ -50,6 +50,7 @@ function Deathless() {
     handleDisplayModeChange,
     handleLocationChange,
   } = useDeathlessViewModel();
+  const comparisonDateLabel = getMonthStartKey();
 
   return (
     <>

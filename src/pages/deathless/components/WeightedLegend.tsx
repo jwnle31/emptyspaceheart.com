@@ -1,4 +1,5 @@
-﻿import Latex from './Latex';
+import Latex from './Latex';
+import DifferenceValue from './DifferenceValue';
 import { formatNumber } from '../utils';
 import styles from '../../Deathless.module.css';
 
@@ -18,30 +19,6 @@ export default function WeightedLegend({
   weightedDisplayScale: number;
   showDifferences: boolean;
 }) {
-  const formatTierDelta = (value?: number) => {
-    if (!value) {
-      return null;
-    }
-
-    const positive = value > 0;
-    const label = `${positive ? '+' : '-'}${formatNumber(
-      Math.abs(Math.round(value)),
-    )}`;
-
-    return (
-      <span
-        className={
-          positive
-            ? styles['delta-bracket-positive']
-            : styles['delta-bracket-negative']
-        }
-        aria-label={positive ? `${label} increase` : `${label} decrease`}
-      >
-        {label}
-      </span>
-    );
-  };
-
   return (
     <section className={styles['weighted-legend']}>
       <div className={styles['weighted-section-title']}>Formula</div>
@@ -145,6 +122,7 @@ export default function WeightedLegend({
                     if (!tierWeight) {
                       return null;
                     }
+
                     const comparisonTierWeight =
                       comparisonWeightedTierScores?.get(tier.id);
                     const currentScore = Math.round(
@@ -166,10 +144,12 @@ export default function WeightedLegend({
                         <td>
                           <div className={styles['tier-score-value']}>
                             <span>{formatNumber(currentScore)}</span>
-                            {showDifferences && formatTierDelta(delta) && (
-                              <span className={styles['tier-score-delta']}>
-                                {formatTierDelta(delta)}
-                              </span>
+                            {showDifferences && (
+                              <DifferenceValue
+                                value={delta}
+                                show={showDifferences}
+                                className={styles['tier-score-delta']}
+                              />
                             )}
                           </div>
                         </td>
