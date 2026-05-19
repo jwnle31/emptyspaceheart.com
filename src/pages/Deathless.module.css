@@ -90,6 +90,14 @@
   min-width: 0;
 }
 
+.toggle-control-subtle {
+  margin-left: 0.25rem;
+  font-size: 0.6rem;
+  line-height: 1;
+  color: #ffffff;
+  opacity: 0.9;
+}
+
 .mode-filter {
   display: flex;
   flex-direction: column;
@@ -587,6 +595,54 @@
 
 .score-value {
   font-weight: 900;
+}
+
+.rank-delta {
+  margin-top: 0.15rem;
+  font-size: 0.5rem;
+  line-height: 1.1;
+}
+
+.score-delta {
+  margin-top: 0.15rem;
+  font-size: 0.5rem;
+  line-height: 1.1;
+}
+
+.delta-bracket-positive,
+.delta-bracket-negative {
+  display: inline-block;
+  font-size: 0.5rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.tier-score-value {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  font-weight: 900;
+}
+
+.tier-score-delta {
+  font-size: 0.5rem;
+  line-height: 1;
+}
+
+.delta-bracket-positive {
+  color: #29a34a;
+}
+
+.delta-bracket-negative {
+  color: #c84747;
+}
+
+:global(:root.dark) .delta-bracket-positive {
+  color: #62d56e;
+}
+
+:global(:root.dark) .delta-bracket-negative {
+  color: #ff7b7b;
 }
 
 .total-head,

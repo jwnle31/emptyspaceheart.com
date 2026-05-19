@@ -29,10 +29,14 @@ function Deathless() {
     nameSearch,
     setNameSearch,
     weightedTierScores,
+    comparisonWeightedTierScores,
     weightedDisplayScale,
     log2WeightedDisplayScale,
     useRawWeightedScore,
     setUseRawWeightedScore,
+    comparisonDateLabel,
+    showDifferences,
+    setShowDifferences,
     pageCount,
     effectivePage,
     pageStart,
@@ -205,6 +209,22 @@ function Deathless() {
               <label className={styles['toggle-control']}>
                 <input
                   type="checkbox"
+                  checked={showDifferences}
+                  onChange={(event) => {
+                    setShowDifferences(event.target.checked);
+                  }}
+                />
+                <span>
+                  Differences
+                  <span className={styles['toggle-control-subtle']}>
+                    [{comparisonDateLabel}]
+                  </span>
+                </span>
+              </label>
+
+              <label className={styles['toggle-control']}>
+                <input
+                  type="checkbox"
                   checked={includeZeroes}
                   onChange={(event) => {
                     setIncludeZeroes(event.target.checked);
@@ -269,6 +289,7 @@ function Deathless() {
               weightedDisplayScale={weightedDisplayScale}
               log2WeightedDisplayScale={log2WeightedDisplayScale}
               useRawWeightedScore={useRawWeightedScore}
+              showDifferences={showDifferences}
               isMobileLayout={isMobileLayout}
             />
 
@@ -291,7 +312,9 @@ function Deathless() {
               <WeightedLegend
                 rankingTiers={rankingTiers}
                 weightedTierScores={weightedTierScores}
+                comparisonWeightedTierScores={comparisonWeightedTierScores}
                 weightedDisplayScale={weightedDisplayScale}
+                showDifferences={showDifferences}
               />
             )}
           </>

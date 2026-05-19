@@ -42,6 +42,7 @@ type CachedPayload<T> = {
 type DeathlessDataState = {
   tiers: DifficultyTier[];
   players: DeathlessPlayerTierClearCounts[];
+  comparisonPlayers: DeathlessPlayerTierClearCounts[];
   globalCounts: Record<string, number>;
   loading: boolean;
   error: string | null;
@@ -50,6 +51,7 @@ type DeathlessDataState = {
 const CACHE_TTL_MS = 2 * 24 * 60 * 60 * 1000;
 const DIFFICULTY_CACHE_KEY = 'deathless:difficulty:v1';
 const PLAYER_CACHE_KEY = 'deathless:player-tier-clear-counts:v1';
+const PLAYER_COMPARISON_CACHE_KEY = 'deathless:player-tier-clear-counts:first-day:v1';
 const PLAYER_META_CACHE_KEY = 'deathless:player-all-customization:v2';
 const GLOBAL_STATS_CACHE_KEY = 'deathless:global-stats:v1';
 
@@ -96,6 +98,29 @@ function writeCache<T>(key: string, data: T) {
   } catch {
     // Ignore storage failures.
   }
+}
+
+function formatDateKey(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
+function getFirstDayOfMonthKey() {
+  const now = new Date();
+  return formatDateKey(new Date(now.getFullYear(), now.getMonth(), 1));
+}
+
+function buildUrl(baseUrl: string, params: Record<string, string>) {
+  const url = new URL(baseUrl);
+
+  Object.entries(params).forEach(([key, value]) => {
+    url.searchParams.set(key, value);
+  });
+
+  return url.toString();
 }
 
 async function fetchJson<T>(url: string, signal: AbortSignal): Promise<T> {
@@ -264,6 +289,9 @@ export type {
 export function useDeathlessData(): DeathlessDataState {
   const [tiers, setTiers] = useState<DifficultyTier[]>([]);
   const [players, setPlayers] = useState<DeathlessPlayerTierClearCounts[]>([]);
+  const [comparisonPlayers, setComparisonPlayers] = useState<
+    DeathlessPlayerTierClearCounts[]
+  >([]);
   const [globalCounts, setGlobalCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -271,10 +299,12 @@ export function useDeathlessData(): DeathlessDataState {
   useEffect(() => {
     const controller = new AbortController();
     let active = true;
+    const firstDayOfMonth = getFirstDayOfMonthKey();
+    const comparisonCacheKey = `${PLAYER_COMPARISON_CACHE_KEY}:${firstDayOfMonth}`;
 
     async function loadData() {
       try {
-        const [tierData, playerData, playerMetaData, globalStatsData] =
+        const [tierData, playerData, comparisonPlayerData, playerMetaData, globalStatsData] =
           await Promise.all([
             fetchWithCache<unknown>(
               DIFFICULTY_CACHE_KEY,
@@ -284,6 +314,13 @@ export function useDeathlessData(): DeathlessDataState {
             fetchWithCache<unknown>(
               PLAYER_CACHE_KEY,
               'https://goldberries.net/api/stats/player-tier-clear-counts',
+              controller.signal,
+            ),
+            fetchWithCache<unknown>(
+              comparisonCacheKey,
+              buildUrl('https://goldberries.net/api/stats/player-tier-clear-counts', {
+                date_end: firstDayOfMonth,
+              }),
               controller.signal,
             ),
             fetchWithCache<unknown>(
@@ -332,6 +369,15 @@ export function useDeathlessData(): DeathlessDataState {
             ...playerMetaById.get(entry.player.id),
           },
         }));
+        const normalizedComparisonPlayers = toArray<DeathlessPlayerTierClearCounts>(
+          comparisonPlayerData,
+        ).map((entry) => ({
+          ...entry,
+          player: {
+            ...entry.player,
+            ...playerMetaById.get(entry.player.id),
+          },
+        }));
         const normalizedGlobalCounts = (() => {
           if (!globalStatsData || typeof globalStatsData !== 'object') {
             return {};
@@ -358,6 +404,7 @@ export function useDeathlessData(): DeathlessDataState {
 
         setTiers(normalizedTiers);
         setPlayers(normalizedPlayers);
+        setComparisonPlayers(normalizedComparisonPlayers);
         setGlobalCounts(normalizedGlobalCounts);
         setError(null);
       } catch (caughtError) {
@@ -385,7 +432,7 @@ export function useDeathlessData(): DeathlessDataState {
     };
   }, []);
 
-  return { tiers, players, globalCounts, loading, error };
+  return { tiers, players, comparisonPlayers, globalCounts, loading, error };
 }
 
 

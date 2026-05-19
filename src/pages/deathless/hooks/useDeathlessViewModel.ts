@@ -22,9 +22,17 @@ import {
 } from '../utils';
 
 export function useDeathlessViewModel() {
-  const { tiers, players, globalCounts, loading, error } = useDeathlessData();
+  const {
+    tiers,
+    players,
+    comparisonPlayers,
+    globalCounts,
+    loading,
+    error,
+  } = useDeathlessData();
   const [searchParams, setSearchParams] = useSearchParams();
   const [includeZeroes, setIncludeZeroes] = useState(false);
+  const [showDifferences, setShowDifferences] = useState(false);
   const [nameSearch, setNameSearch] = useState('');
   const [useRawWeightedScore, setUseRawWeightedScore] = useState(false);
   const [isMobileLayout, setIsMobileLayout] = useState(false);
@@ -52,6 +60,10 @@ export function useDeathlessViewModel() {
     searchParams.get('display'),
   );
   const location = parseLocationParam(searchParams.get('location'));
+  const comparisonDateLabel = useMemo(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
+  }, []);
 
   useEffect(() => {
     if (displayMode === 'region' && nameSearch) {
@@ -109,6 +121,24 @@ export function useDeathlessViewModel() {
     return players.filter((entry) => entry.player.countryCode === countryCode);
   }, [location, players]);
 
+  const comparisonLocationFilteredPlayers = useMemo(() => {
+    if (location === 'world') {
+      return comparisonPlayers;
+    }
+
+    if (location.startsWith('continent:')) {
+      const continent = location.slice('continent:'.length);
+      return comparisonPlayers.filter((entry) => entry.player.continent === continent);
+    }
+
+    const countryCode = location.slice('country:'.length);
+    if (countryCode === 'unknown') {
+      return comparisonPlayers.filter((entry) => !entry.player.countryCode);
+    }
+
+    return comparisonPlayers.filter((entry) => entry.player.countryCode === countryCode);
+  }, [comparisonPlayers, location]);
+
   const rankingTiers = useMemo(
     () =>
       tiers
@@ -122,11 +152,40 @@ export function useDeathlessViewModel() {
     [globalCounts, rankingTiers],
   );
 
+  const comparisonGlobalCounts = useMemo(() => {
+    return comparisonPlayers.reduce<Record<string, number>>(
+      (result, entry) => {
+        Object.entries(entry.clears).forEach(([tierId, clears]) => {
+          result[tierId] = (result[tierId] ?? 0) + clears;
+        });
+
+        return result;
+      },
+      {},
+    );
+  }, [comparisonPlayers]);
+
+  const comparisonWeightedTierScores = useMemo(
+    () => buildTierWeights(rankingTiers, comparisonGlobalCounts),
+    [comparisonGlobalCounts, rankingTiers],
+  );
+
+  const comparisonPlayerById = useMemo(
+    () =>
+      new Map<number, (typeof comparisonPlayers)[number]>(
+        comparisonPlayers.map((entry) => [entry.player.id, entry]),
+      ),
+    [comparisonPlayers],
+  );
+
   const weightedDisplayScale = useMemo(() => {
     return 1;
   }, [weightedTierScores]);
 
-  const buildRankedPlayers = (sourcePlayers: typeof players) => {
+  const buildRankedPlayers = (
+    sourcePlayers: typeof players,
+    tierWeights: Map<number, { cumulativeShare: number; weight: number }>,
+  ) => {
     const filtered = sourcePlayers
       .map<RankedPlayer>((entry) => {
         const tierProfile = rankingTiers.map(
@@ -137,7 +196,17 @@ export function useDeathlessViewModel() {
             ? scorePlayer(
                 entry.clears,
                 rankingTiers,
-                weightedTierScores,
+                tierWeights,
+                SCORE_SCALE,
+              )
+            : { score: 0, scoreKey: 0 };
+        const comparisonPlayer = comparisonPlayerById.get(entry.player.id);
+        const comparisonWeightedScoreResult =
+          rankingMode === 'weighted' && comparisonPlayer
+            ? scorePlayer(
+                comparisonPlayer.clears,
+                rankingTiers,
+                comparisonWeightedTierScores,
                 SCORE_SCALE,
               )
             : { score: 0, scoreKey: 0 };
@@ -147,6 +216,7 @@ export function useDeathlessViewModel() {
           tierProfile,
           weightedScore: weightedScoreResult.score,
           weightedScoreKey: weightedScoreResult.scoreKey,
+          comparisonWeightedScore: comparisonWeightedScoreResult.score,
           rank: 0,
         };
       })
@@ -198,13 +268,53 @@ export function useDeathlessViewModel() {
   };
   
   const rankedPlayersAll = useMemo(
-    () => buildRankedPlayers(locationFilteredPlayers),
-    [includeZeroes, locationFilteredPlayers, rankingMode, rankingTiers, weightedTierScores],
+    () => buildRankedPlayers(locationFilteredPlayers, weightedTierScores),
+    [
+      includeZeroes,
+      locationFilteredPlayers,
+      rankingMode,
+      rankingTiers,
+      weightedTierScores,
+      comparisonWeightedTierScores,
+    ],
+  );
+
+  const comparisonRankedPlayersAll = useMemo(
+    () => buildRankedPlayers(comparisonLocationFilteredPlayers, comparisonWeightedTierScores),
+    [
+      comparisonLocationFilteredPlayers,
+      comparisonWeightedTierScores,
+      includeZeroes,
+      rankingMode,
+      rankingTiers,
+      weightedTierScores,
+    ],
+  );
+
+  const comparisonRankByPlayerId = useMemo(
+    () =>
+      new Map<number, number>(
+        comparisonRankedPlayersAll.map((row) => [row.player.id, row.rank]),
+      ),
+    [comparisonRankedPlayersAll],
   );
 
   const globalRankByPlayerId = useMemo(
-    () => new Map<number, number>(buildRankedPlayers(players).map((row) => [row.player.id, row.rank])),
-    [players, includeZeroes, rankingMode, rankingTiers, weightedTierScores],
+    () =>
+      new Map<number, number>(
+        buildRankedPlayers(players, weightedTierScores).map((row) => [
+          row.player.id,
+          row.rank,
+        ]),
+      ),
+    [
+      players,
+      includeZeroes,
+      rankingMode,
+      rankingTiers,
+      weightedTierScores,
+      comparisonWeightedTierScores,
+    ],
   );
 
   const rankedPlayers = useMemo(
@@ -231,8 +341,10 @@ export function useDeathlessViewModel() {
         rowKey: `person-${row.player.id}-${index}`,
         displayRank: row.rank,
         globalRank: globalRankByPlayerId.get(row.player.id),
+        comparisonDisplayRank: comparisonRankByPlayerId.get(row.player.id),
+        comparisonWeightedScore: row.comparisonWeightedScore,
       })),
-    [globalRankByPlayerId, rankedPlayers],
+    [comparisonRankByPlayerId, globalRankByPlayerId, rankedPlayers],
   );
 
   const regionRows = useMemo<DeathlessDisplayRow[]>(() => {
@@ -249,6 +361,7 @@ export function useDeathlessViewModel() {
     };
 
     const buildAggregateRows = (
+      tierWeights: Map<number, { cumulativeShare: number; weight: number }>,
       sourceRows: RankedPlayer[],
       rowKeyPrefix: string,
       groupKeySelector: (row: RankedPlayer) => string,
@@ -307,7 +420,7 @@ export function useDeathlessViewModel() {
             ? scorePlayer(
                 group.clears,
                 rankingTiers,
-                weightedTierScores,
+                tierWeights,
                 SCORE_SCALE,
               )
             : { score: 0, scoreKey: 0 };
@@ -401,6 +514,43 @@ export function useDeathlessViewModel() {
       }, []);
     };
 
+    const comparisonWorldRows = buildAggregateRows(
+      comparisonWeightedTierScores,
+      buildRankedPlayers(comparisonLocationFilteredPlayers, comparisonWeightedTierScores),
+      'world',
+      () => 'world',
+      () => 'World',
+    );
+    const comparisonWorldRanks = new Map<string, { rank: number; score: number }>(
+      comparisonWorldRows
+        .filter((row) => row.displayScope !== 'Unknown')
+        .map((row) => [`world:${row.displayScope}`, { rank: row.rank, score: row.weightedScore }]),
+    );
+    const comparisonContinentRows = buildAggregateRows(
+      comparisonWeightedTierScores,
+      buildRankedPlayers(comparisonLocationFilteredPlayers, comparisonWeightedTierScores),
+      'continent',
+      (row) => row.player.continent ?? 'Unknown',
+      (_row, key) => key,
+    );
+    const comparisonContinentRanks = new Map<string, { rank: number; score: number }>(
+      comparisonContinentRows
+        .filter((row) => row.displayScope !== 'Unknown')
+        .map((row) => [`continent:${row.displayScope}`, { rank: row.rank, score: row.weightedScore }]),
+    );
+    const comparisonCountryRows = buildAggregateRows(
+      comparisonWeightedTierScores,
+      buildRankedPlayers(comparisonLocationFilteredPlayers, comparisonWeightedTierScores),
+      'country',
+      (row) => row.player.countryCode ?? 'unknown',
+      (row) => row.player.country ?? row.player.countryCode ?? 'Unknown',
+    );
+    const comparisonCountryRanks = new Map<string, { rank: number; score: number }>(
+      comparisonCountryRows
+        .filter((row) => row.displayScope !== 'Unknown')
+        .map((row) => [`country:${row.displayScope}`, { rank: row.rank, score: row.weightedScore }]),
+    );
+
     rankedRows.push({
       rowType: 'separator',
       rowKey: 'region-world',
@@ -408,6 +558,7 @@ export function useDeathlessViewModel() {
     });
     rankedRows.push(
       ...buildAggregateRows(
+        weightedTierScores,
         rankedPlayersAll,
         'world',
         () => 'world',
@@ -416,6 +567,8 @@ export function useDeathlessViewModel() {
         ...row,
         rowType: 'row' as const,
         rowKey: `world-${row.player.id}-${row.rank}`,
+        comparisonDisplayRank: comparisonWorldRanks.get('world:World')?.rank,
+        comparisonWeightedScore: comparisonWorldRanks.get('world:World')?.score,
       })),
     );
 
@@ -426,6 +579,7 @@ export function useDeathlessViewModel() {
     });
     rankedRows.push(
       ...buildAggregateRows(
+        weightedTierScores,
         rankedPlayersAll,
         'continent',
         (row) => row.player.continent ?? 'Unknown',
@@ -434,6 +588,12 @@ export function useDeathlessViewModel() {
         ...row,
         rowType: 'row' as const,
         rowKey: `continent-${row.player.id}-${row.rank}`,
+        comparisonDisplayRank: comparisonContinentRanks.get(
+          `continent:${row.displayScope}`,
+        )?.rank,
+        comparisonWeightedScore: comparisonContinentRanks.get(
+          `continent:${row.displayScope}`,
+        )?.score,
       })),
     );
 
@@ -444,6 +604,7 @@ export function useDeathlessViewModel() {
     });
     rankedRows.push(
       ...buildAggregateRows(
+        weightedTierScores,
         rankedPlayersAll,
         'country',
         (row) => row.player.countryCode ?? 'unknown',
@@ -452,11 +613,24 @@ export function useDeathlessViewModel() {
         ...row,
         rowType: 'row' as const,
         rowKey: `country-${row.player.id}-${row.rank}`,
+        comparisonDisplayRank: comparisonCountryRanks.get(
+          `country:${row.displayScope}`,
+        )?.rank,
+        comparisonWeightedScore: comparisonCountryRanks.get(
+          `country:${row.displayScope}`,
+        )?.score,
       })),
     );
 
     return rankedRows;
-  }, [rankingMode, rankingTiers, rankedPlayersAll, weightedTierScores]);
+  }, [
+    comparisonLocationFilteredPlayers,
+    comparisonWeightedTierScores,
+    rankingMode,
+    rankingTiers,
+    rankedPlayersAll,
+    weightedTierScores,
+  ]);
 
   const displayedRows = displayMode === 'person' ? personRows : regionRows;
 
@@ -548,8 +722,13 @@ export function useDeathlessViewModel() {
   return {
     loading,
     error,
+    comparisonPlayers,
+    comparisonGlobalCounts,
+    comparisonWeightedTierScores,
     includeZeroes,
     setIncludeZeroes,
+    showDifferences,
+    setShowDifferences,
     rankingMode,
     rankingTiers,
     countries,
@@ -579,6 +758,7 @@ export function useDeathlessViewModel() {
     handleLocationChange,
     useRawWeightedScore,
     setUseRawWeightedScore,
+    comparisonDateLabel,
   };
 }
 

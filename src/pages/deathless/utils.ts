@@ -46,6 +46,7 @@ export type RankedPlayer = DeathlessPlayerTierClearCounts & {
   tierProfile: number[];
   weightedScore: number;
   weightedScoreKey: number;
+  comparisonWeightedScore?: number;
   rank: number;
   globalRank?: number;
 };
@@ -62,6 +63,8 @@ export type DeathlessDisplayRow =
       displayRank?: number;
       displayScope?: string;
       globalRank?: number;
+      comparisonDisplayRank?: number;
+      comparisonWeightedScore?: number;
     });
 
 export function formatNumber(value: number) {

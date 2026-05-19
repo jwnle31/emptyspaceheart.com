@@ -5,12 +5,43 @@ import styles from '../../Deathless.module.css';
 export default function WeightedLegend({
   rankingTiers,
   weightedTierScores,
+  comparisonWeightedTierScores,
   weightedDisplayScale,
+  showDifferences,
 }: {
   rankingTiers: { id: number; sort: number }[];
   weightedTierScores: Map<number, { cumulativeShare: number; weight: number }>;
+  comparisonWeightedTierScores?: Map<
+    number,
+    { cumulativeShare: number; weight: number }
+  >;
   weightedDisplayScale: number;
+  showDifferences: boolean;
 }) {
+  const formatTierDelta = (value?: number) => {
+    if (!value) {
+      return null;
+    }
+
+    const positive = value > 0;
+    const label = `${positive ? '+' : '-'}${formatNumber(
+      Math.abs(Math.round(value)),
+    )}`;
+
+    return (
+      <span
+        className={
+          positive
+            ? styles['delta-bracket-positive']
+            : styles['delta-bracket-negative']
+        }
+        aria-label={positive ? `${label} increase` : `${label} decrease`}
+      >
+        {label}
+      </span>
+    );
+  };
+
   return (
     <section className={styles['weighted-legend']}>
       <div className={styles['weighted-section-title']}>Formula</div>
@@ -114,16 +145,33 @@ export default function WeightedLegend({
                     if (!tierWeight) {
                       return null;
                     }
+                    const comparisonTierWeight =
+                      comparisonWeightedTierScores?.get(tier.id);
+                    const currentScore = Math.round(
+                      tierWeight.weight * weightedDisplayScale,
+                    );
+                    const comparisonScore = comparisonTierWeight
+                      ? Math.round(
+                          comparisonTierWeight.weight * weightedDisplayScale,
+                        )
+                      : undefined;
+                    const delta =
+                      comparisonScore === undefined
+                        ? undefined
+                        : currentScore - comparisonScore;
 
                     return (
                       <tr key={tier.id}>
                         <td>{tier.sort}</td>
                         <td>
-                          {formatNumber(
-                            Math.round(
-                              tierWeight.weight * weightedDisplayScale,
-                            ),
-                          )}
+                          <div className={styles['tier-score-value']}>
+                            <span>{formatNumber(currentScore)}</span>
+                            {showDifferences && formatTierDelta(delta) && (
+                              <span className={styles['tier-score-delta']}>
+                                {formatTierDelta(delta)}
+                              </span>
+                            )}
+                          </div>
                         </td>
                         <td>{tierWeight.cumulativeShare.toFixed(5)}</td>
                       </tr>

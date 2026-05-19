@@ -49,16 +49,72 @@ function formatWeightedScore(
   useRawWeightedScore: boolean,
   log2WeightedDisplayScale: number,
 ) {
+  return formatNumber(
+    Math.round(
+      useRawWeightedScore
+        ? value
+        : Math.log2(value + 1) * log2WeightedDisplayScale,
+    ),
+  );
+}
+
+function getWeightedDisplayValue(
+  value: number,
+  useRawWeightedScore: boolean,
+  log2WeightedDisplayScale: number,
+) {
   if (value <= 0) {
-    return formatNumber(0);
+    return 0;
   }
 
   if (useRawWeightedScore) {
-    return formatNumber(Math.round(value));
+    return Math.round(value);
   }
 
-  return formatNumber(
-    Math.round(Math.log2(value + 1) * log2WeightedDisplayScale),
+  return Math.round(Math.log2(value + 1) * log2WeightedDisplayScale);
+}
+
+function formatPointDelta(value?: number) {
+  if (!value) {
+    return null;
+  }
+
+  const positive = value > 0;
+  const label = `${positive ? '+' : '-'}${formatNumber(Math.abs(Math.round(value)))}`;
+
+  return (
+    <span
+      className={
+        positive
+          ? styles['delta-bracket-positive']
+          : styles['delta-bracket-negative']
+      }
+      aria-label={positive ? `${label} increase` : `${label} decrease`}
+    >
+      {label}
+    </span>
+  );
+}
+
+function formatPlacementDelta(value?: number) {
+  if (!value) {
+    return null;
+  }
+
+  const improving = value < 0;
+  const label = `${value < 0 ? '-' : '+'}${formatNumber(Math.abs(Math.round(value)))}`;
+
+  return (
+    <span
+      className={
+        improving
+          ? styles['delta-bracket-positive']
+          : styles['delta-bracket-negative']
+      }
+      aria-label={improving ? `${label} improvement` : `${label} decline`}
+    >
+      {label}
+    </span>
   );
 }
 
@@ -198,6 +254,7 @@ type DeathlessTableProps = {
   weightedDisplayScale: number;
   log2WeightedDisplayScale: number;
   useRawWeightedScore: boolean;
+  showDifferences: boolean;
   isMobileLayout: boolean;
 };
 
@@ -210,6 +267,7 @@ export default function DeathlessTable({
   weightedDisplayScale,
   log2WeightedDisplayScale,
   useRawWeightedScore,
+  showDifferences,
   isMobileLayout,
 }: DeathlessTableProps) {
   return (
@@ -288,7 +346,22 @@ export default function DeathlessTable({
                       : styles['rank-cell']
                   }
                 >
-                  {formatNumber(row.displayRank ?? row.rank)}
+                  <div>{formatNumber(row.displayRank ?? row.rank)}</div>
+                  {showDifferences &&
+                    formatPlacementDelta(
+                      row.comparisonDisplayRank === undefined
+                        ? undefined
+                        : (row.displayRank ?? row.rank) - row.comparisonDisplayRank,
+                    ) && (
+                    <div className={styles['rank-delta']}>
+                      {formatPlacementDelta(
+                        row.comparisonDisplayRank === undefined
+                          ? undefined
+                          : (row.displayRank ?? row.rank) -
+                              row.comparisonDisplayRank,
+                      )}
+                    </div>
+                  )}
                   {displayMode === 'person' &&
                     location !== 'world' &&
                     isMobileLayout && (
@@ -313,24 +386,92 @@ export default function DeathlessTable({
                   isMobileLayout,
                 )}
                 {rankingMode === 'weighted' && isMobileLayout && (
-                    <td className={styles['score-cell']}>
-                      <div className={styles['score-value']}>
+                  <td className={styles['score-cell']}>
+                    <div className={styles['score-value']}>
+                      <div>
                         {formatWeightedScore(
                           row.weightedScore,
                           useRawWeightedScore,
                           log2WeightedDisplayScale,
                         )}
                       </div>
-                    </td>
-                  )}
+                      {showDifferences &&
+                        formatPointDelta(
+                          row.comparisonWeightedScore === undefined
+                            ? undefined
+                            : getWeightedDisplayValue(
+                                row.weightedScore,
+                                useRawWeightedScore,
+                                log2WeightedDisplayScale,
+                              ) -
+                              getWeightedDisplayValue(
+                                row.comparisonWeightedScore,
+                                useRawWeightedScore,
+                                log2WeightedDisplayScale,
+                              ),
+                        ) && (
+                          <div className={styles['score-delta']}>
+                            {formatPointDelta(
+                              row.comparisonWeightedScore === undefined
+                                ? undefined
+                                : getWeightedDisplayValue(
+                                    row.weightedScore,
+                                    useRawWeightedScore,
+                                    log2WeightedDisplayScale,
+                                  ) -
+                                  getWeightedDisplayValue(
+                                    row.comparisonWeightedScore,
+                                    useRawWeightedScore,
+                                    log2WeightedDisplayScale,
+                                  ),
+                            )}
+                          </div>
+                        )}
+                    </div>
+                  </td>
+                )}
                 {rankingMode === 'weighted' && !isMobileLayout && (
                   <td className={styles['score-cell']}>
                     <div className={styles['score-value']}>
-                      {formatWeightedScore(
-                        row.weightedScore,
-                        useRawWeightedScore,
-                        log2WeightedDisplayScale,
-                      )}
+                      <div>
+                        {formatWeightedScore(
+                          row.weightedScore,
+                          useRawWeightedScore,
+                          log2WeightedDisplayScale,
+                        )}
+                      </div>
+                      {showDifferences &&
+                        formatPointDelta(
+                          row.comparisonWeightedScore === undefined
+                            ? undefined
+                            : getWeightedDisplayValue(
+                                row.weightedScore,
+                                useRawWeightedScore,
+                                log2WeightedDisplayScale,
+                              ) -
+                              getWeightedDisplayValue(
+                                row.comparisonWeightedScore,
+                                useRawWeightedScore,
+                                log2WeightedDisplayScale,
+                              ),
+                        ) && (
+                        <div className={styles['score-delta']}>
+                          {formatPointDelta(
+                            row.comparisonWeightedScore === undefined
+                              ? undefined
+                              : getWeightedDisplayValue(
+                                    row.weightedScore,
+                                    useRawWeightedScore,
+                                    log2WeightedDisplayScale,
+                                  ) -
+                                  getWeightedDisplayValue(
+                                    row.comparisonWeightedScore,
+                                    useRawWeightedScore,
+                                    log2WeightedDisplayScale,
+                                  ),
+                            )}
+                          </div>
+                        )}
                     </div>
                   </td>
                 )}
