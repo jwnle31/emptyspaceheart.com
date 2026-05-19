@@ -8,7 +8,7 @@ import {
 } from '../types';
 
 const CATEGORY_CACHE_KEY = 'speedrunning-categories-cache-v6';
-const CATEGORY_CACHE_TTL_MS = 2 * 24 * 60 * 60 * 1000;
+const CATEGORY_CACHE_TTL_MS = 12 * 60 * 60 * 1000;
 
 type CategoryCache = {
   timestamp: number;

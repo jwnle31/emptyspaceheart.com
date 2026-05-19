@@ -49,7 +49,7 @@ type DeathlessDataState = {
   error: string | null;
 };
 
-const CACHE_TTL_MS = 2 * 24 * 60 * 60 * 1000;
+const CACHE_TTL_MS = 12 * 60 * 60 * 1000;
 const DIFFICULTY_CACHE_KEY = 'deathless:difficulty:v1';
 const PLAYER_CACHE_KEY = 'deathless:player-tier-clear-counts:v1';
 const PLAYER_COMPARISON_CACHE_KEY = 'deathless:player-tier-clear-counts:first-day:v1';

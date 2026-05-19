@@ -16,7 +16,7 @@ type VariableSelection = {
   value: string;
 };
 
-const LEADERBOARD_CACHE_TTL_MS = 2 * 24 * 60 * 60 * 1000;
+const LEADERBOARD_CACHE_TTL_MS = 12 * 60 * 60 * 1000;
 
 function buildLeaderboardUrl(
   gameId: string,
