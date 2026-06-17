@@ -58,7 +58,7 @@ function Footer() {
           </section>
         </div>
       </footer>
-      <script async src="./scripts/buttons.js"></script>
+      <script async src="/scripts/buttons.js"></script>
     </>
   );
 }
