@@ -288,11 +288,6 @@ export default function ChallengesTable({
                                   {challenge.firstClearSubmission.player_notes}
                                 </div>
                               )}
-                              {challenge.firstClearSubmission.verifier_notes && (
-                                <div className={styles['detail-text']}>
-                                  {challenge.firstClearSubmission.verifier_notes}
-                                </div>
-                              )}
                             </div>
                           ) : (
                             <div className={styles['empty-state']}>
