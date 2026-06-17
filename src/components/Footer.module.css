@@ -2,22 +2,40 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 0.75rem;
   margin-top: 4rem;
   margin-bottom: 3rem;
+  font-size: 0.75rem;
 }
 
-.footer-menu {
-  font-size: 1rem;
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  width: min(100%, 40rem);
 }
 
-.footer-menu-secondary {
-  font-size: 0.95rem;
-  margin-top: 0.35rem;
+.footer-group {
+  min-width: 0;
+}
+
+.footer-heading {
+  margin: 0 0 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--theme-color-hover);
+}
+
+.footer-links {
+  display: grid;
+  gap: 0.4rem;
 }
 
 .socials {
-  margin-top: 1rem;
+  display: flex;
+  align-items: flex-start;
+  margin-top: 0.15rem;
 }
 
 .icon {
@@ -40,22 +58,22 @@
     font-size: 0.6875rem;
     margin-top: 3rem;
     margin-bottom: 2rem;
+    width: 100%;
+    padding-inline: 0.75rem;
+    box-sizing: border-box;
   }
 
-  .footer-menu {
-    font-size: 0.8125rem;
-    text-align: center;
-    line-height: 1.4;
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+    width: 100%;
   }
 
-  .footer-menu-secondary {
-    font-size: 0.8125rem;
-    text-align: center;
-    line-height: 1.4;
-    margin-top: 0.15rem;
+  .footer-heading {
+    margin-bottom: 0.35rem;
   }
 
   .socials {
-    margin-top: 0.75rem;
+    margin-top: 0;
   }
 }

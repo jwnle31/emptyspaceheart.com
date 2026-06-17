@@ -11,11 +11,12 @@ type LinkProps = {
 
 function Link({ icon, text, url, flag, internal }: LinkProps) {
   const Icon = iconMap[icon as keyof typeof iconMap];
+  const isInternal = internal || url.startsWith('/');
   return (
     <li className={styles.link}>
       {Icon && <Icon size={14} />}
       <span title={text}>
-        {internal ? (
+        {isInternal ? (
           <a href={url}>{text}</a>
         ) : (
           <a href={url} target="_blank" rel="noopener noreferrer">
