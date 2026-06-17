@@ -17,7 +17,7 @@ function Footer() {
               <a href="/deathless" className={styles.link}>
                 Deathless Ranking
               </a>
-              <a href="/challenges" className={styles.link}>
+              <a href="/deathless/top-challenges" className={styles.link}>
                 Top Deathless Challenges
               </a>
             </nav>

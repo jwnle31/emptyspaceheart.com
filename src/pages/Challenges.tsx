@@ -34,7 +34,7 @@ function Challenges() {
           </div>
           <a
             className={styles['docs-link']}
-            href="https://goldberries.net/"
+            href="https://goldberries.net/top-golden-list"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Goldberries"
