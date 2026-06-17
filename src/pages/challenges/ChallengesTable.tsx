@@ -46,6 +46,7 @@ export default function ChallengesTable({
           {topChallenges.map((challenge) => {
             const expanded = expandedId === challenge.id;
             const statusChips = getStatusChips(challenge);
+            const clearedAt = challenge.firstClearSubmission?.date_achieved ?? null;
             const baseTier = challenge.tier;
             const bottomValue = baseTier
               ? baseTier.sort + getChallengeFracValue(challenge.data?.frac)
@@ -184,13 +185,13 @@ export default function ChallengesTable({
                   )}
                   {!isNarrowScreen && (
                     <td className={styles['created-cell']}>
-                      <span className={styles['stat-line']}>
-                        <IconCalendar size={12} />
-                        <span className={styles['date-text']}>
-                          {formatDate(challenge.date_created)}
+                        <span className={styles['stat-line']}>
+                          <IconCalendar size={12} />
+                          <span className={styles['date-text']}>
+                          {formatDate(clearedAt)}
+                          </span>
                         </span>
-                      </span>
-                    </td>
+                      </td>
                   )}
                   <td className={styles['action-cell']}>
                     <button
@@ -218,7 +219,7 @@ export default function ChallengesTable({
                           <div className={styles['detail-card']}>
                             <div className={styles['detail-label']}>Cleared</div>
                             <div className={styles['detail-value']}>
-                              {formatDate(challenge.date_created)}
+                              {formatDate(clearedAt)}
                             </div>
                           </div>
                         )}
