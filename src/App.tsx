@@ -8,7 +8,6 @@ import Speedrunning from './pages/Speedrunning';
 import Deathless from './pages/Deathless';
 import Challenges from './pages/Challenges';
 import NotFound from './pages/NotFound';
-import { Navigate } from 'react-router-dom';
 
 function App() {
   return (
@@ -20,7 +19,6 @@ function App() {
         <Route path="/speedrunning" element={<Speedrunning />} />
         <Route path="/deathless" element={<Deathless />} />
         <Route path="/deathless/top-challenges" element={<Challenges />} />
-        <Route path="/challenges" element={<Navigate to="/deathless/top-challenges" replace />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
