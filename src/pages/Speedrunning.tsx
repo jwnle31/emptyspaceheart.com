@@ -144,7 +144,7 @@ function SpeedrunningView({
         <Breathe />
 
         <div className={styles.heading}>
-          <h2>Speedrunning</h2>
+          <h2>Speedrun Leaderboard</h2>
           <a
             className={styles['speedrun-link']}
             href={selectedGame?.weblink ?? 'https://www.speedrun.com'}

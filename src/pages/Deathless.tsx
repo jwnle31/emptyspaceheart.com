@@ -1,4 +1,4 @@
-﻿import { IconSkull, IconX } from '@tabler/icons-react';
+import { IconSkull, IconX } from '@tabler/icons-react';
 import Breathe from '../components/Breathe';
 import SEO from '../components/SEO';
 import Goldberry from '../assets/gifs/goldberry.gif';
@@ -65,7 +65,7 @@ function Deathless() {
         <Breathe />
         <div className={styles.heading}>
           <div>
-            <h2>Deathless Challenge</h2>
+            <h2>Deathless Ranking</h2>
           </div>
           <a
             className={styles['docs-link']}
@@ -259,7 +259,7 @@ function Deathless() {
                   those values. When Raw mode is turned off, the displayed
                   score is transformed by <Latex expression="\log_2(S+1)" />{' '}
                   and then linearly rescaled so the lowest tier reads as 1000.
-                  Clicking a tier pill shows that tier's raw score contribution.
+                  Clicking a tier pill shows that tier&apos;s raw score contribution.
                 </>
               )}
         </p>
