@@ -44,12 +44,10 @@ function Challenges() {
         </div>
 
         <div className={styles['section-shell']}>
-          {loading && <div className={styles.summary}>Loading the Goldberries list...</div>}
+          {loading && <div className={styles.summary}>Loading the top 200 list...</div>}
 
           {error ? (
             <p className={styles.message}>{error}</p>
-          ) : loading ? (
-            <p className={styles.message}>Fetching live challenge data.</p>
           ) : (
             <ChallengesTable
               topChallenges={topChallenges}
