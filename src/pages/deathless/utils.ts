@@ -71,7 +71,10 @@ export function formatNumber(value: number) {
 }
 
 export function formatPeerPoints(pointsTwice: number) {
-  return formatNumber(pointsTwice / 2);
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  }).format(pointsTwice / 2);
 }
 
 export function peerPercentUnits(pointsTwice: number, possiblePoints: number, decimals: number) {
