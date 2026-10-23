@@ -257,15 +257,13 @@ function Deathless() {
           ? 'Absolute mode ranks players by the full tier-clear profile, from higher tiers down.'
             : (
                 <>
-                  Peer mode compares each player&apos;s cumulative clears at every
-                  tier threshold with every other active player. A win earns 1
-                  point, a tie earns ½, and a loss earns 0. In Points view, each row
-                  shows points earned; the total possible points appears in the
-                  note above the table or region section. Percent shows the same score
-                  as a percentage. Players are ranked by
-                  their exact point total. Region scores compare continents with
-                  continents and countries with countries. Open a Peer record
-                  to see the cumulative clears and score at each threshold.
+                  At each tier, count your clears at that tier and above. Compare
+                  that total with every other player: more earns 1 point, a tie
+                  earns ½, and fewer earns 0. Add the points from all tiers to
+                  rank players. Percent shows your share of the possible points.
+                  Region rankings compare countries with countries and continents
+                  with continents. Open a Peer record to see each tier&apos;s count
+                  and points.
                 </>
               )}
         </p>
