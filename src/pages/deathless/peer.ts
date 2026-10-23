@@ -23,9 +23,16 @@ function upperBound(sorted: number[], value: number) {
 export type PeerThreshold = {
   cumulative: number;
   standing: number | null;
+  pointsTwice: number | null;
+  possiblePoints: number;
 };
 
-export type PeerScore = { key: number; percent: number; thresholds: PeerThreshold[] };
+export type PeerScore = {
+  key: number;
+  percent: number;
+  possiblePoints: number;
+  thresholds: PeerThreshold[];
+};
 
 // Profiles contain exact tier counts, ordered from hardest to easiest.
 // Zero-clear profiles are excluded from the comparison population, but keep
@@ -44,7 +51,13 @@ export function scorePeerProfiles(profiles: number[][]): PeerScore[] {
   if (population === 0) return profiles.map((profile) => ({
     key: 0,
     percent: 0,
-    thresholds: profile.map(() => ({ cumulative: 0, standing: null })),
+    possiblePoints: 0,
+    thresholds: profile.map(() => ({
+      cumulative: 0,
+      standing: null,
+      pointsTwice: null,
+      possiblePoints: 0,
+    })),
   }));
 
   const distributions = profiles[0].map((_, tierIndex) =>
@@ -57,13 +70,24 @@ export function scorePeerProfiles(profiles: number[][]): PeerScore[] {
     if (profile[profile.length - 1] === 0) return {
       key: 0,
       percent: 0,
-      thresholds: profile.map((cumulative) => ({ cumulative, standing: null })),
+      possiblePoints: 0,
+      thresholds: profile.map((cumulative) => ({
+        cumulative,
+        standing: null,
+        pointsTwice: null,
+        possiblePoints: 0,
+      })),
     };
     let key = 0;
     const thresholds = profile.map((clears, tierIndex) => {
       const distribution = distributions[tierIndex];
       if (distribution[distribution.length - 1] === 0 || population < 2) {
-        return { cumulative: clears, standing: null };
+        return {
+          cumulative: clears,
+          standing: null,
+          pointsTwice: null,
+          possiblePoints: 0,
+        };
       }
       const fewer = lowerBound(distribution, clears);
       const tiedOtherPlayers = upperBound(distribution, clears) - fewer - 1;
@@ -72,6 +96,8 @@ export function scorePeerProfiles(profiles: number[][]): PeerScore[] {
       return {
         cumulative: clears,
         standing: (100 * pointsTwice) / (2 * (population - 1)),
+        pointsTwice,
+        possiblePoints: population - 1,
       };
     });
     return {
@@ -79,6 +105,7 @@ export function scorePeerProfiles(profiles: number[][]): PeerScore[] {
       percent: population > 1
         ? (100 * key) / (2 * (population - 1) * activeThresholds.length)
         : 0,
+      possiblePoints: (population - 1) * activeThresholds.length,
       thresholds,
     };
   });

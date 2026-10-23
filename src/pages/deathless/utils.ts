@@ -33,13 +33,17 @@ export const DIFFICULTY_COLORS: Record<number, string> = {
 };
 
 export type RankingMode = 'absolute' | 'peer';
+export type PeerScoreFormat = 'percent' | 'fraction';
 
 export type RankedPlayer = DeathlessPlayerTierClearCounts & {
   tierProfile: number[];
   peerScore: number;
   peerScoreKey: number;
+  peerPossiblePoints: number;
   peerThresholds: PeerThreshold[];
   comparisonPeerScore?: number;
+  comparisonPeerScoreKey?: number;
+  comparisonPeerPossiblePoints?: number;
   rank: number;
   globalRank?: number;
 };
@@ -58,10 +62,28 @@ export type DeathlessDisplayRow =
       globalRank?: number;
       comparisonDisplayRank?: number;
       comparisonPeerScore?: number;
+      comparisonPeerScoreKey?: number;
+      comparisonPeerPossiblePoints?: number;
     });
 
 export function formatNumber(value: number) {
   return new Intl.NumberFormat('en-US').format(value);
+}
+
+export function formatPeerPoints(pointsTwice: number) {
+  return formatNumber(pointsTwice / 2);
+}
+
+export function peerPercentUnits(pointsTwice: number, possiblePoints: number, decimals: number) {
+  const scale = 10 ** decimals;
+  return possiblePoints > 0
+    ? Math.floor((50 * pointsTwice * scale) / possiblePoints)
+    : 0;
+}
+
+export function formatPeerPercent(pointsTwice: number, possiblePoints: number, decimals: number) {
+  const scale = 10 ** decimals;
+  return `${(peerPercentUnits(pointsTwice, possiblePoints, decimals) / scale).toFixed(decimals)}%`;
 }
 
 export function getPlayerAccentStyle(

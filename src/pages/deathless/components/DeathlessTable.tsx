@@ -1,8 +1,11 @@
 import styles from '../../Deathless.module.css';
-import type { RankingMode, DeathlessDisplayRow } from '../utils';
+import type { RankingMode, PeerScoreFormat, DeathlessDisplayRow } from '../utils';
 import {
   formatNumber,
+  formatPeerPercent,
+  formatPeerPoints,
   getPlayerAccentStyle,
+  peerPercentUnits,
 } from '../utils';
 import PeerRecord from './PeerRecord';
 import TierPills from './TierPills';
@@ -45,14 +48,35 @@ function getSeparatorColSpan(
   return rankingMode === 'peer' ? baseColumns + 1 : baseColumns;
 }
 
-function formatPeerScore(value: number) {
-  return `${value.toFixed(2)}%`;
+function getSectionMaximums(rows: DeathlessDisplayRow[]) {
+  const maximums = new Map<string, { current?: number; previous?: number }>();
+  let sectionKey: string | undefined;
+
+  rows.forEach((row) => {
+    if (row.rowType === 'separator') {
+      sectionKey = row.rowKey;
+      maximums.set(sectionKey, {});
+      return;
+    }
+
+    if (!sectionKey) return;
+    const section = maximums.get(sectionKey)!;
+    if (!section.current && row.peerPossiblePoints > 0) {
+      section.current = row.peerPossiblePoints;
+    }
+    if (!section.previous && row.comparisonPeerPossiblePoints) {
+      section.previous = row.comparisonPeerPossiblePoints;
+    }
+  });
+
+  return maximums;
 }
 
 function renderPlayerCell(
   row: Extract<DeathlessDisplayRow, { rowType: 'row' }>,
   displayMode: DisplayModeValue,
   rankingMode: RankingMode,
+  peerScoreFormat: PeerScoreFormat,
   rankingTiers: DifficultyTier[],
   isMobileLayout: boolean,
 ) {
@@ -122,7 +146,7 @@ function renderPlayerCell(
             {rankingMode === 'absolute' ? (
               <TierPills tierProfile={row.tierProfile} tiers={rankingTiers} />
             ) : (
-              <PeerRecord row={row} tiers={rankingTiers} />
+              <PeerRecord row={row} tiers={rankingTiers} scoreFormat={peerScoreFormat} />
             )}
           </div>
         )}
@@ -143,7 +167,7 @@ function renderPlayerCell(
           {rankingMode === 'absolute' ? (
             <TierPills tierProfile={row.tierProfile} tiers={rankingTiers} />
           ) : (
-            <PeerRecord row={row} tiers={rankingTiers} />
+            <PeerRecord row={row} tiers={rankingTiers} scoreFormat={peerScoreFormat} />
           )}
         </div>
       )}
@@ -155,6 +179,7 @@ type DeathlessTableProps = {
   displayMode: DisplayModeValue;
   location: LocationFilterValue;
   rankingMode: RankingMode;
+  peerScoreFormat: PeerScoreFormat;
   rows: DeathlessDisplayRow[];
   rankingTiers: DifficultyTier[];
   showDifferences: boolean;
@@ -165,17 +190,48 @@ export default function DeathlessTable({
   displayMode,
   location,
   rankingMode,
+  peerScoreFormat,
   rows,
   rankingTiers,
   showDifferences,
   isMobileLayout,
 }: DeathlessTableProps) {
+  const pointsView = rankingMode === 'peer' && peerScoreFormat === 'fraction';
+  const currentMaximum = rows.find(
+    (row) => row.rowType === 'row' && row.peerPossiblePoints > 0,
+  );
+  const previousMaximum = rows.find(
+    (row) => row.rowType === 'row' && row.comparisonPeerPossiblePoints,
+  );
+  const sectionMaximums = displayMode === 'region' ? getSectionMaximums(rows) : undefined;
+  const hasSectionHeader = rows.some((row) => row.rowType === 'separator');
+  const sectionlessMaximums = new Set(
+    rows.flatMap((row) => row.rowType === 'row' && row.peerPossiblePoints > 0
+      ? [row.peerPossiblePoints]
+      : []),
+  );
+  const headerMaximum = displayMode === 'person' || (!hasSectionHeader && sectionlessMaximums.size === 1)
+    ? currentMaximum?.rowType === 'row' ? currentMaximum.peerPossiblePoints : undefined
+    : undefined;
+  const headerPreviousMaximum = previousMaximum?.rowType === 'row'
+    ? previousMaximum.comparisonPeerPossiblePoints
+    : undefined;
+  const scoreHeader = pointsView ? 'Peer points' : 'Peer score';
+
   return (
     <div
       className={`${styles['table-wrapper']} ${
         displayMode === 'region' ? styles['region-mode'] : ''
-      } ${rankingMode === 'absolute' ? styles['absolute-mode'] : ''}`}
+      } ${rankingMode === 'absolute' ? styles['absolute-mode'] : ''} ${pointsView ? styles['score-points'] : ''}`}
     >
+      {pointsView && headerMaximum && (
+        <div className={styles['score-maximum']}>
+          Maximum: {formatNumber(headerMaximum)} peer points
+          {showDifferences && headerPreviousMaximum
+            ? ` · previous maximum: ${formatNumber(headerPreviousMaximum)}`
+            : ''}
+        </div>
+      )}
       <table>
         <thead>
           <tr>
@@ -194,7 +250,7 @@ export default function DeathlessTable({
               </>
             )}
           {rankingMode === 'peer' && !isMobileLayout && (
-            <th className={styles['score-head']}>Peer score</th>
+            <th className={styles['score-head']}>{scoreHeader}</th>
           )}
           {!isMobileLayout && (
             <th className={styles['profile-head']}>
@@ -203,13 +259,14 @@ export default function DeathlessTable({
           )}
             {!isMobileLayout && <th className={styles['total-head']}>Total</th>}
           {rankingMode === 'peer' && isMobileLayout && (
-              <th className={styles['score-head']}>Peer score</th>
+              <th className={styles['score-head']}>{scoreHeader}</th>
           )}
           </tr>
         </thead>
         <tbody>
           {rows.map((row) => {
             if (row.rowType === 'separator') {
+              const maximum = sectionMaximums?.get(row.rowKey);
               return (
                 <tr key={row.rowKey}>
                   <td
@@ -222,6 +279,14 @@ export default function DeathlessTable({
                     )}
                   >
                     {row.label}
+                    {pointsView && maximum?.current && (
+                      <span className={styles['section-maximum']}>
+                        Max {formatNumber(maximum.current)} points
+                        {showDifferences && maximum.previous
+                          ? ` · prior max ${formatNumber(maximum.previous)}`
+                          : ''}
+                      </span>
+                    )}
                   </td>
                 </tr>
               );
@@ -234,17 +299,35 @@ export default function DeathlessTable({
                 : displayRank - row.comparisonDisplayRank;
             const peerScoreValue =
               rankingMode === 'peer'
-                ? row.displayScope === 'World' ? '—' : formatPeerScore(row.peerScore)
+                ? row.displayScope === 'World'
+                  ? '—'
+                  : peerScoreFormat === 'fraction'
+                    ? row.peerPossiblePoints > 0
+                      ? formatPeerPoints(row.peerScoreKey)
+                      : '—'
+                    : formatPeerPercent(row.peerScoreKey, row.peerPossiblePoints, 2)
                 : '0';
-            const peerComparisonValue =
-              rankingMode === 'peer' &&
-              row.comparisonPeerScore !== undefined
-                ? row.comparisonPeerScore
-                : undefined;
             const peerDelta =
-              rankingMode === 'peer' && peerComparisonValue !== undefined && row.displayScope !== 'World'
-                ? row.peerScore - peerComparisonValue
+              rankingMode === 'peer' &&
+              row.comparisonPeerScoreKey !== undefined &&
+              row.comparisonPeerPossiblePoints !== undefined &&
+              row.displayScope !== 'World'
+                ? (peerPercentUnits(row.peerScoreKey, row.peerPossiblePoints, 2) -
+                  peerPercentUnits(row.comparisonPeerScoreKey, row.comparisonPeerPossiblePoints, 2)) / 100
                 : undefined;
+            const previousPeerPoints =
+              row.comparisonPeerScoreKey !== undefined &&
+              row.comparisonPeerPossiblePoints !== undefined &&
+              row.displayScope !== 'World'
+                ? row.comparisonPeerPossiblePoints > 0
+                  ? formatPeerPoints(row.comparisonPeerScoreKey)
+                  : undefined
+                : undefined;
+            const peerDifference = peerScoreFormat === 'fraction'
+              ? showDifferences && previousPeerPoints
+                ? `was ${previousPeerPoints}`
+                : null
+              : <DifferenceValue value={peerDelta} show={showDifferences} decimals={2} />;
             const podiumClassName =
               displayMode === 'person' && row.rank === 1
                 ? styles['rank-gold']
@@ -286,6 +369,7 @@ export default function DeathlessTable({
                   row,
                   displayMode,
                   rankingMode,
+                  peerScoreFormat,
                   rankingTiers,
                   isMobileLayout,
                 )}
@@ -294,7 +378,7 @@ export default function DeathlessTable({
                     <div className={styles['score-value']}>
                       <div>{peerScoreValue}</div>
                       <div className={styles['score-delta']}>
-                        <DifferenceValue value={peerDelta} show={showDifferences} decimals={2} />
+                        {peerDifference}
                       </div>
                     </div>
                   </td>
@@ -304,7 +388,7 @@ export default function DeathlessTable({
                     <div className={styles['score-value']}>
                       <div>{peerScoreValue}</div>
                       <div className={styles['score-delta']}>
-                        <DifferenceValue value={peerDelta} show={showDifferences} decimals={2} />
+                        {peerDifference}
                       </div>
                     </div>
                   </td>
@@ -314,7 +398,7 @@ export default function DeathlessTable({
                     {rankingMode === 'absolute' ? (
                       <TierPills tierProfile={row.tierProfile} tiers={rankingTiers} />
                     ) : (
-                      <PeerRecord row={row} tiers={rankingTiers} />
+                      <PeerRecord row={row} tiers={rankingTiers} scoreFormat={peerScoreFormat} />
                     )}
                   </td>
                 )}

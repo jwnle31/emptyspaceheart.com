@@ -140,7 +140,13 @@ export function useDeathlessViewModel() {
         const peerScoreResult = scores.get(entry.player.id) ?? {
           percent: 0,
           key: 0,
-          thresholds: tierProfile.map((cumulative) => ({ cumulative, standing: null })),
+          possiblePoints: 0,
+          thresholds: tierProfile.map((cumulative) => ({
+            cumulative,
+            standing: null,
+            pointsTwice: null,
+            possiblePoints: 0,
+          })),
         };
         const comparisonPlayer = comparisonPlayerById.get(entry.player.id);
         const comparisonPeerScoreResult =
@@ -151,8 +157,11 @@ export function useDeathlessViewModel() {
           tierProfile,
           peerScore: peerScoreResult.percent,
           peerScoreKey: peerScoreResult.key,
+          peerPossiblePoints: peerScoreResult.possiblePoints,
           peerThresholds: peerScoreResult.thresholds,
           comparisonPeerScore: comparisonPeerScoreResult?.percent,
+          comparisonPeerScoreKey: comparisonPeerScoreResult?.key,
+          comparisonPeerPossiblePoints: comparisonPeerScoreResult?.possiblePoints,
           rank: 0,
         };
       })
@@ -380,6 +389,7 @@ export function useDeathlessViewModel() {
           tierProfile,
           peerScore: 0,
           peerScoreKey: 0,
+          peerPossiblePoints: 0,
           peerThresholds: [],
           rank: 0,
           displayScope: group.label,
@@ -393,6 +403,7 @@ export function useDeathlessViewModel() {
       visibleAggregateRows.forEach((row, index) => {
         row.peerScore = groupScores[index].percent;
         row.peerScoreKey = groupScores[index].key;
+        row.peerPossiblePoints = groupScores[index].possiblePoints;
         row.peerThresholds = groupScores[index].thresholds;
       });
 
@@ -448,10 +459,10 @@ export function useDeathlessViewModel() {
       () => 'world',
       () => 'World',
     );
-    const comparisonWorldRanks = new Map<string, { rank: number; score: number }>(
+    const comparisonWorldRanks = new Map<string, { rank: number; score: number; key: number; possiblePoints: number }>(
       comparisonWorldRows
         .filter((row) => row.displayScope !== 'Unknown')
-        .map((row) => [`world:${row.displayScope}`, { rank: row.rank, score: row.peerScore }]),
+        .map((row) => [`world:${row.displayScope}`, { rank: row.rank, score: row.peerScore, key: row.peerScoreKey, possiblePoints: row.peerPossiblePoints }]),
     );
     const comparisonContinentRows = buildAggregateRows(
       comparisonRankedRows,
@@ -459,10 +470,10 @@ export function useDeathlessViewModel() {
       (row) => row.player.continent ?? 'Unknown',
       (_row, key) => key,
     );
-    const comparisonContinentRanks = new Map<string, { rank: number; score: number }>(
+    const comparisonContinentRanks = new Map<string, { rank: number; score: number; key: number; possiblePoints: number }>(
       comparisonContinentRows
         .filter((row) => row.displayScope !== 'Unknown')
-        .map((row) => [`continent:${row.displayScope}`, { rank: row.rank, score: row.peerScore }]),
+        .map((row) => [`continent:${row.displayScope}`, { rank: row.rank, score: row.peerScore, key: row.peerScoreKey, possiblePoints: row.peerPossiblePoints }]),
     );
     const comparisonCountryRows = buildAggregateRows(
       comparisonRankedRows,
@@ -470,10 +481,10 @@ export function useDeathlessViewModel() {
       (row) => row.player.countryCode ?? 'unknown',
       (row) => row.player.country ?? row.player.countryCode ?? 'Unknown',
     );
-    const comparisonCountryRanks = new Map<string, { rank: number; score: number }>(
+    const comparisonCountryRanks = new Map<string, { rank: number; score: number; key: number; possiblePoints: number }>(
       comparisonCountryRows
         .filter((row) => row.displayScope !== 'Unknown')
-        .map((row) => [`country:${row.displayScope}`, { rank: row.rank, score: row.peerScore }]),
+        .map((row) => [`country:${row.displayScope}`, { rank: row.rank, score: row.peerScore, key: row.peerScoreKey, possiblePoints: row.peerPossiblePoints }]),
     );
 
     rankedRows.push({
@@ -493,6 +504,8 @@ export function useDeathlessViewModel() {
         rowKey: `world-${row.player.id}-${row.rank}`,
         comparisonDisplayRank: comparisonWorldRanks.get('world:World')?.rank,
         comparisonPeerScore: comparisonWorldRanks.get('world:World')?.score,
+        comparisonPeerScoreKey: comparisonWorldRanks.get('world:World')?.key,
+        comparisonPeerPossiblePoints: comparisonWorldRanks.get('world:World')?.possiblePoints,
       })),
     );
 
@@ -517,6 +530,12 @@ export function useDeathlessViewModel() {
         comparisonPeerScore: comparisonContinentRanks.get(
           `continent:${row.displayScope}`,
         )?.score,
+        comparisonPeerScoreKey: comparisonContinentRanks.get(
+          `continent:${row.displayScope}`,
+        )?.key,
+        comparisonPeerPossiblePoints: comparisonContinentRanks.get(
+          `continent:${row.displayScope}`,
+        )?.possiblePoints,
       })),
     );
 
@@ -541,6 +560,12 @@ export function useDeathlessViewModel() {
         comparisonPeerScore: comparisonCountryRanks.get(
           `country:${row.displayScope}`,
         )?.score,
+        comparisonPeerScoreKey: comparisonCountryRanks.get(
+          `country:${row.displayScope}`,
+        )?.key,
+        comparisonPeerPossiblePoints: comparisonCountryRanks.get(
+          `country:${row.displayScope}`,
+        )?.possiblePoints,
       })),
     );
 

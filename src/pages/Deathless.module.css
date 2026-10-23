@@ -398,6 +398,23 @@
   width: 6rem;
 }
 
+.score-points .score-head,
+.score-points .score-cell {
+  width: 7rem;
+  min-width: 7rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.score-maximum {
+  padding: 0.55rem 0.8rem;
+  border-bottom: 0.0625rem solid var(--theme-color);
+  background: color-mix(in srgb, var(--theme-color) 4%, var(--theme-color-bg));
+  font-size: 0.6875rem;
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: normal;
+}
+
 .region-head,
 .region-cell {
   min-width: 0;
@@ -528,6 +545,20 @@
   background: color-mix(in srgb, var(--theme-color) 6%, transparent);
   text-transform: uppercase;
   letter-spacing: 0.03em;
+}
+
+.section-maximum {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.625rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--theme-color-hover);
+}
+
+.table-wrapper > table td.section-row {
+  white-space: normal;
 }
 
 .player-link {
@@ -928,6 +959,12 @@
   .score-cell {
     width: 5.5rem;
     min-width: 5.5rem;
+  }
+
+  .score-points .score-head,
+  .score-points .score-cell {
+    width: 6.5rem;
+    min-width: 6.5rem;
   }
 
   .profile-head,

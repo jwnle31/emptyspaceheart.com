@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { IconSkull, IconX } from '@tabler/icons-react';
 import Breathe from '../components/Breathe';
 import SEO from '../components/SEO';
@@ -8,9 +9,10 @@ import LocationFilter from './deathless/components/LocationFilter';
 import Pagination from './deathless/components/Pagination';
 import { getMonthStartKey } from './deathless/comparison';
 import { useDeathlessViewModel } from './deathless/hooks/useDeathlessViewModel';
-import { formatNumber } from './deathless/utils';
+import { formatNumber, type PeerScoreFormat } from './deathless/utils';
 
 function Deathless() {
+  const [peerScoreFormat, setPeerScoreFormat] = useState<PeerScoreFormat>('percent');
   const {
     loading,
     error,
@@ -143,6 +145,30 @@ function Deathless() {
               </div>
             </div>
 
+            {rankingMode === 'peer' && (
+              <div className={styles['mode-filter']}>
+                <span>Peer score</span>
+                <div className={styles['display-toggle']} role="group" aria-label="Peer score format">
+                  <button
+                    type="button"
+                    className={peerScoreFormat === 'percent' ? styles['display-toggle-active'] : undefined}
+                    aria-pressed={peerScoreFormat === 'percent'}
+                    onClick={() => setPeerScoreFormat('percent')}
+                  >
+                    Percent
+                  </button>
+                  <button
+                    type="button"
+                    className={peerScoreFormat === 'fraction' ? styles['display-toggle-active'] : undefined}
+                    aria-pressed={peerScoreFormat === 'fraction'}
+                    onClick={() => setPeerScoreFormat('fraction')}
+                  >
+                    Points
+                  </button>
+                </div>
+              </div>
+            )}
+
             <LocationFilter
               countries={countries}
               selectedLocation={location}
@@ -233,12 +259,13 @@ function Deathless() {
                 <>
                   Peer mode compares each player&apos;s cumulative clears at every
                   tier threshold with every other active player. A win earns 1
-                  point, a tie earns ½, and a loss earns 0. The score is the
-                  percentage of possible points across all thresholds. Players
-                  are ranked by their exact point total before rounding the
-                  displayed percentage. Region scores compare continents with
+                  point, a tie earns ½, and a loss earns 0. In Points view, each row
+                  shows points earned; the total possible points appears in the
+                  note above the table or region section. Percent shows the same score
+                  as a percentage. Players are ranked by
+                  their exact point total. Region scores compare continents with
                   continents and countries with countries. Open a Peer record
-                  to see the cumulative clears and standing at each threshold.
+                  to see the cumulative clears and score at each threshold.
                 </>
               )}
         </p>
@@ -263,6 +290,7 @@ function Deathless() {
               displayMode={displayMode}
               location={location}
               rankingMode={rankingMode}
+              peerScoreFormat={peerScoreFormat}
               rows={pageRows}
               rankingTiers={rankingTiers}
               showDifferences={showDifferences}
