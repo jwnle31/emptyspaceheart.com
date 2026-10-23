@@ -11,11 +11,15 @@ type ListProps = {
 function List({ category, title }: ListProps) {
   const categoryData = linksData.filter((link) => link.type === category);
   return (
-    <div id={category} className={styles['list-container']}>
-      <h5 className={styles.title}>{title}</h5>
-      <ul>
+    <section id={category} className={styles['list-container']}>
+      <div className={styles.heading}>
+        <h3 className={styles.title}>{title}</h3>
+        <span>{categoryData.length} links</span>
+      </div>
+      <ul className={styles.list}>
         {categoryData.map((link) => (
           <Link
+            key={link.url}
             icon={link.icon}
             text={link.text}
             url={link.url}
@@ -24,7 +28,7 @@ function List({ category, title }: ListProps) {
           />
         ))}
       </ul>
-    </div>
+    </section>
   );
 }
 
