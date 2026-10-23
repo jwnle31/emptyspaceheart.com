@@ -5,11 +5,15 @@ type DifferenceValueProps = {
   show: boolean;
   invert?: boolean;
   className?: string;
+  decimals?: number;
 };
 
-function formatDifferenceLabel(value: number) {
-  const rounded = Math.abs(Math.round(value));
-  return `${value > 0 ? '+' : '-'}${rounded.toLocaleString('en-US')}`;
+function formatDifferenceLabel(value: number, decimals: number) {
+  const rounded = Math.abs(value).toLocaleString('en-US', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+  return `${value > 0 ? '+' : '-'}${rounded}`;
 }
 
 export default function DifferenceValue({
@@ -17,6 +21,7 @@ export default function DifferenceValue({
   show,
   invert = false,
   className,
+  decimals = 0,
 }: DifferenceValueProps) {
   if (!show || !value) {
     return null;
@@ -24,7 +29,7 @@ export default function DifferenceValue({
 
   const positive = value > 0;
   const improving = invert ? value < 0 : positive;
-  const label = formatDifferenceLabel(value);
+  const label = formatDifferenceLabel(value, decimals);
 
   return (
     <span

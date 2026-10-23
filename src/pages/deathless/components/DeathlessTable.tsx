@@ -1,14 +1,14 @@
 import styles from '../../Deathless.module.css';
-import type { RankingMode, DeathlessDisplayRow, ProfileSummaryEntry } from '../utils';
+import type { RankingMode, DeathlessDisplayRow } from '../utils';
 import {
   formatNumber,
-  getProfilePreviewMetrics,
   getPlayerAccentStyle,
 } from '../utils';
-import ProfileFingerprint from './ProfileFingerprint';
+import PeerRecord from './PeerRecord';
+import TierPills from './TierPills';
 import DifferenceValue from './DifferenceValue';
 import type { DisplayModeValue, LocationFilterValue } from '../location';
-import type { DeathlessPlayerTierClearCounts } from '../hooks/useDeathlessData';
+import type { DeathlessPlayerTierClearCounts, DifficultyTier } from '../hooks/useDeathlessData';
 
 function getPlayerAccentClassName(
   player: DeathlessPlayerTierClearCounts['player'],
@@ -31,56 +31,29 @@ function getSeparatorColSpan(
 ) {
   if (displayMode === 'region') {
     if (isMobileLayout) {
-      return rankingMode === 'weighted' ? 3 : 2;
+      return rankingMode === 'peer' ? 3 : 2;
     }
 
-    return rankingMode === 'weighted' ? 5 : 4;
+    return rankingMode === 'peer' ? 5 : 4;
   }
 
   if (isMobileLayout) {
-    return rankingMode === 'weighted' ? 3 : 2;
+    return rankingMode === 'peer' ? 3 : 2;
   }
 
   const baseColumns = location !== 'world' ? 5 : 4;
-  return rankingMode === 'weighted' ? baseColumns + 1 : baseColumns;
+  return rankingMode === 'peer' ? baseColumns + 1 : baseColumns;
 }
 
-function formatWeightedScore(
-  value: number,
-  useRawWeightedScore: boolean,
-  log2WeightedDisplayScale: number,
-) {
-  return formatNumber(
-    Math.round(
-      useRawWeightedScore
-        ? value
-        : Math.log2(value + 1) * log2WeightedDisplayScale,
-    ),
-  );
-}
-
-function getWeightedDisplayValue(
-  value: number,
-  useRawWeightedScore: boolean,
-  log2WeightedDisplayScale: number,
-) {
-  if (value <= 0) {
-    return 0;
-  }
-
-  if (useRawWeightedScore) {
-    return Math.round(value);
-  }
-
-  return Math.round(Math.log2(value + 1) * log2WeightedDisplayScale);
+function formatPeerScore(value: number) {
+  return `${value.toFixed(2)}%`;
 }
 
 function renderPlayerCell(
   row: Extract<DeathlessDisplayRow, { rowType: 'row' }>,
   displayMode: DisplayModeValue,
   rankingMode: RankingMode,
-  weightedDisplayScale: number,
-  profileSummary: ProfileSummaryEntry[],
+  rankingTiers: DifficultyTier[],
   isMobileLayout: boolean,
 ) {
   const playerAccentStyle = getPlayerAccentStyle(row.player);
@@ -146,23 +119,11 @@ function renderPlayerCell(
         </span>
         {isMobileLayout && (
           <div className={styles['profile-row']}>
-            <div className={styles['profile-preview-and-more']}>
-              <div className={styles['profile-preview-column']}>
-                {profileSummary.length > 0 ? (
-                  <ProfileFingerprint
-                    preview={getProfilePreviewMetrics(
-                      profileSummary,
-                      weightedDisplayScale,
-                    )}
-                    showTooltips={rankingMode === 'weighted'}
-                  />
-                ) : (
-                  <span className={styles['profile-empty']} aria-hidden="true">
-                    &nbsp;
-                  </span>
-                )}
-              </div>
-            </div>
+            {rankingMode === 'absolute' ? (
+              <TierPills tierProfile={row.tierProfile} tiers={rankingTiers} />
+            ) : (
+              <PeerRecord row={row} tiers={rankingTiers} />
+            )}
           </div>
         )}
       </td>
@@ -179,23 +140,11 @@ function renderPlayerCell(
       )}
       {isMobileLayout && (
         <div className={styles['profile-row']}>
-          <div className={styles['profile-preview-and-more']}>
-            <div className={styles['profile-preview-column']}>
-              {profileSummary.length > 0 ? (
-              <ProfileFingerprint
-                preview={getProfilePreviewMetrics(
-                  profileSummary,
-                  weightedDisplayScale,
-                )}
-                showTooltips={rankingMode === 'weighted'}
-              />
-              ) : (
-                <span className={styles['profile-empty']} aria-hidden="true">
-                  &nbsp;
-                </span>
-              )}
-            </div>
-          </div>
+          {rankingMode === 'absolute' ? (
+            <TierPills tierProfile={row.tierProfile} tiers={rankingTiers} />
+          ) : (
+            <PeerRecord row={row} tiers={rankingTiers} />
+          )}
         </div>
       )}
     </td>
@@ -207,10 +156,7 @@ type DeathlessTableProps = {
   location: LocationFilterValue;
   rankingMode: RankingMode;
   rows: DeathlessDisplayRow[];
-  profileSummaries: Map<number, ProfileSummaryEntry[]>;
-  weightedDisplayScale: number;
-  log2WeightedDisplayScale: number;
-  useRawWeightedScore: boolean;
+  rankingTiers: DifficultyTier[];
   showDifferences: boolean;
   isMobileLayout: boolean;
 };
@@ -220,10 +166,7 @@ export default function DeathlessTable({
   location,
   rankingMode,
   rows,
-  profileSummaries,
-  weightedDisplayScale,
-  log2WeightedDisplayScale,
-  useRawWeightedScore,
+  rankingTiers,
   showDifferences,
   isMobileLayout,
 }: DeathlessTableProps) {
@@ -231,9 +174,7 @@ export default function DeathlessTable({
     <div
       className={`${styles['table-wrapper']} ${
         displayMode === 'region' ? styles['region-mode'] : ''
-      } ${rankingMode === 'absolute' ? styles['absolute-mode'] : ''} ${
-        rankingMode === 'weighted' ? styles['weighted-mode'] : ''
-      }`}
+      } ${rankingMode === 'absolute' ? styles['absolute-mode'] : ''}`}
     >
       <table>
         <thead>
@@ -252,15 +193,17 @@ export default function DeathlessTable({
                 <th className={styles['player-head']}>Player</th>
               </>
             )}
-          {rankingMode === 'weighted' && !isMobileLayout && (
-            <th className={styles['score-head']}>Score</th>
+          {rankingMode === 'peer' && !isMobileLayout && (
+            <th className={styles['score-head']}>Peer score</th>
           )}
           {!isMobileLayout && (
-            <th className={styles['profile-head']}>Tier Profile</th>
+            <th className={styles['profile-head']}>
+              {rankingMode === 'absolute' ? 'Tier Profile' : 'Peer record'}
+            </th>
           )}
             {!isMobileLayout && <th className={styles['total-head']}>Total</th>}
-          {rankingMode === 'weighted' && isMobileLayout && (
-              <th className={styles['score-head']}>Score</th>
+          {rankingMode === 'peer' && isMobileLayout && (
+              <th className={styles['score-head']}>Peer score</th>
           )}
           </tr>
         </thead>
@@ -284,36 +227,23 @@ export default function DeathlessTable({
               );
             }
 
-            const profileSummary = profileSummaries.get(row.player.id) ?? [];
             const displayRank = row.displayRank ?? row.rank;
             const rankDelta =
               row.comparisonDisplayRank === undefined
                 ? undefined
                 : displayRank - row.comparisonDisplayRank;
-            const weightedScoreValue =
-              rankingMode === 'weighted'
-                ? formatWeightedScore(
-                    row.weightedScore,
-                    useRawWeightedScore,
-                    log2WeightedDisplayScale,
-                  )
+            const peerScoreValue =
+              rankingMode === 'peer'
+                ? row.displayScope === 'World' ? '—' : formatPeerScore(row.peerScore)
                 : '0';
-            const weightedComparisonValue =
-              rankingMode === 'weighted' &&
-              row.comparisonWeightedScore !== undefined
-                ? getWeightedDisplayValue(
-                    row.comparisonWeightedScore,
-                    useRawWeightedScore,
-                    log2WeightedDisplayScale,
-                  )
+            const peerComparisonValue =
+              rankingMode === 'peer' &&
+              row.comparisonPeerScore !== undefined
+                ? row.comparisonPeerScore
                 : undefined;
-            const weightedDelta =
-              rankingMode === 'weighted' && weightedComparisonValue !== undefined
-                ? getWeightedDisplayValue(
-                    row.weightedScore,
-                    useRawWeightedScore,
-                    log2WeightedDisplayScale,
-                  ) - weightedComparisonValue
+            const peerDelta =
+              rankingMode === 'peer' && peerComparisonValue !== undefined && row.displayScope !== 'World'
+                ? row.peerScore - peerComparisonValue
                 : undefined;
             const podiumClassName =
               displayMode === 'person' && row.rank === 1
@@ -356,54 +286,36 @@ export default function DeathlessTable({
                   row,
                   displayMode,
                   rankingMode,
-                  weightedDisplayScale,
-                  profileSummary,
+                  rankingTiers,
                   isMobileLayout,
                 )}
-                {rankingMode === 'weighted' && isMobileLayout && (
+                {rankingMode === 'peer' && isMobileLayout && (
                   <td className={styles['score-cell']}>
                     <div className={styles['score-value']}>
-                      <div>{weightedScoreValue}</div>
+                      <div>{peerScoreValue}</div>
                       <div className={styles['score-delta']}>
-                        <DifferenceValue value={weightedDelta} show={showDifferences} />
+                        <DifferenceValue value={peerDelta} show={showDifferences} decimals={2} />
                       </div>
                     </div>
                   </td>
                 )}
-                {rankingMode === 'weighted' && !isMobileLayout && (
+                {rankingMode === 'peer' && !isMobileLayout && (
                   <td className={styles['score-cell']}>
                     <div className={styles['score-value']}>
-                      <div>{weightedScoreValue}</div>
+                      <div>{peerScoreValue}</div>
                       <div className={styles['score-delta']}>
-                        <DifferenceValue value={weightedDelta} show={showDifferences} />
+                        <DifferenceValue value={peerDelta} show={showDifferences} decimals={2} />
                       </div>
                     </div>
                   </td>
                 )}
                 {!isMobileLayout && (
                   <td className={styles['profile-cell']}>
-                    <div className={styles['profile-row']}>
-                      <div className={styles['profile-preview-and-more']}>
-                        <div className={styles['profile-preview-column']}>
-                          {profileSummary.length > 0 ? (
-                            <ProfileFingerprint
-                              preview={getProfilePreviewMetrics(
-                                profileSummary,
-                                weightedDisplayScale,
-                              )}
-                              showTooltips={rankingMode === 'weighted'}
-                            />
-                          ) : (
-                            <span
-                              className={styles['profile-empty']}
-                              aria-hidden="true"
-                            >
-                              &nbsp;
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
+                    {rankingMode === 'absolute' ? (
+                      <TierPills tierProfile={row.tierProfile} tiers={rankingTiers} />
+                    ) : (
+                      <PeerRecord row={row} tiers={rankingTiers} />
+                    )}
                   </td>
                 )}
                 {!isMobileLayout && (

@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useDeathlessData } from './useDeathlessData';
 import {
@@ -10,16 +10,13 @@ import {
   parseLocationParam,
 } from '../location';
 import { filterPlayersByLocation } from '../comparison';
+import { scorePeerProfiles, type PeerScore } from '../peer';
 import {
-  buildTierWeights,
   compareTierProfiles,
-  getProfileSummary,
   PAGE_SIZE,
-  SCORE_SCALE,
   type DeathlessDisplayRow,
   type RankedPlayer,
   type RankingMode,
-  scorePlayer,
 } from '../utils';
 
 export function useDeathlessViewModel() {
@@ -27,7 +24,6 @@ export function useDeathlessViewModel() {
     tiers,
     players,
     comparisonPlayers,
-    globalCounts,
     loading,
     error,
   } = useDeathlessData();
@@ -35,7 +31,6 @@ export function useDeathlessViewModel() {
   const [includeZeroes, setIncludeZeroes] = useState(false);
   const [showDifferences, setShowDifferences] = useState(false);
   const [nameSearch, setNameSearch] = useState('');
-  const [useRawWeightedScore, setUseRawWeightedScore] = useState(false);
   const [isMobileLayout, setIsMobileLayout] = useState(false);
   const [isLocationMenuOpen, setIsLocationMenuOpen] = useState(false);
 
@@ -54,19 +49,13 @@ export function useDeathlessViewModel() {
     };
   }, []);
 
-  const selectedModeValue = searchParams.get('mode') ?? 'absolute';
+  const selectedModeValue = searchParams.get('mode') ?? 'peer';
   const rankingMode: RankingMode =
-    selectedModeValue === 'weighted' ? 'weighted' : 'absolute';
+    selectedModeValue === 'absolute' ? 'absolute' : 'peer';
   const displayMode: DisplayModeValue = parseDisplayParam(
     searchParams.get('display'),
   );
   const location = parseLocationParam(searchParams.get('location'));
-
-  useEffect(() => {
-    if (displayMode === 'region' && nameSearch) {
-      setNameSearch('');
-    }
-  }, [displayMode, nameSearch]);
 
   const currentPageParam = Number(searchParams.get('page') ?? '1');
   const currentPage =
@@ -118,28 +107,19 @@ export function useDeathlessViewModel() {
     [tiers],
   );
 
-  const weightedTierScores = useMemo(
-    () => buildTierWeights(rankingTiers, globalCounts),
-    [globalCounts, rankingTiers],
+  const profileOf = useCallback(
+    (entry: (typeof players)[number]) =>
+      rankingTiers.map((tier) => entry.clears[String(tier.id)] ?? 0),
+    [rankingTiers],
   );
-
-  const comparisonGlobalCounts = useMemo(() => {
-    return comparisonPlayers.reduce<Record<string, number>>(
-      (result, entry) => {
-        Object.entries(entry.clears).forEach(([tierId, clears]) => {
-          result[tierId] = (result[tierId] ?? 0) + clears;
-        });
-
-        return result;
-      },
-      {},
-    );
-  }, [comparisonPlayers]);
-
-  const comparisonWeightedTierScores = useMemo(
-    () => buildTierWeights(rankingTiers, comparisonGlobalCounts),
-    [comparisonGlobalCounts, rankingTiers],
-  );
+  const peerScores = useMemo(() => {
+    const scores = scorePeerProfiles(players.map(profileOf));
+    return new Map(players.map((entry, index) => [entry.player.id, scores[index]] as const));
+  }, [players, profileOf]);
+  const comparisonPeerScores = useMemo(() => {
+    const scores = scorePeerProfiles(comparisonPlayers.map(profileOf));
+    return new Map(comparisonPlayers.map((entry, index) => [entry.player.id, scores[index]] as const));
+  }, [comparisonPlayers, profileOf]);
 
   const comparisonPlayerById = useMemo(
     () =>
@@ -149,52 +129,37 @@ export function useDeathlessViewModel() {
     [comparisonPlayers],
   );
 
-  const weightedDisplayScale = useMemo(() => {
-    return 1;
-  }, [weightedTierScores]);
 
-  const buildRankedPlayers = (
+  const buildRankedPlayers = useCallback((
     sourcePlayers: typeof players,
-    tierWeights: Map<number, { cumulativeShare: number; weight: number }>,
+    scores: Map<number, PeerScore>,
   ) => {
     const filtered = sourcePlayers
       .map<RankedPlayer>((entry) => {
-        const tierProfile = rankingTiers.map(
-          (tier) => entry.clears[String(tier.id)] ?? 0,
-        );
-        const weightedScoreResult =
-          rankingMode === 'weighted'
-            ? scorePlayer(
-                entry.clears,
-                rankingTiers,
-                tierWeights,
-                SCORE_SCALE,
-              )
-            : { score: 0, scoreKey: 0 };
+        const tierProfile = profileOf(entry);
+        const peerScoreResult = scores.get(entry.player.id) ?? {
+          percent: 0,
+          key: 0,
+          thresholds: tierProfile.map((cumulative) => ({ cumulative, standing: null })),
+        };
         const comparisonPlayer = comparisonPlayerById.get(entry.player.id);
-        const comparisonWeightedScoreResult =
-          rankingMode === 'weighted' && comparisonPlayer
-            ? scorePlayer(
-                comparisonPlayer.clears,
-                rankingTiers,
-                comparisonWeightedTierScores,
-                SCORE_SCALE,
-              )
-            : { score: 0, scoreKey: 0 };
+        const comparisonPeerScoreResult =
+          comparisonPlayer ? comparisonPeerScores.get(entry.player.id) : undefined;
 
         return {
           ...entry,
           tierProfile,
-          weightedScore: weightedScoreResult.score,
-          weightedScoreKey: weightedScoreResult.scoreKey,
-          comparisonWeightedScore: comparisonWeightedScoreResult.score,
+          peerScore: peerScoreResult.percent,
+          peerScoreKey: peerScoreResult.key,
+          peerThresholds: peerScoreResult.thresholds,
+          comparisonPeerScore: comparisonPeerScoreResult?.percent,
           rank: 0,
         };
       })
       .filter((entry) => includeZeroes || entry.total > 0)
       .sort((left, right) => {
-        if (rankingMode === 'weighted') {
-          const scoreDiff = right.weightedScoreKey - left.weightedScoreKey;
+        if (rankingMode === 'peer') {
+          const scoreDiff = right.peerScoreKey - left.peerScoreKey;
           if (scoreDiff !== 0) {
             return scoreDiff;
           }
@@ -221,8 +186,8 @@ export function useDeathlessViewModel() {
       const previous = result[result.length - 1];
       const isTie =
         previous &&
-        (rankingMode === 'weighted'
-          ? previous.weightedScoreKey === entry.weightedScoreKey
+        (rankingMode === 'peer'
+          ? previous.peerScoreKey === entry.peerScoreKey
           : previous.total === entry.total &&
             previous.tierProfile.length === entry.tierProfile.length &&
             previous.tierProfile.every(
@@ -236,29 +201,23 @@ export function useDeathlessViewModel() {
 
       return result;
     }, []);
-  };
+  }, [comparisonPeerScores, comparisonPlayerById, includeZeroes, profileOf, rankingMode]);
   
   const rankedPlayersAll = useMemo(
-    () => buildRankedPlayers(locationFilteredPlayers, weightedTierScores),
+    () => buildRankedPlayers(locationFilteredPlayers, peerScores),
     [
-      includeZeroes,
       locationFilteredPlayers,
-      rankingMode,
-      rankingTiers,
-      weightedTierScores,
-      comparisonWeightedTierScores,
+      peerScores,
+      buildRankedPlayers,
     ],
   );
 
   const comparisonRankedPlayersAll = useMemo(
-    () => buildRankedPlayers(comparisonLocationFilteredPlayers, comparisonWeightedTierScores),
+    () => buildRankedPlayers(comparisonLocationFilteredPlayers, comparisonPeerScores),
     [
       comparisonLocationFilteredPlayers,
-      comparisonWeightedTierScores,
-      includeZeroes,
-      rankingMode,
-      rankingTiers,
-      weightedTierScores,
+      comparisonPeerScores,
+      buildRankedPlayers,
     ],
   );
 
@@ -273,18 +232,15 @@ export function useDeathlessViewModel() {
   const globalRankByPlayerId = useMemo(
     () =>
       new Map<number, number>(
-        buildRankedPlayers(players, weightedTierScores).map((row) => [
+        buildRankedPlayers(players, peerScores).map((row) => [
           row.player.id,
           row.rank,
         ]),
       ),
     [
       players,
-      includeZeroes,
-      rankingMode,
-      rankingTiers,
-      weightedTierScores,
-      comparisonWeightedTierScores,
+      peerScores,
+      buildRankedPlayers,
     ],
   );
 
@@ -313,7 +269,7 @@ export function useDeathlessViewModel() {
         displayRank: row.rank,
         globalRank: globalRankByPlayerId.get(row.player.id),
         comparisonDisplayRank: comparisonRankByPlayerId.get(row.player.id),
-        comparisonWeightedScore: row.comparisonWeightedScore,
+        comparisonPeerScore: row.comparisonPeerScore,
       })),
     [comparisonRankByPlayerId, globalRankByPlayerId, rankedPlayers],
   );
@@ -332,7 +288,6 @@ export function useDeathlessViewModel() {
     };
 
     const buildAggregateRows = (
-      tierWeights: Map<number, { cumulativeShare: number; weight: number }>,
       sourceRows: RankedPlayer[],
       rowKeyPrefix: string,
       groupKeySelector: (row: RankedPlayer) => string,
@@ -386,15 +341,6 @@ export function useDeathlessViewModel() {
       const aggregateRows = Array.from(groups.entries()).map(
         ([key, group]): RankedPlayer & { displayScope: string } => {
         const tierProfile = rankingTiers.map((tier) => group.clears[String(tier.id)] ?? 0);
-        const weightedScoreResult =
-          rankingMode === 'weighted'
-            ? scorePlayer(
-                group.clears,
-                rankingTiers,
-                tierWeights,
-                SCORE_SCALE,
-              )
-            : { score: 0, scoreKey: 0 };
 
         const player =
           rowKeyPrefix === 'country'
@@ -432,8 +378,9 @@ export function useDeathlessViewModel() {
           clears: group.clears,
           total: group.total,
           tierProfile,
-          weightedScore: weightedScoreResult.score,
-          weightedScoreKey: weightedScoreResult.scoreKey,
+          peerScore: 0,
+          peerScoreKey: 0,
+          peerThresholds: [],
           rank: 0,
           displayScope: group.label,
         };
@@ -442,10 +389,16 @@ export function useDeathlessViewModel() {
       const visibleAggregateRows = aggregateRows.filter(
         (row) => row.displayScope !== 'Unknown',
       );
+      const groupScores = scorePeerProfiles(visibleAggregateRows.map((row) => row.tierProfile));
+      visibleAggregateRows.forEach((row, index) => {
+        row.peerScore = groupScores[index].percent;
+        row.peerScoreKey = groupScores[index].key;
+        row.peerThresholds = groupScores[index].thresholds;
+      });
 
       visibleAggregateRows.sort((left, right) => {
-        if (rankingMode === 'weighted') {
-          const scoreDiff = right.weightedScoreKey - left.weightedScoreKey;
+        if (rankingMode === 'peer') {
+          const scoreDiff = right.peerScoreKey - left.peerScoreKey;
           if (scoreDiff !== 0) {
             return scoreDiff;
           }
@@ -468,8 +421,8 @@ export function useDeathlessViewModel() {
         const previous = result[result.length - 1];
         const isTie =
           previous &&
-          (rankingMode === 'weighted'
-            ? previous.weightedScoreKey === entry.weightedScoreKey
+          (rankingMode === 'peer'
+            ? previous.peerScoreKey === entry.peerScoreKey
             : previous.total === entry.total &&
               previous.tierProfile.length === entry.tierProfile.length &&
               previous.tierProfile.every(
@@ -487,10 +440,9 @@ export function useDeathlessViewModel() {
 
     const comparisonRankedRows = buildRankedPlayers(
       comparisonLocationFilteredPlayers,
-      comparisonWeightedTierScores,
+      comparisonPeerScores,
     );
     const comparisonWorldRows = buildAggregateRows(
-      comparisonWeightedTierScores,
       comparisonRankedRows,
       'world',
       () => 'world',
@@ -499,10 +451,9 @@ export function useDeathlessViewModel() {
     const comparisonWorldRanks = new Map<string, { rank: number; score: number }>(
       comparisonWorldRows
         .filter((row) => row.displayScope !== 'Unknown')
-        .map((row) => [`world:${row.displayScope}`, { rank: row.rank, score: row.weightedScore }]),
+        .map((row) => [`world:${row.displayScope}`, { rank: row.rank, score: row.peerScore }]),
     );
     const comparisonContinentRows = buildAggregateRows(
-      comparisonWeightedTierScores,
       comparisonRankedRows,
       'continent',
       (row) => row.player.continent ?? 'Unknown',
@@ -511,10 +462,9 @@ export function useDeathlessViewModel() {
     const comparisonContinentRanks = new Map<string, { rank: number; score: number }>(
       comparisonContinentRows
         .filter((row) => row.displayScope !== 'Unknown')
-        .map((row) => [`continent:${row.displayScope}`, { rank: row.rank, score: row.weightedScore }]),
+        .map((row) => [`continent:${row.displayScope}`, { rank: row.rank, score: row.peerScore }]),
     );
     const comparisonCountryRows = buildAggregateRows(
-      comparisonWeightedTierScores,
       comparisonRankedRows,
       'country',
       (row) => row.player.countryCode ?? 'unknown',
@@ -523,7 +473,7 @@ export function useDeathlessViewModel() {
     const comparisonCountryRanks = new Map<string, { rank: number; score: number }>(
       comparisonCountryRows
         .filter((row) => row.displayScope !== 'Unknown')
-        .map((row) => [`country:${row.displayScope}`, { rank: row.rank, score: row.weightedScore }]),
+        .map((row) => [`country:${row.displayScope}`, { rank: row.rank, score: row.peerScore }]),
     );
 
     rankedRows.push({
@@ -533,7 +483,6 @@ export function useDeathlessViewModel() {
     });
     rankedRows.push(
       ...buildAggregateRows(
-        weightedTierScores,
         rankedPlayersAll,
         'world',
         () => 'world',
@@ -543,7 +492,7 @@ export function useDeathlessViewModel() {
         rowType: 'row' as const,
         rowKey: `world-${row.player.id}-${row.rank}`,
         comparisonDisplayRank: comparisonWorldRanks.get('world:World')?.rank,
-        comparisonWeightedScore: comparisonWorldRanks.get('world:World')?.score,
+        comparisonPeerScore: comparisonWorldRanks.get('world:World')?.score,
       })),
     );
 
@@ -554,7 +503,6 @@ export function useDeathlessViewModel() {
     });
     rankedRows.push(
       ...buildAggregateRows(
-        weightedTierScores,
         rankedPlayersAll,
         'continent',
         (row) => row.player.continent ?? 'Unknown',
@@ -566,7 +514,7 @@ export function useDeathlessViewModel() {
         comparisonDisplayRank: comparisonContinentRanks.get(
           `continent:${row.displayScope}`,
         )?.rank,
-        comparisonWeightedScore: comparisonContinentRanks.get(
+        comparisonPeerScore: comparisonContinentRanks.get(
           `continent:${row.displayScope}`,
         )?.score,
       })),
@@ -579,7 +527,6 @@ export function useDeathlessViewModel() {
     });
     rankedRows.push(
       ...buildAggregateRows(
-        weightedTierScores,
         rankedPlayersAll,
         'country',
         (row) => row.player.countryCode ?? 'unknown',
@@ -591,7 +538,7 @@ export function useDeathlessViewModel() {
         comparisonDisplayRank: comparisonCountryRanks.get(
           `country:${row.displayScope}`,
         )?.rank,
-        comparisonWeightedScore: comparisonCountryRanks.get(
+        comparisonPeerScore: comparisonCountryRanks.get(
           `country:${row.displayScope}`,
         )?.score,
       })),
@@ -600,33 +547,14 @@ export function useDeathlessViewModel() {
     return rankedRows;
   }, [
     comparisonLocationFilteredPlayers,
-    comparisonWeightedTierScores,
+    comparisonPeerScores,
+    buildRankedPlayers,
     rankingMode,
     rankingTiers,
     rankedPlayersAll,
-    weightedTierScores,
   ]);
 
   const displayedRows = displayMode === 'person' ? personRows : regionRows;
-
-  const log2WeightedDisplayScale = useMemo(() => {
-    if (rankingMode !== 'weighted') {
-      return 1;
-    }
-
-    const easiestTier = rankingTiers[rankingTiers.length - 1];
-    const lowestTierScore = easiestTier
-      ? weightedTierScores.get(easiestTier.id)?.weight ?? 0
-      : 0;
-
-    if (lowestTierScore <= 0) {
-      return 1;
-    }
-
-    const log2Minimum = Math.log2(lowestTierScore + 1);
-
-    return log2Minimum > 0 ? 1000 / log2Minimum : 1;
-  }, [rankingMode, rankingTiers, weightedTierScores]);
 
   const pageCount = Math.max(1, Math.ceil(displayedRows.length / PAGE_SIZE));
   const effectivePage = Math.min(currentPage, pageCount);
@@ -636,19 +564,6 @@ export function useDeathlessViewModel() {
   const pageRows = displayedRows.slice(
     (effectivePage - 1) * PAGE_SIZE,
     effectivePage * PAGE_SIZE,
-  );
-
-  const profileSummaries = useMemo(
-    () =>
-      new Map(
-        pageRows
-          .filter((row): row is Extract<DeathlessDisplayRow, { rowType: 'row' }> => row.rowType === 'row')
-          .map((row) => [
-            row.player.id,
-            getProfileSummary(row.tierProfile, rankingTiers, weightedTierScores),
-          ]),
-      ),
-    [pageRows, rankingTiers, weightedTierScores],
   );
 
   const totalClears = useMemo(
@@ -673,6 +588,7 @@ export function useDeathlessViewModel() {
   };
 
   const handleDisplayModeChange = (nextDisplayMode: DisplayModeValue) => {
+    if (nextDisplayMode === 'region') setNameSearch('');
     updateSearchParams({
       display: nextDisplayMode,
       page: '1',
@@ -697,9 +613,6 @@ export function useDeathlessViewModel() {
   return {
     loading,
     error,
-    comparisonPlayers,
-    comparisonGlobalCounts,
-    comparisonWeightedTierScores,
     includeZeroes,
     setIncludeZeroes,
     showDifferences,
@@ -715,24 +628,18 @@ export function useDeathlessViewModel() {
     setIsLocationMenuOpen,
     nameSearch,
     setNameSearch,
-    weightedTierScores,
-    weightedDisplayScale,
-    log2WeightedDisplayScale,
     rankedPlayers,
     pageCount,
     effectivePage,
     pageStart,
     pageEnd,
     pageRows,
-    profileSummaries,
     totalClears,
     isMobileLayout,
     handlePageChange,
     handleModeChange,
     handleDisplayModeChange,
     handleLocationChange,
-    useRawWeightedScore,
-    setUseRawWeightedScore,
   };
 }
 

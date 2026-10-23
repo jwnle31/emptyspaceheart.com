@@ -6,8 +6,6 @@ import styles from './Deathless.module.css';
 import DeathlessTable from './deathless/components/DeathlessTable';
 import LocationFilter from './deathless/components/LocationFilter';
 import Pagination from './deathless/components/Pagination';
-import WeightedLegend from './deathless/components/WeightedLegend';
-import Latex from './deathless/components/Latex';
 import { getMonthStartKey } from './deathless/comparison';
 import { useDeathlessViewModel } from './deathless/hooks/useDeathlessViewModel';
 import { formatNumber } from './deathless/utils';
@@ -21,7 +19,6 @@ function Deathless() {
     rankingMode,
     displayMode,
     rankedPlayers,
-    rankingTiers,
     countries,
     location,
     locationGroups,
@@ -29,12 +26,7 @@ function Deathless() {
     setIsLocationMenuOpen,
     nameSearch,
     setNameSearch,
-    weightedTierScores,
-    comparisonWeightedTierScores,
-    weightedDisplayScale,
-    log2WeightedDisplayScale,
-    useRawWeightedScore,
-    setUseRawWeightedScore,
+    rankingTiers,
     showDifferences,
     setShowDifferences,
     pageCount,
@@ -42,7 +34,6 @@ function Deathless() {
     pageStart,
     pageEnd,
     pageRows,
-    profileSummaries,
     totalClears,
     isMobileLayout,
     handlePageChange,
@@ -56,7 +47,7 @@ function Deathless() {
     <>
       <SEO
         title="Deathless"
-        description="Goldberries deathless challenge rankings by tier profile"
+        description="Goldberries deathless challenge rankings by peer comparison"
       />
       <section className={styles.page}>
         <div className={styles['img-wrapper']}>
@@ -103,15 +94,15 @@ function Deathless() {
                 <button
                   type="button"
                   className={
-                    rankingMode === 'weighted'
+                    rankingMode === 'peer'
                       ? styles['display-toggle-active']
                       : undefined
                   }
                   onClick={() => {
-                    handleModeChange('weighted');
+                    handleModeChange('peer');
                   }}
                 >
-                  Weighted
+                  Peer
                 </button>
               </div>
             </div>
@@ -194,19 +185,6 @@ function Deathless() {
             )}
 
             <div className={styles['controls-utility']}>
-              {rankingMode === 'weighted' && (
-                <label className={styles['toggle-control']}>
-                  <input
-                    type="checkbox"
-                    checked={useRawWeightedScore}
-                    onChange={(event) => {
-                      setUseRawWeightedScore(event.target.checked);
-                    }}
-                  />
-                  <span>Raw</span>
-                </label>
-              )}
-
               <label className={styles['toggle-control']}>
                 <input
                   type="checkbox"
@@ -253,17 +231,17 @@ function Deathless() {
           ? 'Absolute mode ranks players by the full tier-clear profile, from higher tiers down.'
             : (
                 <>
-                  Weighted mode defines a tier value from the cumulative global
-                  tail probability at or above that tier, then scores each
-                  player by the linear sum of their tier clears multiplied by
-                  those values. When Raw mode is turned off, the displayed
-                  score is transformed by <Latex expression="\log_2(S+1)" />{' '}
-                  and then linearly rescaled so the lowest tier reads as 1000.
-                  Clicking a tier pill shows that tier&apos;s raw score contribution.
+                  Peer mode compares each player&apos;s cumulative clears at every
+                  tier threshold with every other active player. A win earns 1
+                  point, a tie earns ½, and a loss earns 0. The score is the
+                  percentage of possible points across all thresholds. Players
+                  are ranked by their exact point total before rounding the
+                  displayed percentage. Region scores compare continents with
+                  continents and countries with countries. Open a Peer record
+                  to see the cumulative clears and standing at each threshold.
                 </>
               )}
         </p>
-
         {error ? (
           <p className={styles.message}>{error}</p>
         ) : (
@@ -286,10 +264,7 @@ function Deathless() {
               location={location}
               rankingMode={rankingMode}
               rows={pageRows}
-              profileSummaries={profileSummaries}
-              weightedDisplayScale={weightedDisplayScale}
-              log2WeightedDisplayScale={log2WeightedDisplayScale}
-              useRawWeightedScore={useRawWeightedScore}
+              rankingTiers={rankingTiers}
               showDifferences={showDifferences}
               isMobileLayout={isMobileLayout}
             />
@@ -307,17 +282,6 @@ function Deathless() {
               />
             )}
 
-            {rankingMode === 'weighted' && <Breathe />}
-
-            {rankingMode === 'weighted' && (
-              <WeightedLegend
-                rankingTiers={rankingTiers}
-                weightedTierScores={weightedTierScores}
-                comparisonWeightedTierScores={comparisonWeightedTierScores}
-                weightedDisplayScale={weightedDisplayScale}
-                showDifferences={showDifferences}
-              />
-            )}
           </>
         )}
       </section>

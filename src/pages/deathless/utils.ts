@@ -1,9 +1,9 @@
-﻿import { type CSSProperties } from 'react';
+import { type CSSProperties } from 'react';
 import { type DeathlessPlayerTierClearCounts } from './hooks/useDeathlessData';
+import type { PeerThreshold } from './peer';
 
 export const PAGE_SIZE = 100;
 export const GOLD_BERRIES_API_DOCS = 'https://goldberries.net/api-docs';
-export const SCORE_SCALE = 1_000_000;
 
 export const DIFFICULTY_COLORS: Record<number, string> = {
   26: '#bd60ff',
@@ -32,21 +32,14 @@ export const DIFFICULTY_COLORS: Record<number, string> = {
   19: '#aaaaaa',
 };
 
-export type RankingMode = 'absolute' | 'weighted';
-
-export type ProfileSummaryEntry = {
-  tierWeight: number;
-  tierId: number;
-  tierName: string;
-  clears: number;
-  tooltip: string;
-};
+export type RankingMode = 'absolute' | 'peer';
 
 export type RankedPlayer = DeathlessPlayerTierClearCounts & {
   tierProfile: number[];
-  weightedScore: number;
-  weightedScoreKey: number;
-  comparisonWeightedScore?: number;
+  peerScore: number;
+  peerScoreKey: number;
+  peerThresholds: PeerThreshold[];
+  comparisonPeerScore?: number;
   rank: number;
   globalRank?: number;
 };
@@ -64,7 +57,7 @@ export type DeathlessDisplayRow =
       displayScope?: string;
       globalRank?: number;
       comparisonDisplayRank?: number;
-      comparisonWeightedScore?: number;
+      comparisonPeerScore?: number;
     });
 
 export function formatNumber(value: number) {
@@ -116,104 +109,3 @@ export function compareTierProfiles(left: number[], right: number[]) {
 
   return 0;
 }
-
-export function buildTierWeights(
-  tiers: { id: number; sort: number }[],
-  globalCounts: Record<string, number>,
-): Map<number, { cumulativeShare: number; weight: number }> {
-  const orderedTiers = tiers
-    .filter((tier) => tier.sort > 0)
-    .sort((left, right) => left.sort - right.sort);
-
-  const totalClears = orderedTiers.reduce(
-    (sum, tier) => sum + (globalCounts[String(tier.id)] ?? 0),
-    0,
-  );
-
-  if (totalClears === 0) {
-    return new Map<number, { cumulativeShare: number; weight: number }>();
-  }
-
-  const rawWeights = orderedTiers.map((tier) => {
-    const cumulativeClears = orderedTiers
-      .filter((nextTier) => nextTier.sort >= tier.sort)
-      .reduce(
-        (sum, nextTier) => sum + (globalCounts[String(nextTier.id)] ?? 0),
-        0,
-      );
-    const cumulativeShare = cumulativeClears / totalClears;
-    const rawWeight = cumulativeShare > 0 ? 1 / cumulativeShare : 0;
-
-    return {
-      tierId: tier.id,
-      cumulativeShare,
-      rawWeight,
-    };
-  });
-
-  const weights = new Map<number, { cumulativeShare: number; weight: number }>();
-
-  rawWeights.forEach((entry) => {
-    weights.set(entry.tierId, {
-      cumulativeShare: entry.cumulativeShare,
-      weight: entry.rawWeight,
-    });
-  });
-
-  return weights;
-}
-
-export function scorePlayer(
-  playerClears: Record<string, number>,
-  tiers: { id: number }[],
-  tierWeights: Map<number, { cumulativeShare: number; weight: number }>,
-  scale: number,
-) {
-  const score = tiers.reduce((sum, tier) => {
-    const clears = playerClears[String(tier.id)] ?? 0;
-    if (clears === 0) {
-      return sum;
-    }
-
-    const weight = tierWeights.get(tier.id)?.weight ?? 0;
-
-    return sum + clears * weight;
-  }, 0);
-
-  return {
-    score,
-    scoreKey: Math.round(score * scale),
-  };
-}
-
-export function getProfileSummary(
-  tierProfile: number[],
-  rankingTiers: { id: number; name: string; sort: number }[],
-  tierWeights: Map<number, { cumulativeShare: number; weight: number }>,
-) {
-  return rankingTiers
-    .map<ProfileSummaryEntry>((tier, index) => ({
-      tierId: tier.id,
-      tierName: tier.name,
-      clears: tierProfile[index] ?? 0,
-      tierWeight: tierWeights.get(tier.id)?.weight ?? 0,
-      tooltip: '',
-    }))
-    .filter((entry) => entry.clears > 0);
-}
-
-export function getProfilePreviewMetrics(
-  preview: ProfileSummaryEntry[],
-  weightedScale: number,
-) {
-  if (preview.length === 0) {
-    return null;
-  }
-
-  return preview.map((entry: ProfileSummaryEntry) => ({
-    ...entry,
-    color: getTierColor(entry.tierId),
-    tooltip: `${formatNumber(Math.round(entry.tierWeight * weightedScale))} × ${formatNumber(entry.clears)} = ${formatNumber(Math.round(entry.tierWeight * entry.clears * weightedScale))}`,
-  }));
-}
-
