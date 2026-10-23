@@ -5,29 +5,6 @@
   color: var(--theme-color);
 }
 
-.compact {
-  width: min(24rem, calc(100vw - 2rem));
-}
-
-.compact .primary {
-  flex-direction: column;
-  gap: 1.1rem;
-}
-
-.compact .identity {
-  min-width: 0;
-}
-
-.compact .navigation {
-  justify-content: flex-start;
-  max-width: none;
-  padding-top: 0;
-}
-
-.compact .secondary {
-  flex-wrap: wrap;
-}
-
 .inner {
   padding-top: 1.4rem;
 }
@@ -103,10 +80,6 @@
     width: min(100% - 1.5rem, 68rem);
     margin-top: 3rem;
     margin-bottom: 1.5rem;
-  }
-
-  .compact {
-    width: min(24rem, calc(100vw - 1.5rem));
   }
 
   .primary {

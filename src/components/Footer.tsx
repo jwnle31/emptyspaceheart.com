@@ -1,12 +1,9 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
 
 function Footer() {
-  const { pathname } = useLocation();
-  const widePage = pathname === '/' || pathname === '/about' || pathname === '/speedrunning' || pathname.startsWith('/deathless');
-
   return (
-    <footer className={`${styles.footer} ${widePage ? '' : styles.compact}`}>
+    <footer className={styles.footer}>
       <div className={styles.inner}>
         <div className={styles.primary}>
           <div className={styles.identity}>
