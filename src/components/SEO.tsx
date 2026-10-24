@@ -1,4 +1,7 @@
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
+import { useLocale } from '../i18n/locale';
+import { SITE_DESCRIPTION } from '../i18n/common';
 
 type SEOProps = {
   title?: string;
@@ -8,21 +11,24 @@ type SEOProps = {
 
 function SEO({
   title,
-  description = 'A minimalist hub for Celeste',
+  description = SITE_DESCRIPTION,
   noIndex = false,
 }: SEOProps) {
+  const locale = useLocale();
+  const { pathname } = useLocation();
   const fullTitle = title
     ? `${title} - Empty Space Heart`
     : 'Empty Space Heart';
 
-  const currentUrl = window.location.pathname;
-  const fullUrl = `https://emptyspaceheart.com${currentUrl}`;
+  const fullUrl = `https://emptyspaceheart.com${pathname}`;
   const imageUrl = 'https://emptyspaceheart.com/favicon.png';
 
   return (
     <Helmet>
+      <html lang={locale} />
       <title>{fullTitle}</title>
 
+      <link rel="canonical" href={fullUrl} />
       <meta name="description" content={description} />
 
       {noIndex && <meta name="robots" content="noindex" />}

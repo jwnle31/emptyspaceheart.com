@@ -4,19 +4,24 @@ import Breathe from '../components/Breathe';
 import SEO from '../components/SEO';
 import EmptySpaceHeart from '../assets/gifs/emptyspaceheart.gif';
 import type { Category } from '../types/Category';
+import { homeCopy } from '../i18n/home';
+import { useLocale } from '../i18n/locale';
 
-const categories: { title: string; category: Category }[] = [
-  { title: 'Official', category: 'official' },
-  { title: 'General', category: 'general' },
-  { title: 'Discord', category: 'discord-global' },
-  { title: 'Modding', category: 'modding' },
-  { title: 'Challenges', category: 'challenge' },
-  { title: 'Speedrunning', category: 'speedrunning' },
-  { title: 'Merch', category: 'merch' },
-  { title: 'Misc.', category: 'misc' },
+const categories: Category[] = [
+  'official',
+  'general',
+  'discord-global',
+  'modding',
+  'challenge',
+  'speedrunning',
+  'merch',
+  'misc',
 ];
 
 function Home() {
+  const locale = useLocale();
+  const copy = homeCopy[locale];
+
   return (
     <>
       <SEO />
@@ -37,18 +42,23 @@ function Home() {
 
         <Breathe />
 
-        <nav className={styles['category-nav']} aria-label="Resource categories">
-          <span>Browse</span>
+        <nav className={styles['category-nav']} aria-label={copy.categoryNavLabel}>
+          <span>{copy.browse}</span>
           <div className={styles['category-links']}>
-            {categories.map(({ title, category }) => (
-              <a href={`#${category}`} key={category}>{title}</a>
+            {categories.map((category) => (
+              <a href={`#${category}`} key={category}>{copy.categories[category]}</a>
             ))}
           </div>
         </nav>
 
         <div className={styles['resource-grid']}>
-          {categories.map(({ title, category }) => (
-            <List title={title} category={category} key={category} />
+          {categories.map((category) => (
+            <List
+              title={copy.categories[category]}
+              category={category}
+              linksLabel={copy.linksLabel}
+              key={category}
+            />
           ))}
         </div>
       </main>

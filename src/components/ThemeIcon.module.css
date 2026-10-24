@@ -1,5 +1,8 @@
 .theme-toggle {
-  margin: 1rem;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
   border: 0;
   background: none;
   cursor: pointer;

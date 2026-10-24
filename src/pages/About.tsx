@@ -17,7 +17,7 @@ function About() {
         <div className={styles.content}>
           <div className={styles.story}>
             <p className={styles.lead}>
-              emptyspaceheart.com is a minimalist hub for Celeste resources.
+              emptyspaceheart.com is a minimalist hub for Celeste.
             </p>
             <p>
               Named after a fleeting heart, it serves as a reminder: no matter
