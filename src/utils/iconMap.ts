@@ -9,6 +9,7 @@ import {
   IconFileSpreadsheet,
   IconBrandTrello,
   IconFileTypeDoc,
+  IconFileTypePdf,
   IconShoppingBag,
 } from '@tabler/icons-react';
 
@@ -23,5 +24,6 @@ export const iconMap = {
   'file-spreadsheet': IconFileSpreadsheet,
   'brand-trello': IconBrandTrello,
   'file-type-doc': IconFileTypeDoc,
+  'file-type-pdf': IconFileTypePdf,
   'shopping-bag': IconShoppingBag,
 } as const;

@@ -82,11 +82,21 @@
   {
     "type": "general",
     "icon": "world",
-    "text": "Celeste Wiki",
+    "text": "celeste.ink",
     "url": "https://celeste.ink/",
     "description": {
       "en": "Community-maintained Celeste reference wiki",
       "ko": "커뮤니티가 관리하는 셀레스트 위키"
+    }
+  },
+  {
+    "type": "general",
+    "icon": "world",
+    "text": "Namu Wiki (Celeste)",
+    "url": "https://namu.wiki/w/Celeste",
+    "description": {
+      "en": "Korean-language wiki article about Celeste",
+      "ko": "셀레스트를 다룬 나무위키 문서"
     }
   },
   {
@@ -114,7 +124,7 @@
     "type": "discord-global",
     "icon": "brand-discord",
     "text": "Celeste Brasil",
-    "url": "https://discord.gg/celeste-brasil",
+    "url": "https://discord.gg/WVDVM96",
     "description": {
       "en": "Brazilian Celeste community Discord",
       "ko": "브라질 셀레스트 커뮤니티 디스코드"
@@ -128,7 +138,7 @@
     "url": "https://discord.com/invite/XVxrn84eum",
     "description": {
       "en": "French-speaking Celeste community Discord",
-      "ko": "프랑스어권 셀레스트 커뮤니티 디스코드"
+      "ko": "프랑스 셀레스트 커뮤니티 디스코드"
     },
     "flag": "FR"
   },
@@ -139,7 +149,7 @@
     "url": "https://discord.com/invite/MW3mBqfN3K",
     "description": {
       "en": "Japanese-speaking Celeste community Discord",
-      "ko": "일본어권 셀레스트 커뮤니티 디스코드"
+      "ko": "일본 셀레스트 커뮤니티 디스코드"
     },
     "flag": "JP"
   },
@@ -150,7 +160,7 @@
     "url": "https://discord.gg/mreyDsfheT",
     "description": {
       "en": "Russian-speaking Celeste community Discord",
-      "ko": "러시아어권 셀레스트 커뮤니티 디스코드"
+      "ko": "러시아 셀레스트 커뮤니티 디스코드"
     },
     "flag": "RU"
   },
@@ -164,6 +174,86 @@
       "ko": "한국 셀레스트 커뮤니티 디스코드"
     },
     "flag": "KR"
+  },
+  {
+    "type": "discord-global",
+    "icon": "brand-discord",
+    "text": "Celeste's Hardest Maps List",
+    "url": "https://discord.gg/qWz3QYpun5",
+    "description": {
+      "en": "Community for Celeste's hardest maps and clears",
+      "ko": "셀레스트 최고 난도 맵과 클리어 기록을 다루는 커뮤니티"
+    }
+  },
+  {
+    "type": "discord-global",
+    "icon": "brand-discord",
+    "text": "CelesteCommunity Events",
+    "url": "https://discord.gg/sb5dbhTURy",
+    "description": {
+      "en": "Discord for Celeste community events",
+      "ko": "셀레스트 커뮤니티 이벤트를 위한 디스코드"
+    }
+  },
+  {
+    "type": "discord-global",
+    "icon": "brand-discord",
+    "text": "Mt. Celeste Paceping Association",
+    "url": "https://discord.gg/MJPB64VZKD",
+    "description": {
+      "en": "Discord for sharing Celeste speedrun pace updates",
+      "ko": "셀레스트 스피드런 페이스를 공유하는 디스코드"
+    }
+  },
+  {
+    "type": "discord-global",
+    "icon": "brand-discord",
+    "text": "Celeste Modded Done Deathless",
+    "url": "https://discord.com/invite/GeJvmMycaC",
+    "description": {
+      "en": "Discord for modded deathless clears and verification",
+      "ko": "모드 맵 노데스 클리어 기록과 인증을 위한 디스코드"
+    }
+  },
+  {
+    "type": "discord-global",
+    "icon": "brand-discord",
+    "text": "Celeste Challenges",
+    "url": "https://discord.gg/MKGNC3Trh",
+    "description": {
+      "en": "Discord community for Celeste challenges",
+      "ko": "셀레스트 챌린지를 위한 디스코드 커뮤니티"
+    }
+  },
+  {
+    "type": "discord-global",
+    "icon": "brand-discord",
+    "text": "Mt. Celeste Playtesting Association",
+    "url": "https://discord.gg/pmauV7EyMs",
+    "description": {
+      "en": "Discord for testing maps and sharing feedback",
+      "ko": "맵 테스트와 피드백을 위한 디스코드"
+    }
+  },
+  {
+    "type": "discord-global",
+    "icon": "brand-discord",
+    "text": "The Theo Enthusiasts",
+    "url": "https://discord.gg/A25YwJsCqR",
+    "description": {
+      "en": "Community focused on Celeste's Theo crystal mechanic",
+      "ko": "셀레스트의 테오 크리스탈 기믹을 다루는 커뮤니티"
+    }
+  },
+  {
+    "type": "discord-global",
+    "icon": "brand-discord",
+    "text": "Blindfolded Celeste",
+    "url": "https://discord.gg/GMtxcXVbha",
+    "description": {
+      "en": "Community for playing Celeste blindfolded",
+      "ko": "눈을 가리고 셀레스트를 플레이하는 커뮤니티"
+    }
   },
   {
     "type": "modding",
@@ -217,16 +307,6 @@
   },
   {
     "type": "modding",
-    "icon": "world",
-    "text": "Monika's D-Sides",
-    "url": "https://gamebanana.com/mods/150759",
-    "description": {
-      "en": "Fan-made, harder versions of Celeste chapters",
-      "ko": "기존 챕터를 더 어렵게 만든 팬 제작 모드"
-    }
-  },
-  {
-    "type": "modding",
     "icon": "brand-youtube",
     "text": "Celeste Modding Central",
     "url": "https://www.youtube.com/@CelesteModdingCentral",
@@ -237,22 +317,22 @@
   },
   {
     "type": "modding",
-    "icon": "brand-discord",
-    "text": "Mt. Celeste Playtesting Association",
-    "url": "https://discord.gg/pmauV7EyMs",
+    "icon": "file-spreadsheet",
+    "text": "The Celeste Mapper's Toolkit",
+    "url": "https://docs.google.com/spreadsheets/d/16xXR5m_WkVrWZlbf98evjmEatYaj834d/edit#gid=499653727",
     "description": {
-      "en": "Discord for testing maps and sharing feedback",
-      "ko": "맵 테스트와 피드백을 위한 디스코드"
+      "en": "Tools, tutorials, and references for Celeste mapping",
+      "ko": "셀레스트 맵 제작 도구와 튜토리얼, 참고 자료 모음"
     }
   },
   {
     "type": "modding",
     "icon": "world",
-    "text": "Celeste Mods List",
-    "url": "https://celestemods.com/",
+    "text": "Skin Mod Template Picker",
+    "url": "https://kuksattu.github.io/celeste/skinmod-template/",
     "description": {
-      "en": "Browse a catalog of Celeste mods",
-      "ko": "셀레스트 모드를 찾아볼 수 있는 목록"
+      "en": "Choose and download a Celeste skin mod template",
+      "ko": "셀레스트 스킨 모드 템플릿을 선택하고 다운로드하는 곳"
     }
   },
   {
@@ -277,9 +357,29 @@
   },
   {
     "type": "challenge",
+    "icon": "world",
+    "text": "Goldberries",
+    "url": "https://goldberries.net/",
+    "description": {
+      "en": "Modded Celeste deathless maps and clear records",
+      "ko": "셀레스트 모드 맵 노데스 클리어 목록과 기록"
+    }
+  },
+  {
+    "type": "challenge",
+    "icon": "world",
+    "text": "Hard Clears",
+    "url": "https://www.hardclears.com/",
+    "description": {
+      "en": "Database of Celeste's hardest maps, players, and clears",
+      "ko": "셀레스트 최고 난도 맵과 플레이어, 클리어 기록"
+    }
+  },
+  {
+    "type": "challenge",
     "icon": "file-spreadsheet",
     "text": "FWG Collectors' List",
-    "url": "https://docs.google.com/spreadsheets/d/1FesTb6qkgMz-dCn7YdioRydToWSQNTg1axFEIHU4FF8/edit?usp=sharing",
+    "url": "https://docs.google.com/spreadsheets/d/1FesTb6qkgMz-dCn7YdioRydToWSQNTg1axFEIHU4FF8/edit",
     "description": {
       "en": "Record of Farewell Golden Strawberry clears",
       "ko": "Farewell 황금 딸기 클리어 기록"
@@ -288,8 +388,18 @@
   {
     "type": "challenge",
     "icon": "file-spreadsheet",
+    "text": "Farewell Golden Strats Spreadsheet",
+    "url": "https://docs.google.com/spreadsheets/d/1HrSBQKw-L1onD2uz5lSlt6NADftpys2au5V7lf79OrM/edit",
+    "description": {
+      "en": "Room-by-room strategies for the Farewell Golden Strawberry",
+      "ko": "Farewell 황금 딸기용 방별 공략과 대체 루트"
+    }
+  },
+  {
+    "type": "challenge",
+    "icon": "file-spreadsheet",
     "text": "Celeste Survivors List",
-    "url": "https://docs.google.com/spreadsheets/d/1a32h6LErb1PAyYGsIO8hY-Y1pd-3r4co3M6RnuIRTZE/edit?usp=sharing",
+    "url": "https://docs.google.com/spreadsheets/d/1a32h6LErb1PAyYGsIO8hY-Y1pd-3r4co3M6RnuIRTZE/edit",
     "description": {
       "en": "Records of deathless runs in the original game",
       "ko": "셀레스트 본편 노데스런 기록"
@@ -317,19 +427,9 @@
   },
   {
     "type": "challenge",
-    "icon": "brand-discord",
-    "text": "Celeste Modded Done Deathless",
-    "url": "https://discord.com/invite/GeJvmMycaC",
-    "description": {
-      "en": "Discord for modded deathless clears and verification",
-      "ko": "모드 맵 노데스 클리어 기록과 인증을 위한 디스코드"
-    }
-  },
-  {
-    "type": "challenge",
     "icon": "file-spreadsheet",
     "text": "Hardest Maps Clear List",
-    "url": "https://docs.google.com/spreadsheets/d/1A88F3X2lOQJry-Da2NpnAr-w5WDrkjDtg7Wt0kLCiz8/edit?usp=sharing",
+    "url": "https://docs.google.com/spreadsheets/d/1A88F3X2lOQJry-Da2NpnAr-w5WDrkjDtg7Wt0kLCiz8/edit",
     "description": {
       "en": "Hardest Celeste maps and their clear records",
       "ko": "최고 난도 셀레스트 맵과 클리어 기록"
@@ -339,7 +439,7 @@
     "type": "challenge",
     "icon": "file-spreadsheet",
     "text": "Celeste Skill Rating",
-    "url": "https://docs.google.com/spreadsheets/d/1XTAL3kgpX0bG6SBfznPX8z7Qdb7lGnQRuxeUfPZMFoU/edit?usp=sharing",
+    "url": "https://docs.google.com/spreadsheets/d/1XTAL3kgpX0bG6SBfznPX8z7Qdb7lGnQRuxeUfPZMFoU/edit",
     "description": {
       "en": "Curated Celeste maps organized by difficulty",
       "ko": "난이도별로 정리된 셀레스트 추천 맵"
@@ -349,7 +449,7 @@
     "type": "challenge",
     "icon": "file-spreadsheet",
     "text": "Randomizer Perfect Room Clears",
-    "url": "https://docs.google.com/spreadsheets/d/15IIy0mCmP3jFG5zwCme6jCqWgXGVDYJSvme0K0iQR-0/edit?usp=sharing",
+    "url": "https://docs.google.com/spreadsheets/d/15IIy0mCmP3jFG5zwCme6jCqWgXGVDYJSvme0K0iQR-0/edit",
     "description": {
       "en": "Records and clips of perfect randomizer room clears",
       "ko": "Randomizer 방의 퍼펙트 클리어 기록과 영상"
@@ -359,7 +459,7 @@
     "type": "challenge",
     "icon": "file-spreadsheet",
     "text": "Celeste Community Mindash",
-    "url": "https://docs.google.com/spreadsheets/d/1j3lPiqxBWa4bbX1rc3nZ2taHu8JchGaTj4x98gXdcho/edit?usp=sharing",
+    "url": "https://docs.google.com/spreadsheets/d/1j3lPiqxBWa4bbX1rc3nZ2taHu8JchGaTj4x98gXdcho/edit",
     "description": {
       "en": "Community records for minimum-dash clears",
       "ko": "대시를 최소한으로 사용한 클리어 기록"
@@ -387,19 +487,39 @@
   },
   {
     "type": "speedrunning",
-    "icon": "file-spreadsheet",
-    "text": "Reference Guide",
-    "url": "https://docs.google.com/spreadsheets/d/14WJL-0vJHYOJzDzhrxfJQumMnMn5M8LD6qwwojogp0E/edit?usp=sharing",
+    "icon": "brand-youtube",
+    "text": "Celeste WR Pace Series",
+    "url": "https://www.youtube.com/playlist?list=PLnCQQ7SaIgMcILGOmQSZwUXDJdpnKlOeY",
     "description": {
-      "en": "Celeste speedrun split times for reference",
-      "ko": "참고용 셀레스트 스피드런 구간별 기록"
+      "en": "Video tutorials for Celeste Any% speedrunning",
+      "ko": "셀레스트 Any% 스피드런 튜토리얼 영상 모음"
+    }
+  },
+  {
+    "type": "speedrunning",
+    "icon": "file-spreadsheet",
+    "text": "Celeste Any% Practice Sheet Template",
+    "url": "https://docs.google.com/spreadsheets/d/1WwqnaloO6I4gHcyzF3odz6n5LnSDTveS34BY-ljORuI/edit",
+    "description": {
+      "en": "Track checkpoint times against Any% practice standards",
+      "ko": "체크포인트 기록을 Any% 연습 기준과 비교하는 시트"
+    }
+  },
+  {
+    "type": "speedrunning",
+    "icon": "file-spreadsheet",
+    "text": "Celeste Sub-30 Checkpoint References",
+    "url": "https://docs.google.com/spreadsheets/d/1HsFtpz_wfA4yrMuZOMX-f69O6ZEZph8db1ReKX8SNIY/edit",
+    "description": {
+      "en": "Checkpoint videos and times for sub-30 Any% practice",
+      "ko": "Any% 30분 미만 달성을 위한 체크포인트별 영상과 기록"
     }
   },
   {
     "type": "speedrunning",
     "icon": "file-type-doc",
     "text": "Resource Guide",
-    "url": "https://docs.google.com/document/d/11AkfNoNJdwfPO3zzRWUqmKATm5EOd00fxh-HOds6HLY/edit?usp=sharing",
+    "url": "https://docs.google.com/document/d/11AkfNoNJdwfPO3zzRWUqmKATm5EOd00fxh-HOds6HLY/edit",
     "description": {
       "en": "Guides, tools, and links for Celeste speedrunning",
       "ko": "셀레스트 스피드런 가이드와 도구 모음"
@@ -427,19 +547,19 @@
   },
   {
     "type": "misc",
-    "icon": "brand-discord",
-    "text": "Mt. Celeste Paceping Association",
-    "url": "https://discord.gg/MJPB64VZKD",
+    "icon": "file-type-pdf",
+    "text": "Dream Hyper Guide",
+    "url": "https://drive.google.com/file/d/1hnF6YRXYYIMe3H7z0QcetOeVsrWnIRgF/view",
     "description": {
-      "en": "Discord for sharing Celeste speedrun pace updates",
-      "ko": "셀레스트 스피드런 페이스를 공유하는 디스코드"
+      "en": "Frame-by-frame guide to dream hypers and dream jumps",
+      "ko": "드림 하이퍼와 드림 점프의 입력 타이밍을 설명하는 가이드"
     }
   },
   {
     "type": "misc",
     "icon": "file-spreadsheet",
     "text": "Celeste Resource Collection",
-    "url": "https://docs.google.com/spreadsheets/d/1UM4ynWTr22tIUMPlvGQnuyzx5UZQw4dBtBIpiGG27u4/edit?usp=sharing",
+    "url": "https://docs.google.com/spreadsheets/d/1UM4ynWTr22tIUMPlvGQnuyzx5UZQw4dBtBIpiGG27u4/edit",
     "description": {
       "en": "Spreadsheet collecting Celeste resources",
       "ko": "셀레스트 자료를 모아 둔 스프레드시트"
