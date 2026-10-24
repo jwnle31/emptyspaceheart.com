@@ -9,10 +9,10 @@
     sans-serif;
   list-style: none;
   font-size: 0.875rem;
-  line-height: 1.75rem;
+  line-height: 1.4;
   display: flex;
-  align-items: center;
-  gap: 0.25rem;
+  align-items: flex-start;
+  gap: 0.45rem;
   transition: transform 0.2s ease;
   min-width: 0;
 }
@@ -21,17 +21,35 @@
   transform: translateX(0.25rem);
 }
 
-.link span {
+.link > svg {
+  flex: 0 0 auto;
+  margin-top: 0.2rem;
+}
+
+.content {
   min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-wrap: ellipsis;
+  flex: 1;
 }
 
 .link a {
+  display: block;
   color: var(--theme-color);
   text-decoration: none;
+}
+
+.name {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.description {
+  display: block;
+  margin-top: 0.1rem;
+  color: var(--theme-color-hover);
+  font-size: 0.6875rem;
+  line-height: 1.45;
 }
 
 .link a:hover,
@@ -42,4 +60,6 @@
 
 .flag-wrapper {
   margin-left: auto;
+  margin-top: 0.2rem;
+  flex: 0 0 auto;
 }

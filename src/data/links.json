@@ -3,67 +3,111 @@
     "type": "official",
     "icon": "world",
     "text": "celestegame.com",
-    "url": "https://www.celestegame.com/"
+    "url": "https://www.celestegame.com/",
+    "description": {
+      "en": "Official Celeste website",
+      "ko": "셀레스트 공식 웹사이트"
+    }
   },
   {
     "type": "official",
     "icon": "world",
     "text": "Extremely OK Games, Ltd.",
-    "url": "https://exok.com"
+    "url": "https://exok.com",
+    "description": {
+      "en": "Official site of the studio behind Celeste",
+      "ko": "셀레스트 개발사의 공식 웹사이트"
+    }
   },
   {
     "type": "official",
     "icon": "world",
     "text": "Celeste Classics",
-    "url": "https://celesteclassic.github.io/"
+    "url": "https://celesteclassic.github.io/",
+    "description": {
+      "en": "Play the original Celeste games",
+      "ko": "초기 셀레스트 게임을 플레이할 수 있는 곳"
+    }
   },
   {
     "type": "official",
     "icon": "world",
     "text": "Celeste 64",
-    "url": "https://maddymakesgamesinc.itch.io/celeste64"
+    "url": "https://maddymakesgamesinc.itch.io/celeste64",
+    "description": {
+      "en": "Free 3D Celeste spin-off",
+      "ko": "무료 3D 셀레스트 스핀오프"
+    }
   },
   {
     "type": "official",
     "icon": "world",
     "text": "amora.ink",
-    "url": "https://amora.ink/celeste"
+    "url": "https://amora.ink/",
+    "description": {
+      "en": "Website of Celeste artist Amora B",
+      "ko": "셀레스트 아티스트 Amora B.의 웹사이트"
+    }
   },
   {
     "type": "official",
     "icon": "brand-bandcamp",
     "text": "Celeste Original Soundtrack",
-    "url": "https://radicaldreamland.bandcamp.com/album/celeste-original-soundtrack"
+    "url": "https://radicaldreamland.bandcamp.com/album/celeste-original-soundtrack",
+    "description": {
+      "en": "Celeste's original soundtrack by Lena Raine",
+      "ko": "Lena Raine의 셀레스트 오리지널 사운드트랙"
+    }
   },
   {
     "type": "official",
     "icon": "brand-bandcamp",
     "text": "Celeste B-Sides",
-    "url": "https://radicaldreamland.bandcamp.com/album/celeste-b-sides"
+    "url": "https://radicaldreamland.bandcamp.com/album/celeste-b-sides",
+    "description": {
+      "en": "B-side remix album for Celeste",
+      "ko": "셀레스트 B사이드 리믹스 앨범"
+    }
   },
   {
     "type": "general",
     "icon": "brand-reddit",
     "text": "r/celestegame",
-    "url": "https://www.reddit.com/r/celestegame/"
+    "url": "https://www.reddit.com/r/celestegame/",
+    "description": {
+      "en": "Celeste discussions and community posts",
+      "ko": "셀레스트 이야기와 커뮤니티 게시글"
+    }
   },
   {
     "type": "general",
     "icon": "world",
     "text": "Celeste Wiki",
-    "url": "https://celeste.ink/"
+    "url": "https://celeste.ink/",
+    "description": {
+      "en": "Community-maintained Celeste reference wiki",
+      "ko": "커뮤니티가 관리하는 셀레스트 위키"
+    }
   },
   {
     "type": "general",
     "icon": "world",
     "text": "Berry Camp",
-    "url": "https://berrycamp.github.io/"
+    "url": "https://berrycamp.github.io/",
+    "description": {
+      "en": "Browse Celeste rooms and maps",
+      "ko": "셀레스트의 방과 맵을 둘러볼 수 있는 곳"
+    }
   },
   {
     "type": "discord-global",
     "icon": "brand-discord",
     "text": "Mt. Celeste Climbing Association",
     "url": "https://discord.gg/celeste",
+    "description": {
+      "en": "Main Celeste community Discord",
+      "ko": "셀레스트 메인 커뮤니티 디스코드"
+    },
     "flag": "CA"
   },
   {
@@ -71,6 +115,10 @@
     "icon": "brand-discord",
     "text": "Celeste Brasil",
     "url": "https://discord.gg/celeste-brasil",
+    "description": {
+      "en": "Brazilian Celeste community Discord",
+      "ko": "브라질 셀레스트 커뮤니티 디스코드"
+    },
     "flag": "BR"
   },
   {
@@ -78,6 +126,10 @@
     "icon": "brand-discord",
     "text": "Le Perchoir Celeste",
     "url": "https://discord.com/invite/XVxrn84eum",
+    "description": {
+      "en": "French-speaking Celeste community Discord",
+      "ko": "프랑스어 셀레스트 커뮤니티 디스코드"
+    },
     "flag": "FR"
   },
   {
@@ -85,6 +137,10 @@
     "icon": "brand-discord",
     "text": "Celeste日本語サーバー",
     "url": "https://discord.com/invite/MW3mBqfN3K",
+    "description": {
+      "en": "Japanese-speaking Celeste community Discord",
+      "ko": "일본어 셀레스트 커뮤니티 디스코드"
+    },
     "flag": "JP"
   },
   {
@@ -92,6 +148,10 @@
     "icon": "brand-discord",
     "text": "Русское сообщество Celeste",
     "url": "https://discord.gg/mreyDsfheT",
+    "description": {
+      "en": "Russian-speaking Celeste community Discord",
+      "ko": "러시아어 셀레스트 커뮤니티 디스코드"
+    },
     "flag": "RU"
   },
   {
@@ -99,174 +159,290 @@
     "icon": "brand-discord",
     "text": "셀레스트 🇰🇷",
     "url": "https://discord.com/invite/SWb9tM4dHR",
+    "description": {
+      "en": "Korean-speaking Celeste community Discord",
+      "ko": "한국어 셀레스트 커뮤니티 디스코드"
+    },
     "flag": "KR"
   },
   {
     "type": "modding",
     "icon": "world",
     "text": "Everest",
-    "url": "https://everestapi.github.io/"
+    "url": "https://everestapi.github.io/",
+    "description": {
+      "en": "Celeste mod loader and setup guide",
+      "ko": "셀레스트 모드 로더와 설치 안내"
+    }
   },
   {
     "type": "modding",
     "icon": "world",
     "text": "GameBanana",
-    "url": "https://gamebanana.com/games/6460"
+    "url": "https://gamebanana.com/games/6460",
+    "description": {
+      "en": "Browse and download Celeste mods",
+      "ko": "셀레스트 모드를 둘러보고 다운로드하는 곳"
+    }
   },
   {
     "type": "modding",
     "icon": "world",
     "text": "CelesteNet",
-    "url": "https://celestenet.0x0a.de/"
+    "url": "https://celestenet.0x0a.de/",
+    "description": {
+      "en": "Play Celeste online with other players",
+      "ko": "다른 플레이어와 온라인으로 셀레스트를 즐기는 모드"
+    }
   },
   {
     "type": "modding",
     "icon": "world",
     "text": "Strawberry Jam Collab",
-    "url": "https://gamebanana.com/mods/424541"
+    "url": "https://gamebanana.com/mods/424541",
+    "description": {
+      "en": "Large community-made collection of Celeste maps",
+      "ko": "커뮤니티가 만든 대규모 셀레스트 맵 모음"
+    }
   },
   {
     "type": "modding",
     "icon": "world",
     "text": "2020 Spring Collab",
-    "url": "https://gamebanana.com/mods/150813"
+    "url": "https://gamebanana.com/mods/150813",
+    "description": {
+      "en": "Community-made Celeste map collection",
+      "ko": "커뮤니티가 만든 셀레스트 맵 모음"
+    }
   },
   {
     "type": "modding",
     "icon": "world",
     "text": "Monika's D-Sides",
-    "url": "https://gamebanana.com/mods/150759"
+    "url": "https://gamebanana.com/mods/150759",
+    "description": {
+      "en": "Fan-made, harder versions of Celeste chapters",
+      "ko": "기존 챕터를 더 어렵게 만든 팬 제작 모드"
+    }
   },
   {
     "type": "modding",
     "icon": "brand-youtube",
     "text": "Celeste Modding Central",
-    "url": "https://www.youtube.com/@CelesteModdingCentral"
+    "url": "https://www.youtube.com/@CelesteModdingCentral",
+    "description": {
+      "en": "Videos about making Celeste mods",
+      "ko": "셀레스트 모드 제작에 관한 영상"
+    }
   },
   {
     "type": "modding",
     "icon": "brand-discord",
     "text": "Mt. Celeste Playtesting Association",
-    "url": "https://discord.gg/pmauV7EyMs"
+    "url": "https://discord.gg/pmauV7EyMs",
+    "description": {
+      "en": "Discord for testing maps and sharing feedback",
+      "ko": "맵 테스트와 피드백을 위한 디스코드"
+    }
   },
   {
     "type": "modding",
     "icon": "world",
     "text": "Celeste Mods List",
-    "url": "https://celestemods.com/"
+    "url": "https://celestemods.com/",
+    "description": {
+      "en": "Browse a catalog of Celeste mods",
+      "ko": "셀레스트 모드 목록을 둘러볼 수 있는 곳"
+    }
   },
   {
     "type": "modding",
     "icon": "world",
     "text": "Maddie's Random Stuff",
-    "url": "https://maddie480.ovh/"
+    "url": "https://maddie480.ovh/",
+    "description": {
+      "en": "Celeste modding tools and references",
+      "ko": "셀레스트 모딩 도구와 참고 자료"
+    }
   },
   {
     "type": "modding",
     "icon": "world",
     "text": "Celeste's FMOD Studio Project",
-    "url": "https://www.fmod.com/docs/2.03/studio/appendix-a-celeste.html"
+    "url": "https://www.fmod.com/docs/2.03/studio/appendix-a-celeste.html",
+    "description": {
+      "en": "Guide to Celeste's public audio project",
+      "ko": "공개된 셀레스트 FMOD 오디오 프로젝트 안내"
+    }
   },
   {
     "type": "challenge",
     "icon": "file-spreadsheet",
     "text": "FWG Collectors' List",
-    "url": "https://docs.google.com/spreadsheets/d/1FesTb6qkgMz-dCn7YdioRydToWSQNTg1axFEIHU4FF8/edit?usp=sharing"
+    "url": "https://docs.google.com/spreadsheets/d/1FesTb6qkgMz-dCn7YdioRydToWSQNTg1axFEIHU4FF8/edit?usp=sharing",
+    "description": {
+      "en": "Record of Farewell Golden Strawberry clears",
+      "ko": "Farewell 황금 딸기 클리어 기록"
+    }
   },
   {
     "type": "challenge",
     "icon": "file-spreadsheet",
     "text": "Celeste Survivors List",
-    "url": "https://docs.google.com/spreadsheets/d/1a32h6LErb1PAyYGsIO8hY-Y1pd-3r4co3M6RnuIRTZE/edit?usp=sharing"
+    "url": "https://docs.google.com/spreadsheets/d/1a32h6LErb1PAyYGsIO8hY-Y1pd-3r4co3M6RnuIRTZE/edit?usp=sharing",
+    "description": {
+      "en": "Record of deathless vanilla Celeste runs",
+      "ko": "바닐라 셀레스트 노데스런 기록"
+    }
   },
   {
     "type": "challenge",
     "icon": "world",
     "text": "Wow Your Friends",
-    "url": "https://wowyourfriends.netlify.app/"
+    "url": "https://wowyourfriends.netlify.app/",
+    "description": {
+      "en": "Players who collected every Celeste strawberry",
+      "ko": "셀레스트의 모든 딸기를 모은 플레이어 기록"
+    }
   },
   {
     "type": "challenge",
     "icon": "world",
     "text": "Top 200 Deathless Challenges",
-    "url": "/challenges"
+    "url": "/deathless/top-challenges",
+    "description": {
+      "en": "Ranked list of hard modded deathless challenges",
+      "ko": "어려운 모드 노데스 챌린지 순위"
+    }
   },
   {
     "type": "challenge",
     "icon": "brand-discord",
     "text": "Celeste Modded Done Deathless",
-    "url": "https://discord.com/invite/GeJvmMycaC"
+    "url": "https://discord.com/invite/GeJvmMycaC",
+    "description": {
+      "en": "Discord for modded deathless clears and verification",
+      "ko": "모드 노데스 클리어와 인증을 위한 디스코드"
+    }
   },
   {
     "type": "challenge",
     "icon": "file-spreadsheet",
     "text": "Hardest Maps Clear List",
-    "url": "https://docs.google.com/spreadsheets/d/1A88F3X2lOQJry-Da2NpnAr-w5WDrkjDtg7Wt0kLCiz8/edit?usp=sharing"
+    "url": "https://docs.google.com/spreadsheets/d/1A88F3X2lOQJry-Da2NpnAr-w5WDrkjDtg7Wt0kLCiz8/edit?usp=sharing",
+    "description": {
+      "en": "Records of clears on the hardest Celeste maps",
+      "ko": "가장 어려운 셀레스트 맵의 클리어 기록"
+    }
   },
   {
     "type": "challenge",
     "icon": "file-spreadsheet",
     "text": "Celeste Skill Rating",
-    "url": "https://docs.google.com/spreadsheets/d/1XTAL3kgpX0bG6SBfznPX8z7Qdb7lGnQRuxeUfPZMFoU/edit?usp=sharing"
+    "url": "https://docs.google.com/spreadsheets/d/1XTAL3kgpX0bG6SBfznPX8z7Qdb7lGnQRuxeUfPZMFoU/edit?usp=sharing",
+    "description": {
+      "en": "Curated Celeste maps organized by difficulty",
+      "ko": "난이도별로 정리된 셀레스트 추천 맵"
+    }
   },
   {
     "type": "challenge",
     "icon": "file-spreadsheet",
     "text": "Randomizer Perfect Room Clears",
-    "url": "https://docs.google.com/spreadsheets/d/15IIy0mCmP3jFG5zwCme6jCqWgXGVDYJSvme0K0iQR-0/edit?usp=sharing"
+    "url": "https://docs.google.com/spreadsheets/d/15IIy0mCmP3jFG5zwCme6jCqWgXGVDYJSvme0K0iQR-0/edit?usp=sharing",
+    "description": {
+      "en": "Records and clips of perfect randomizer room clears",
+      "ko": "랜더마이저 방 퍼펙트 클리어 기록과 영상"
+    }
   },
   {
     "type": "challenge",
     "icon": "file-spreadsheet",
     "text": "Celeste Community Mindash",
-    "url": "https://docs.google.com/spreadsheets/d/1j3lPiqxBWa4bbX1rc3nZ2taHu8JchGaTj4x98gXdcho/edit?usp=sharing"
+    "url": "https://docs.google.com/spreadsheets/d/1j3lPiqxBWa4bbX1rc3nZ2taHu8JchGaTj4x98gXdcho/edit?usp=sharing",
+    "description": {
+      "en": "Community records for minimum-dash clears",
+      "ko": "대시를 최소한으로 사용한 클리어 기록"
+    }
   },
   {
     "type": "challenge",
     "icon": "brand-trello",
     "text": "Celeste Bounty Board",
-    "url": "https://trello.com/b/DzaUnS9z/celeste-bounty-board"
+    "url": "https://trello.com/b/DzaUnS9z/celeste-bounty-board",
+    "description": {
+      "en": "Community bounty board for Celeste challenges",
+      "ko": "셀레스트 챌린지 현상금 게시판"
+    }
   },
   {
     "type": "speedrunning",
     "icon": "world",
     "text": "Speedrun.com Leaderboard",
-    "url": "https://www.speedrun.com/celeste"
+    "url": "https://www.speedrun.com/celeste",
+    "description": {
+      "en": "Celeste speedrun rankings and submitted runs",
+      "ko": "셀레스트 스피드런 순위와 등록된 기록"
+    }
   },
   {
     "type": "speedrunning",
     "icon": "file-spreadsheet",
     "text": "Reference Guide",
-    "url": "https://docs.google.com/spreadsheets/d/14WJL-0vJHYOJzDzhrxfJQumMnMn5M8LD6qwwojogp0E/edit?usp=sharing"
+    "url": "https://docs.google.com/spreadsheets/d/14WJL-0vJHYOJzDzhrxfJQumMnMn5M8LD6qwwojogp0E/edit?usp=sharing",
+    "description": {
+      "en": "Split times from Celeste runs at different levels",
+      "ko": "다양한 수준의 셀레스트 런 구간 기록"
+    }
   },
   {
     "type": "speedrunning",
     "icon": "file-type-doc",
     "text": "Resource Guide",
-    "url": "https://docs.google.com/document/d/11AkfNoNJdwfPO3zzRWUqmKATm5EOd00fxh-HOds6HLY/edit?usp=sharing"
+    "url": "https://docs.google.com/document/d/11AkfNoNJdwfPO3zzRWUqmKATm5EOd00fxh-HOds6HLY/edit?usp=sharing",
+    "description": {
+      "en": "Guides, tools, and links for Celeste speedrunning",
+      "ko": "셀레스트 스피드런 가이드와 도구 모음"
+    }
   },
   {
     "type": "merch",
     "icon": "shopping-bag",
     "text": "Fangamer",
-    "url": "https://www.fangamer.com/collections/celeste"
+    "url": "https://www.fangamer.com/collections/celeste",
+    "description": {
+      "en": "Celeste merchandise collection",
+      "ko": "셀레스트 굿즈 모음"
+    }
   },
   {
     "type": "merch",
     "icon": "shopping-bag",
     "text": "The Yetee",
-    "url": "https://theyetee.com/collections/celeste"
+    "url": "https://theyetee.com/collections/celeste",
+    "description": {
+      "en": "Celeste merchandise collection",
+      "ko": "셀레스트 굿즈 모음"
+    }
   },
   {
     "type": "misc",
     "icon": "brand-discord",
     "text": "Mt. Celeste Paceping Association",
-    "url": "https://discord.gg/MJPB64VZKD"
+    "url": "https://discord.gg/MJPB64VZKD",
+    "description": {
+      "en": "Discord for Celeste speedrun pace discussion",
+      "ko": "셀레스트 스피드런 페이스를 이야기하는 디스코드"
+    }
   },
   {
     "type": "misc",
     "icon": "file-spreadsheet",
     "text": "Celeste Resource Collection",
-    "url": "https://docs.google.com/spreadsheets/d/1UM4ynWTr22tIUMPlvGQnuyzx5UZQw4dBtBIpiGG27u4/edit?usp=sharing"
+    "url": "https://docs.google.com/spreadsheets/d/1UM4ynWTr22tIUMPlvGQnuyzx5UZQw4dBtBIpiGG27u4/edit?usp=sharing",
+    "description": {
+      "en": "Spreadsheet collecting Celeste resources",
+      "ko": "셀레스트 자료를 모아 둔 스프레드시트"
+    }
   }
 ]

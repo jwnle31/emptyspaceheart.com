@@ -29,6 +29,6 @@
 }
 
 .list li {
-  padding: 0.34rem 0;
+  padding: 0.5rem 0;
   border-bottom: 0.0625rem solid color-mix(in srgb, var(--theme-color) 15%, transparent);
 }

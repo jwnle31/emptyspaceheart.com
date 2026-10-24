@@ -4,26 +4,31 @@ import { iconMap } from '../utils/iconMap';
 type LinkProps = {
   icon: string;
   text: string;
+  description: string;
   url: string;
   flag?: string;
   internal: boolean;
 };
 
-function Link({ icon, text, url, flag, internal }: LinkProps) {
+function Link({ icon, text, description, url, flag, internal }: LinkProps) {
   const Icon = iconMap[icon as keyof typeof iconMap];
   const isInternal = internal || url.startsWith('/');
   return (
     <li className={styles.link}>
       {Icon && <Icon size={14} />}
-      <span title={text}>
+      <div className={styles.content}>
         {isInternal ? (
-          <a href={url}>{text}</a>
+          <a href={url}>
+            <span className={styles.name}>{text}</span>
+            <span className={styles.description}>{description}</span>
+          </a>
         ) : (
           <a href={url} target="_blank" rel="noopener noreferrer">
-            {text}
+            <span className={styles.name}>{text}</span>
+            <span className={styles.description}>{description}</span>
           </a>
         )}
-      </span>
+      </div>
       {flag && (
         <div className={styles['flag-wrapper']}>
           <span className={`fi fi-${flag.toLowerCase()}`} />

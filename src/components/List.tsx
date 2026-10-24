@@ -2,6 +2,7 @@ import styles from './List.module.css';
 import type { Category } from '../types/Category';
 import linksData from '../data/links.json';
 import Link from './Link';
+import { useLocale } from '../i18n/locale';
 
 type ListProps = {
   category: Category;
@@ -10,6 +11,7 @@ type ListProps = {
 };
 
 function List({ category, title, linksLabel }: ListProps) {
+  const locale = useLocale();
   const categoryData = linksData.filter((link) => link.type === category);
   return (
     <section id={category} className={styles['list-container']}>
@@ -23,6 +25,7 @@ function List({ category, title, linksLabel }: ListProps) {
             key={link.url}
             icon={link.icon}
             text={link.text}
+            description={link.description[locale]}
             url={link.url}
             flag={link.flag || ''}
             internal={false}
