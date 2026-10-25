@@ -34,7 +34,6 @@
   gap: 1.25rem;
   padding: 1.25rem 0;
   border-top: 0.125rem solid var(--theme-color);
-  border-bottom: 0.0625rem solid color-mix(in srgb, var(--theme-color) 25%, transparent);
 }
 
 .category-nav > span {
@@ -73,7 +72,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: start;
   gap: 2.5rem 3rem;
-  padding-top: 2.25rem;
+  padding-top: 1.25rem;
 }
 
 .feedback {
