@@ -1,6 +1,7 @@
 import type { Locale } from './locale';
 
-export const SITE_DESCRIPTION = 'A minimalist hub for Celeste.';
+export const SITE_TAGLINE = 'A minimalist hub for Celeste';
+export const SITE_DESCRIPTION = `${SITE_TAGLINE}.`;
 
 type CommonCopy = {
   home: string;

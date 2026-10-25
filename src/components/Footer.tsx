@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
-import { commonCopy, SITE_DESCRIPTION } from '../i18n/common';
+import { commonCopy, SITE_TAGLINE } from '../i18n/common';
 import { useLocale } from '../i18n/locale';
 
 function Footer() {
@@ -13,7 +13,7 @@ function Footer() {
         <div className={styles.primary}>
           <div className={styles.identity}>
             <Link to="/" className={styles.brand}>empty space</Link>
-            <p>{SITE_DESCRIPTION}</p>
+            <p>{SITE_TAGLINE}</p>
           </div>
           <nav className={styles.navigation} aria-label={copy.footerNavigationLabel}>
             <Link to="/">{copy.home}</Link>
