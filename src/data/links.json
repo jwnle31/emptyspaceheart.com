@@ -558,6 +558,26 @@
   {
     "type": "misc",
     "icon": "file-spreadsheet",
+    "text": "Celeste's Longest Accomplishments",
+    "url": "https://docs.google.com/spreadsheets/d/1L2hoTuokvJJKQzJYqZXIe8xhlweTJZYJAWLVQdp4u4w/edit",
+    "description": {
+      "en": "Long Celeste grinds and high death count records",
+      "ko": "긴 셀레스트 도전과 높은 사망 횟수를 모은 기록"
+    }
+  },
+  {
+    "type": "misc",
+    "icon": "file-spreadsheet",
+    "text": "The Routing List",
+    "url": "https://docs.google.com/spreadsheets/d/14Gg7Jtb9z4uc3kCJM8favqfcN9mAwD1GJ7GxBQrl12Y/edit#gid=254091638",
+    "description": {
+      "en": "Celeste maps ranked by how hard they are to route",
+      "ko": "루트 찾기가 어려운 셀레스트 맵을 난이도별로 정리한 목록"
+    }
+  },
+  {
+    "type": "misc",
+    "icon": "file-spreadsheet",
     "text": "Celeste Resource Collection",
     "url": "https://docs.google.com/spreadsheets/d/1UM4ynWTr22tIUMPlvGQnuyzx5UZQw4dBtBIpiGG27u4/edit",
     "description": {
