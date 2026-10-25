@@ -91,7 +91,7 @@ function Deathless() {
                     handleModeChange('absolute');
                   }}
                 >
-                  Absolute
+                  Profile
                 </button>
                 <button
                   type="button"
@@ -254,7 +254,7 @@ function Deathless() {
 
         <p className={styles.description}>
           {rankingMode === 'absolute'
-          ? 'Absolute mode ranks players by the full tier-clear profile, from higher tiers down.'
+          ? 'Profile compares clear counts from the highest tier down. The first tier with different counts decides the order: more clears at that tier ranks higher. Lower tiers matter only when all higher tiers are tied.'
             : (
                 <>
                   At each tier, count your clears at that tier and above. Compare
