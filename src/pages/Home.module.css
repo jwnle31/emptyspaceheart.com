@@ -76,6 +76,20 @@
   padding-top: 2.25rem;
 }
 
+.feedback {
+  margin-top: 2.75rem;
+  color: var(--theme-color-hover);
+  font-size: 0.6875rem;
+  line-height: 1.7;
+  text-align: right;
+}
+
+.feedback strong {
+  color: var(--theme-color);
+  font-weight: 900;
+  user-select: all;
+}
+
 @media (max-width: 40rem) {
   .page {
     width: min(100% - 1.5rem, 68rem);
@@ -93,5 +107,9 @@
   .resource-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
+  }
+
+  .feedback {
+    text-align: left;
   }
 }

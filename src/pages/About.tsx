@@ -13,8 +13,8 @@ function About() {
         </div>
         <Breathe />
 
-        <h2 className={styles.title}>About</h2>
-        <div className={styles.content}>
+        <section className={styles.content} aria-labelledby="about-title">
+          <h1 id="about-title" className={styles.title}>About</h1>
           <div className={styles.story}>
             <p className={styles.lead}>
               emptyspaceheart.com is a minimalist hub for Celeste.
@@ -25,18 +25,7 @@ function About() {
               more to climb.
             </p>
           </div>
-          <aside className={styles.contribute}>
-            <h3>Contribute</h3>
-            <p>Want to add something? Suggest it through GitHub Issues.</p>
-            <a
-              href="https://github.com/jwnle31/emptyspaceheart/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GitHub Issues ↗
-            </a>
-          </aside>
-        </div>
+        </section>
       </main>
     </>
   );

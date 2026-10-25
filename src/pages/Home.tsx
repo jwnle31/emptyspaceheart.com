@@ -61,6 +61,12 @@ function Home() {
             />
           ))}
         </div>
+
+        <p className={styles.feedback}>
+          {copy.feedbackPrefix}{' '}
+          <strong>u_h_m</strong>
+          {copy.feedbackSuffix}
+        </p>
       </main>
     </>
   );
